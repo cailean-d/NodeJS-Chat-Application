@@ -41,7 +41,7 @@ var connection = mysql.createConnection({
 });
 
 app.get('/', function(req, res){
- res.sendFile(__dirname + '/src/index2.html');
+ res.sendFile(__dirname + '/index.html');
 });
 
 http.listen(port, ip, function(){

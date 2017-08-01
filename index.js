@@ -28,7 +28,7 @@ var now = require("performance-now");
 var rndName = require("./randomName");
 
 var ip = '0.0.0.0';
-var port = 443;
+var port = 3000;
 var connections = [];
 var clients = {};
 var users = [];
@@ -44,7 +44,7 @@ app.get('/', function(req, res){
  res.sendFile(__dirname + '/index.html');
 });
 
-http.listen(port, ip, function(){
+http.listen('', '', function(){
   console.log(colors.green(`\nSERVER listening on ${ip}:${port}\n`));
 });
 

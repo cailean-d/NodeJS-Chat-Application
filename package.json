@@ -1,0 +1,24 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.15.3",
+    "node-static": "^0.7.9",
+    "socket.io": "^2.0.3",
+    "ws": "^3.0.0"
+  },
+  "devDependencies": {
+    "mysql": "^2.13.0",
+    "mysql-utilities": "^1.0.10",
+    "node-static": "^0.7.9",
+    "ws": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

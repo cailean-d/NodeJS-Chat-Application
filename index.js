@@ -41,10 +41,10 @@ var connection = mysql.createConnection({
 });
 
 app.get('/', function(req, res){
- res.sendFile(__dirname + '/index.html');
+ res.sendFile(__dirname + 'index.html');
 });
 
-http.listen('', '', function(){
+http.listen(port, ip, function(){
   console.log(colors.green(`\nSERVER listening on ${ip}:${port}\n`));
 });
 

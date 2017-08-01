@@ -27,7 +27,7 @@ var mysqlUtilities = require('mysql-utilities');
 var now = require("performance-now");
 var rndName = require("./randomName");
 
-var ip = '91.210.157.101';
+var ip = '0.0.0.0';
 var port = 443;
 var connections = [];
 var clients = {};

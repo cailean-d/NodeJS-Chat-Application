@@ -53,6 +53,14 @@ app.get('/css/style.css', function(req, res){
  res.sendFile(__dirname + '/css/style.css');
 });
 
+app.get('/js/libs/jquery.min.js', function(req, res){
+ res.sendFile(__dirname + '/js/libs/jquery.min.js');
+});
+
+app.get('/js/libs/socket.io.js', function(req, res){
+ res.sendFile(__dirname + '/js/libs/socket.io.js');
+});
+
 //=================================================
 
 http.listen(port, ip, function(){

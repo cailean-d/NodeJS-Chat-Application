@@ -1,0 +1,137 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+      body { 
+        font: 13px Helvetica, Arial; background: #FEFEFE;
+      }
+      form { 
+        /* background: #000;  */
+        /* padding: 3px; */
+        bottom: 0; 
+        width: 100%; 
+        display: flex;
+      }
+      form input { 
+        border: 1px solid #000; 
+        padding: 10px; 
+        width: 100%; 
+        margin-right: .5%; 
+      }
+      form button { 
+        /* width: 9%;  */
+        background: #CECEFD;
+        cursor: pointer;
+        border: 1px solid #000; 
+        /* border: none;  */
+        padding: 10px; 
+      }
+      #messages { 
+        background: #EFF5F4;
+        list-style: none;
+        margin: 0; 
+        padding: 5px; 
+        overflow-y: scroll; 
+        height: 400px;
+        overflow-x: hidden; 
+      }
+      .chat{
+        width: 500px;
+        /* height: 300px; */
+        margin: 20px;
+      }
+      .name{
+        padding: 10px;
+        color: #fff;
+        background: #333;
+      }
+      #messages::-webkit-scrollbar{
+        width:10px;
+        }
+      #messages::-webkit-scrollbar-thumb{
+          border-width: 0;
+          border-width:1px 1px 1px 2px;
+          border-color: #777;
+          background-color: #aaa;
+      }
+      #messages::-webkit-scrollbar-thumb:hover{
+          border-width: 1px 1px 1px 2px;
+          border-color: #555;
+          background-color: #777;
+      }
+      #messages::-webkit-scrollbar-track{
+          border-width:0;
+      }
+      #messages::-webkit-scrollbar-track:hover{
+          border-left: solid 1px #aaa;
+          background-color: #eee;
+      }
+      .message, .myMessage, .connectedUser, .disconnectedUser{
+          margin: 5px;
+          background: #EADAF8;
+          padding: 5px;
+          display: flex;
+          justify-content: space-between;
+      }
+      .message .msg, .myMessage .msg{
+        padding: 5px;
+        word-wrap: break-word;
+        margin-right: 5px;
+        width: 73%;
+      }
+      .message .time, .myMessage .time{
+        /* display: inline; */
+        padding: 5px;
+        /* width: 30%; */
+      }
+      .myMessage{
+          background: #FFFFFF;
+      }
+      .myMessage .s, .message .s{
+         color: #3100AD;
+      }
+      .type{
+        min-height: 25px;
+        background: #EFF5F4;
+        padding: 5px;
+        /* border: 1px solid #000; */
+      }
+      .type ul{
+        list-style: none;
+      }
+      .row{
+        display: flex;
+      }
+      .online{
+        min-width: 150px;
+        display: inline-block;
+        background: #EFF5F4;
+        padding: 10px;
+        margin:  20px;
+      }
+      .online ul{
+        list-style: none;
+      }
+      .online ul li{padding: 2px; background: #fff; margin-bottom: 3px}
+      .online ul li:hover{
+        cursor: pointer;
+        background: #252525;
+        color: #fff;
+      }
+      .online h4{
+        margin-bottom: 20px;
+      }
+      .connectedUser{
+        background: #81F281;
+        color: #fff;
+      }
+      .disconnectedUser{
+        background: #F55656;
+        color: #fff;
+
+      }
+      @media screen and (max-width: 500px){
+        .chat{
+          width: 90%;
+        }
+        .row{
+          display: block;
+        }
+      }

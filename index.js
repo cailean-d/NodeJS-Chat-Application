@@ -39,10 +39,21 @@ var connection = mysql.createConnection({
   password: '',
   database: 'test'
 });
-
+//=================================================
+//                   Routing
+//=================================================
 app.get('/', function(req, res){
- res.sendFile(__dirname + 'index.html');
+ res.sendFile(__dirname + '/index.html');
 });
+
+app.get('/js/socket-connection.js', function(req, res){
+ res.sendFile(__dirname + '/js/socket-connection.js');
+});
+app.get('/css/style.css', function(req, res){
+ res.sendFile(__dirname + '/css/style.css');
+});
+
+//=================================================
 
 http.listen(port, ip, function(){
   console.log(colors.green(`\nSERVER listening on ${ip}:${port}\n`));

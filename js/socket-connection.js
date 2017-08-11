@@ -1,10 +1,10 @@
 
-    var myName = '';
+   $(function () {
+
+    var myName =  $('.name span').text();
     var isTyping = false;
     var type;
     var serverIP = '192.168.0.54';
-
-   $(function () {
 
     //connect
     var socket = io();        // var socket = io(`http://${serverIP}:3000`);
@@ -50,13 +50,15 @@
     });
 
 // ----------------------------------------
-//     GET NAME 
+//     SEND NAME 
 // ----------------------------------------
 
-    socket.on('name', function(name){
-         myName = name;
-         $('.name span').text(name);
-    });
+    // socket.on('name', function(name){
+    //      myName = name;
+    //      $('.name span').text(name);
+    // });
+
+    socket.emit('user-name', $('.name span').html());
 
 // ----------------------------------------
 //     GET ONLINE

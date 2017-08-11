@@ -1,3 +1,4 @@
+
 var express = require('express');
 var app = require('express')();
 var http = require('http').Server(app);
@@ -6,7 +7,7 @@ var colors = require('colors/safe');
 var mysql = require('mysql');
 var mysqlUtilities = require('mysql-utilities');
 var now = require("performance-now");
-var rndName = require("./randomName");
+// var rndName = require("./randomName");
 // var cookieSession = require('cookie-session');
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
@@ -177,21 +178,40 @@ http.listen(port, ip, function(){
 io.on('connection', function(socket){
 	connections.push(socket);
 
-	var rndClientName = rndName();
 
-	socket.emit('name', rndClientName);
-	socket.username = rndClientName;
-	users.push(socket.username);
+  // var rndClientName = rndName();
+  var rndClientName = '';
 
-	updateOnline();
-	socket.broadcast.emit('connectedUser', socket.username);
 
-    console.log(colors.yellow(`${socket.username} is connected`));
+  socket.on('user-name', function(client){
+      rndClientName = client;
+      // console.log(client + '  ___user-name');
+
+      socket.username = rndClientName;
+      users.push(socket.username);
+
+      updateOnline();
+
+      socket.broadcast.emit('connectedUser', socket.username);
+      console.log(colors.yellow(`${socket.username} is connected`));
+      
+
+  });  
+
+
+	// socket.emit('name', rndClientName);
+
+
+
+
     // console.log(colors.green(`ONLINE IS ${connections.length}`));
 
     socket.on('disconnect', function(){
 
-    console.log(colors.red(`${socket.username} disconnected`));
+      if(socket.username){
+        console.log(colors.red(`${socket.username} disconnected`));
+      }
+
     users.splice(users.indexOf(socket.username), 1);
 
     connections.splice(connections.indexOf(socket), 1);
@@ -235,10 +255,8 @@ io.on('connection', function(socket){
 
 //==================================================================
 
-
-
 function updateOnline(){
-	io.sockets.emit('online', users);
+      io.sockets.emit('online', users);
 }
 
 // function connectedUser(){

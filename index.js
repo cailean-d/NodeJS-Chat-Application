@@ -13,6 +13,8 @@ var bodyParser = require('body-parser')
 var colour = require('colour');
 
 
+
+
 //middlewares
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -77,6 +79,11 @@ app.get('/index', function(req, res){
 app.get('/js/socket-connection.js', function(req, res){
  res.sendFile(__dirname + '/js/socket-connection.js');
 });
+
+app.get('/js/libs/js.cookie.js', function(req, res){
+ res.sendFile(__dirname + '/js/libs/js.cookie.js');
+});
+
 app.get('/css/style.css', function(req, res){
  res.sendFile(__dirname + '/css/style.css');
 });
@@ -127,8 +134,8 @@ app.post('/login', function(req, res){
 
       connection.queryRow('SELECT * FROM users where email=?', [email], function(err, row) {
         // console.dir(row);
-        console.log('valid email');
         if(row){
+        console.log('valid email');
           // validEmail = true;
           if(row.password === password){
             console.log('valid password');
@@ -139,12 +146,22 @@ app.post('/login', function(req, res){
             console.log('invalid password');
             res.send('invalid password');
           }
+        } else{
+          console.log('invalid email');
         }
       });
   }
+});
 
-
-
+app.post('/index', function(req, res){
+    if(req.body.userID){
+       connection.queryRow('SELECT * FROM users where id=?', [req.body.userID], function(err, row) {
+            res.send({ nickname: row.nickname });
+       });
+    } else{
+      res.end();
+    }
+  
 })
 
 

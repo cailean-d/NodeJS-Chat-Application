@@ -11,7 +11,7 @@
     <div class="chat">
       <div class="name">My name is<span style="padding: 10px; color: #DAE1FF; text-transform: uppercase; font-weight: bold;"></span></div>
       <div id="messages"></div>
-      <form action="">
+      <form id='chat_input'>
         <input id="m" autocomplete="off" />
         <button>Send</button>
       </form>
@@ -25,6 +25,10 @@
       </ul>
     </div>
   </div>
+  <form method="get">
+    <!-- <input type="hidden" name='logout' value='true'> -->
+    <input name='logout' type="submit" value='выйти' style="cursor: pointer;">
+  </form>
     <script src="./js/libs/jquery.min.js"></script>
     <script src="./js/libs/socket.io.js"></script>
     <script src="js/socket-connection.js"></script>

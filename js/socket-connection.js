@@ -12,7 +12,7 @@
 // ----------------------------------------
 //     SEND MESSAGE
 // ----------------------------------------
-    $('form').submit(function(){
+    $('#chat_input').submit(function(){
 
       if ($('#m').val() != ''){  
         //format date

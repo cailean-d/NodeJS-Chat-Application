@@ -1,23 +1,4 @@
-// var io = require('socket.io');
-// var express = require('express');
-
-// var app = express.createServer();
-// var io = io.listen(app);
-
-// app.listen(80);
-
-// io.sockets.on('connection', function (socket) {
-//   socket.emit('news', { hello: 'world' });
-//   socket.on('my other event', function (data) {
-//     console.log(data);
-//   });
-//   socket.on('disconnect', function () {
-//     console.log('user disconnected');
-//   });
-// });
-
-
-
+var express = require('express');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -26,6 +7,17 @@ var mysql = require('mysql');
 var mysqlUtilities = require('mysql-utilities');
 var now = require("performance-now");
 var rndName = require("./randomName");
+// var cookieSession = require('cookie-session');
+var cookieParser = require('cookie-parser')
+var bodyParser = require('body-parser')
+var colour = require('colour');
+
+
+//middlewares
+app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 
 var ip = '0.0.0.0';
 var port = 3000;
@@ -33,18 +25,54 @@ var connections = [];
 var clients = {};
 var users = [];
 
-var connection = mysql.createConnection({
+//=================================================
+//                DB Connection
+//=================================================
+
+var connection = mysql.createPool({
   host:     'localhost',
   user:     'root',
   password: '',
-  database: 'test'
+  database: 'chat_application'
 });
+
+  mysqlUtilities.upgrade(connection);
+  mysqlUtilities.introspection(connection);
+
 //=================================================
 //                   Routing
 //=================================================
+
+// app.use(express.static('public'))
+
+
+
 app.get('/', function(req, res){
- res.sendFile(__dirname + '/index.html');
+
+  // console.dir(req.query);
+
+
+    // console.log(req.cookies);
+    // console.log(req.cookies.userID + ' userID______');
+    if(req.cookies.userID == undefined){
+       res.redirect('/login');
+    } else {
+       res.redirect('/index');  
+    }
+
+    // Set cookie
+    // res.cookie( 'hyhyh', 'hyhykhoyko',{ maxAge: 1000 * 60 * 10, httpOnly: false });
+
 });
+
+app.get('/index', function(req, res){
+    if(req.query.logout){
+    res.cookie( 'userID', '', { maxAge: -1 , httpOnly: false });
+    res.redirect('/login');
+  } else {
+    res.sendFile(__dirname + '/index.html');
+  }
+})
 
 app.get('/js/socket-connection.js', function(req, res){
  res.sendFile(__dirname + '/js/socket-connection.js');
@@ -61,11 +89,73 @@ app.get('/js/libs/socket.io.js', function(req, res){
  res.sendFile(__dirname + '/js/libs/socket.io.js');
 });
 
+app.get('/registration', function(req, res){
+ res.sendFile(__dirname + '/registration.html');
+});
+app.get('/login', function(req, res){
+ res.sendFile(__dirname + '/login.html');
+});
+
+
+app.post('/registration', function(req, res){
+
+      connection.insert('users', {
+    nickname: req.body.nickname,
+    email: req.body.email,
+    password: req.body.password
+  }, function(err, recordId) {
+    if(err){ console.log(err); res.send('cant registrate'); } else {
+        console.log(`User \"${colors.green(req.body.nickname)}\"[${colors.yellow(recordId)}] is registred`);
+    }
+
+  });
+
+  // console.dir(req.headers.cookie);
+  // console.dir(req.body);
+  res.redirect('/login');
+  
+})
+
+app.post('/login', function(req, res){
+
+  if(req.body.login){
+
+      let email = req.body.email;
+      let password = req.body.password;
+      // let validEmail = false;
+
+
+      connection.queryRow('SELECT * FROM users where email=?', [email], function(err, row) {
+        // console.dir(row);
+        console.log('valid email');
+        if(row){
+          // validEmail = true;
+          if(row.password === password){
+            console.log('valid password');
+            res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
+            res.redirect('/');
+
+          } else{
+            console.log('invalid password');
+            res.send('invalid password');
+          }
+        }
+      });
+  }
+
+
+
+})
+
+
 //=================================================
 
 http.listen(port, ip, function(){
   console.log(colors.green(`\nSERVER listening on ${ip}:${port}\n`));
 });
+
+
+//=================================================
 
 io.on('connection', function(socket){
 	connections.push(socket);
@@ -97,32 +187,23 @@ io.on('connection', function(socket){
   });
 
   socket.on('chat message', function(msg){
- 
-    var table = 'node_test';
 
- 	socket.broadcast.emit('chat message', {
- 		message: msg.message,
- 		sender : msg.sender,
- 		time: msg.time
- 	});
+   	socket.broadcast.emit('chat message', {
+   		sender : msg.sender,
+      message: msg.message,
+   		time: msg.time
+   	});
 
-	mysqlUtilities.upgrade(connection);
-    mysqlUtilities.introspection(connection);
+    connection.insert('general_chat', {
+    sender: msg.sender,
+    message: msg.message
+  }, function(err, recordId) {
+    if(err){ console.log(err);}
 
-	var start = now();
 
-	connection.insert(table, {
-	  a: msg.sender,
-	  b: msg.message,
-	  c: msg.time,
-	}, function(err, recordId) {
-
-	  var end = now();
-
-	  console.log('MESSAGE \"' + colors.magenta(msg.message) + '\" BY ' + colors.cyan(msg.sender) + ' IS INSERTED INTO ' + 
-					colors.magenta(table) + ' WITH ID ' + colors.magenta(recordId) + ' IN ' + colors.green((end - start).toFixed(3)) + ' ms');
-	});
-
+    console.log('MESSAGE \"' + colors.magenta(msg.message) + '\" BY ' + colors.cyan(msg.sender) + ' IS INSERTED INTO ' + 
+          colors.magenta('general_chat') + ' WITH ID ' + colors.magenta(recordId));
+  });
 
   });
 
@@ -134,6 +215,9 @@ io.on('connection', function(socket){
   });
 
 });
+
+//==================================================================
+
 
 
 function updateOnline(){

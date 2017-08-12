@@ -145,6 +145,7 @@ app.post('/login', function(req, res){
           }
         } else{
           // console.log('invalid email');
+          res.send('invalid email');
         }
       });
   }

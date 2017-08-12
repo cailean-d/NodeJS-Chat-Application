@@ -52,6 +52,8 @@ var connection = mysql.createPool({
 //                   Routing
 //=================================================
 
+
+
 // app.use(express.static('public'))
 
 
@@ -61,17 +63,17 @@ app.get('/', function(req, res){    //chat only for registered users
     if(req.cookies.userID == undefined){
        res.redirect('/login');
     } else {
-       res.redirect('/index');  
+       res.redirect('/general_chat');  
     }
 
 });
 
-app.get('/index', function(req, res){
+app.get('/general_chat', function(req, res){
     if(req.query.logout){
     res.cookie( 'userID', '', { maxAge: -1 , httpOnly: false });
     res.redirect('/login');
   } else {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/general_chat.html');
   }
 })
 
@@ -151,7 +153,7 @@ app.post('/login', function(req, res){
   }
 });
 
-app.post('/index', function(req, res){
+app.post('/general_chat', function(req, res){
     if(req.body.userID){
        connection.queryRow('SELECT * FROM users where id=?', [req.body.userID], function(err, row) {
             res.send({ nickname: row.nickname });

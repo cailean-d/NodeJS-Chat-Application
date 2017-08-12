@@ -35,7 +35,7 @@
       
       let userID = Cookies.get('userID');
         $.ajax({
-            url : "index",
+            url : "general_chat",
             type: "post",
             data: {userID: userID},
             success: function(data){

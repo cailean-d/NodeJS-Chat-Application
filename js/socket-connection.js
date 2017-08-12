@@ -9,18 +9,13 @@
     //connect
     // var socket = io();        // var socket = io(`http://${serverIP}:3000`);
 
+    // console.log(myName);
 
-    const socket = io({
-      query: {
-        id: $('.name span').html()
-      }
-    });
+    const socket = io({ query: { id: myName } });
 
     socket.on('reconnect_attempt', () => {
-  socket.io.opts.query = {
-    id: $('.name span').html()
-  }
-});
+      socket.io.opts.query = { id: myName }
+    });
 
 
 // ----------------------------------------

@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 var colors = require('colors/safe');
 var mysql = require('mysql');
 var mysqlUtilities = require('mysql-utilities');
-var now = require("performance-now");
+// var now = require("performance-now");
 // var rndName = require("./randomName");
 // var cookieSession = require('cookie-session');
 var cookieParser = require('cookie-parser')
@@ -16,7 +16,7 @@ const jsonfile = require('jsonfile');
 
 
 
-
+// parse config.json
 const SETTINGS = jsonfile.readFileSync('./config.json');
 
 
@@ -56,21 +56,13 @@ var connection = mysql.createPool({
 
 
 
-app.get('/', function(req, res){
+app.get('/', function(req, res){    //chat only for registered users
 
-  // console.dir(req.query);
-
-
-    // console.log(req.cookies);
-    // console.log(req.cookies.userID + ' userID______');
     if(req.cookies.userID == undefined){
        res.redirect('/login');
     } else {
        res.redirect('/index');  
     }
-
-    // Set cookie
-    // res.cookie( 'hyhyh', 'hyhykhoyko',{ maxAge: 1000 * 60 * 10, httpOnly: false });
 
 });
 
@@ -148,11 +140,11 @@ app.post('/login', function(req, res){
             res.redirect('/');
 
           } else{
-            console.log('invalid password');
+            // console.log('invalid password');
             res.send('invalid password');
           }
         } else{
-          console.log('invalid email');
+          // console.log('invalid email');
         }
       });
   }
@@ -180,18 +172,24 @@ http.listen(port, ip, function(){
 //=================================================
 
 io.on('connection', function(socket){
+
+  socket.username =  socket.handshake.query.id;
+  
+
+
 	connections.push(socket);
+  console.log('socket connect ' + socket.id);
+  console.log('socket name ' + socket.username);
 
 
   // var rndClientName = rndName();
-  var rndClientName = '';
+  // var rndClientName = '';
 
 
-  socket.on('user-name', function(client){
-      rndClientName = client;
+      // rndClientName = client;
       // console.log(client + '  ___user-name');
 
-      socket.username = rndClientName;
+      // socket.username = rndClientName;
       users.push(socket.username);
 
       updateOnline();
@@ -200,7 +198,6 @@ io.on('connection', function(socket){
       console.log(colors.yellow(`${socket.username} is connected`));
       
 
-  });  
 
 
 	// socket.emit('name', rndClientName);
@@ -211,6 +208,10 @@ io.on('connection', function(socket){
     // console.log(colors.green(`ONLINE IS ${connections.length}`));
 
     socket.on('disconnect', function(){
+
+
+  console.log('socket disconnect ' + socket.id);
+  console.log('socket disc name ' + socket.username);
 
       if(socket.username){
         console.log(colors.red(`${socket.username} disconnected`));

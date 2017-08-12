@@ -7,7 +7,21 @@
     var serverIP = '192.168.0.54';
 
     //connect
-    var socket = io();        // var socket = io(`http://${serverIP}:3000`);
+    // var socket = io();        // var socket = io(`http://${serverIP}:3000`);
+
+
+    const socket = io({
+      query: {
+        id: $('.name span').html()
+      }
+    });
+
+    socket.on('reconnect_attempt', () => {
+  socket.io.opts.query = {
+    id: $('.name span').html()
+  }
+});
+
 
 // ----------------------------------------
 //     SEND MESSAGE
@@ -48,17 +62,6 @@
         $('#messages').append(`<div class='message'><div  class='msg'><span class='s'>${msg.sender}:</span> ${msg.message}</div><div class='time'>[${msg.time}]</div></div>`);
         $('#messages').scrollTop(9999999);
     });
-
-// ----------------------------------------
-//     SEND NAME 
-// ----------------------------------------
-
-    // socket.on('name', function(name){
-    //      myName = name;
-    //      $('.name span').text(name);
-    // });
-
-    socket.emit('user-name', $('.name span').html());
 
 // ----------------------------------------
 //     GET ONLINE

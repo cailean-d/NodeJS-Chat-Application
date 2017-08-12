@@ -39,10 +39,10 @@ var users = [];
 //=================================================
 
 var connection = mysql.createPool({
-  host:     'localhost',
-  user:     'root',
-  password: '',
-  database: 'chat_application'
+  host:     SETTINGS.db.host,
+  user:     SETTINGS.db.user,
+  password: SETTINGS.db.password,
+  database: SETTINGS.db.database
 });
 
   mysqlUtilities.upgrade(connection);

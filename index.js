@@ -12,6 +12,12 @@ var now = require("performance-now");
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var colour = require('colour');
+const jsonfile = require('jsonfile');
+
+
+
+
+const SETTINGS = jsonfile.readFileSync('./config.json');
 
 
 
@@ -130,16 +136,14 @@ app.post('/login', function(req, res){
 
       let email = req.body.email;
       let password = req.body.password;
-      // let validEmail = false;
-
 
       connection.queryRow('SELECT * FROM users where email=?', [email], function(err, row) {
         // console.dir(row);
         if(row){
-        console.log('valid email');
-          // validEmail = true;
+        // console.log('valid email');
+
           if(row.password === password){
-            console.log('valid password');
+            // console.log('valid password');
             res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
             res.redirect('/');
 

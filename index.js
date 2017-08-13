@@ -203,7 +203,6 @@ console.dir(usersID);
               users.push(socket.username);
       usersID.push(socket.userid);
 
-      updateOnline();
 
       socket.broadcast.emit('connectedUser', socket.username);
       console.log(colors.yellow(`${socket.username} is connected`));
@@ -211,6 +210,7 @@ console.dir(usersID);
 
 
       
+      updateOnline();
 
 
 

@@ -139,6 +139,7 @@ app.post('/login', function(req, res){
           if(row.password === password){
             // console.log('valid password');
             res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
+            res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false });
             res.redirect('/');
 
           } else{
@@ -156,7 +157,7 @@ app.post('/login', function(req, res){
 app.post('/general_chat', function(req, res){
     if(req.body.userID){
        connection.queryRow('SELECT * FROM users where id=?', [req.body.userID], function(err, row) {
-            res.send({ nickname: row.nickname });
+            res.send({ nickname: row.nickname, id: row.id });
        });
     } else{
       res.end();
@@ -176,13 +177,14 @@ http.listen(port, ip, function(){
 
 io.on('connection', function(socket){
 
-  socket.username =  socket.handshake.query.id;
+  socket.userid =  socket.handshake.query.id;
+  socket.username =  socket.handshake.query.nickname;
   
 
 
 	connections.push(socket);
-  console.log('socket connect ' + socket.id);
-  console.log('socket name ' + socket.username);
+  console.log(`socket connect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
+  // console.log('socket name ' + socket.username);
 
 
   // var rndClientName = rndName();
@@ -213,8 +215,8 @@ io.on('connection', function(socket){
     socket.on('disconnect', function(){
 
 
-  console.log('socket disconnect ' + socket.id);
-  console.log('socket disc name ' + socket.username);
+  console.log(`socket connect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
+  // console.log('socket disc name ' + socket.username);
 
       if(socket.username){
         console.log(colors.red(`${socket.username} disconnected`));

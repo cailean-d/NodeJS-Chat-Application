@@ -34,14 +34,16 @@
     <script>
       
       let userID = Cookies.get('userID');
-        $.ajax({
-            url : "general_chat",
-            type: "post",
-            data: {userID: userID},
-            success: function(data){
-                $('.name span').text(data.nickname);
-            }
-        });
+       $('.name span').text(Cookies.get('nickname'));
+
+        // $.ajax({
+        //     url : "general_chat",
+        //     type: "post",
+        //     data: {userID: userID},
+        //     success: function(data){
+        //         $('.name span').text(data.nickname);
+        //     }
+        // });
 
     </script>
     <script src="./js/socket-connection.js"></script>

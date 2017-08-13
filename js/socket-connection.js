@@ -1,7 +1,8 @@
 
    $(function () {
 
-    var myName =  $('.name span').text();
+    var myName =  Cookies.get('nickname');
+    let myID = Cookies.get('userID');
     var isTyping = false;
     var type;
     var serverIP = '192.168.0.54';
@@ -11,10 +12,10 @@
 
     // console.log(myName);
 
-    const socket = io({ query: { id: myName } });
+    const socket = io({ query: { id: myID, nickname: myName } });
 
     socket.on('reconnect_attempt', () => {
-      socket.io.opts.query = { id: myName }
+      socket.io.opts.query = { id: myID, nickname: myName }
     });
 
 
@@ -119,5 +120,10 @@
     $('#messages').append(`<div class='disconnectedUser'><div>Server is offline.</div>`);
     $('#messages').scrollTop(9999999);
   });
+
+  socket.on('reconnect', (attemptNumber) => {
+    $('#messages').append(`<div class='connectedUser'><div>Server is online.</div>`);
+    $('#messages').scrollTop(9999999);
+});
 
 });

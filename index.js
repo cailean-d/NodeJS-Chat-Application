@@ -33,7 +33,7 @@ var port = 3000;
 // var connections = [];
 // var clients = {};
 var users = [];
-var usersIDs = [];
+var usersID = [];
 
 //=================================================
 //                DB Connection
@@ -182,6 +182,7 @@ io.on('connection', function(socket){
   socket.username =  socket.handshake.query.nickname;
   
 
+console.dir(usersID);
 
 	// connections.push(socket);
   console.log(`socket connect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
@@ -196,12 +197,19 @@ io.on('connection', function(socket){
       // console.log(client + '  ___user-name');
 
       // socket.username = rndClientName;
-      users.push(socket.username);
+
+
+     if(usersID.indexOf(socket.userid) == -1){
+              users.push(socket.username);
+      usersID.push(socket.userid);
 
       updateOnline();
 
       socket.broadcast.emit('connectedUser', socket.username);
       console.log(colors.yellow(`${socket.username} is connected`));
+     }
+
+
       
 
 
@@ -224,6 +232,7 @@ io.on('connection', function(socket){
       }
 
     users.splice(users.indexOf(socket.username), 1);
+    usersID.splice(usersID.indexOf(socket.userid), 1);
 
     // connections.splice(connections.indexOf(socket), 1);
     // console.log(colors.green(`ONLINE IS ${connections.length}`));

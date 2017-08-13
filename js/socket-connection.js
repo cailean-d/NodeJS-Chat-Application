@@ -14,9 +14,9 @@
 
     const socket = io({ query: { id: myID, nickname: myName } });
 
-    socket.on('reconnect_attempt', () => {
-      socket.io.opts.query = { id: myID, nickname: myName }
-    });
+    // socket.on('reconnect_attempt', () => {
+    //   socket.io.opts.query = { id: myID, nickname: myName }
+    // });
 
 
 // ----------------------------------------
@@ -70,6 +70,10 @@
       }
       $('.online ul').html(html);
     });
+
+    socket.on('online-count', function(data){
+     $('.online-count').text(data);
+    })
 
 // ----------------------------------------
 //     TYPING

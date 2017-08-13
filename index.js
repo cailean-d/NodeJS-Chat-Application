@@ -32,8 +32,11 @@ var ip = '0.0.0.0';
 var port = 3000;
 // var connections = [];
 // var clients = {};
-var users = [];
-var usersID = [];
+var users = {
+  name: [],
+  id: []
+};
+// var usersID = [];
 
 //=================================================
 //                DB Connection
@@ -176,34 +179,22 @@ http.listen(port, ip, function(){
 
 //=================================================
 
+
+
+
+
 io.on('connection', function(socket){
 
   socket.userid =  socket.handshake.query.id;
   socket.username =  socket.handshake.query.nickname;
-  
 
-console.dir(usersID);
-
-	// connections.push(socket);
   console.log(`socket connect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
-  // console.log('socket name ' + socket.username);
 
 
-  // var rndClientName = rndName();
-  // var rndClientName = '';
-
-
-      // rndClientName = client;
-      // console.log(client + '  ___user-name');
-
-      // socket.username = rndClientName;
-
-
-     if(usersID.indexOf(socket.userid) == -1){
-              users.push(socket.username);
-      usersID.push(socket.userid);
-
-
+     if(users.id.indexOf(socket.userid) == -1){
+          users.name.push(socket.username);
+          users.id.push(socket.userid);
+   
       socket.broadcast.emit('connectedUser', socket.username);
       console.log(colors.yellow(`${socket.username} is connected`));
      }
@@ -214,32 +205,40 @@ console.dir(usersID);
 
 
 
-	// socket.emit('name', rndClientName);
-
-
-
-
-    // console.log(colors.green(`ONLINE IS ${connections.length}`));
 
     socket.on('disconnect', function(){
 
+        let id =  socket.userid;
+        let clients = [];
+        let timeout = 3000;
 
-  console.log(`socket connect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
-  // console.log('socket disc name ' + socket.username);
+        setTimeout(function(){
 
-      if(socket.username){
-        console.log(colors.red(`${socket.username} disconnected`));
-      }
+            for(socketId in io.sockets.connected){
+                clients.push(io.sockets.connected[socketId].handshake.query.id);
+            }
 
-    users.splice(users.indexOf(socket.username), 1);
-    usersID.splice(usersID.indexOf(socket.userid), 1);
+            console.log('disconnect  ___ ' + clients);
 
-    // connections.splice(connections.indexOf(socket), 1);
-    // console.log(colors.green(`ONLINE IS ${connections.length}`));
+            if(clients.indexOf(id) == -1){
+                // console.log('client isnt here');
+                console.log(`socket disconnect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
+                console.log(colors.red(`${socket.username} disconnected`));
 
-   
-    updateOnline();
-    socket.broadcast.emit('disconnectedUser', socket.username);
+                users.name.splice(users.name.indexOf(socket.username), 1);
+                users.id.splice(users.id.indexOf(socket.userid), 1);
+                socket.broadcast.emit('disconnectedUser', socket.username);
+
+                updateOnline();
+            }
+
+        }, timeout);
+
+
+
+
+
+
 
   });
 
@@ -271,12 +270,30 @@ console.dir(usersID);
      io.emit('typingEnd', client);
   });
 
+   
+
+
 });
 
 //==================================================================
 
 function updateOnline(){
-      io.sockets.emit('online', users);
+      io.sockets.emit('online', users.name);
+      io.sockets.emit('online-count', users.name.length);
+}
+
+
+function socketCount(){
+
+  let sockets = [];
+
+  Object.keys(io.sockets.sockets).forEach(function(id) {
+     sockets.push(id) ;
+     // console.log("ID:",id)  // socketId
+  });
+
+  return sockets;
+
 }
 
 // function connectedUser(){

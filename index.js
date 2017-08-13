@@ -135,26 +135,30 @@ app.post('/login', function(req, res){
       let email = req.body.email;
       let password = req.body.password;
 
-      connection.queryRow('SELECT * FROM users where email=?', [email], function(err, row) {
-        // console.dir(row);
-        if(row){
-        // console.log('valid email');
-
-          if(row.password === password){
-            // console.log('valid password');
-            res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
-            res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false });
-            res.redirect('/');
-
-          } else{
-            // console.log('invalid password');
-            res.send('invalid password');
-          }
-        } else{
-          // console.log('invalid email');
-          res.send('invalid email');
+     connection.getConnection(function(err, conn) {
+        if(err){ 
+          console.log(err.code); 
+          res.send('database connection error');
+          return;
         }
-      });
+
+       connection.queryRow('SELECT * FROM users where email=?', [email], function(err, row) {
+          if(row){
+            if(row.password === password){
+              res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
+              res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false });
+              res.redirect('/');
+
+            } else{
+              res.send('invalid password');
+            }
+          } else{
+            res.send('invalid email');
+          }
+            conn.release();
+        });
+
+     });
   }
 });
 

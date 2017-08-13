@@ -30,9 +30,10 @@ app.use(bodyParser.json())
 
 var ip = '0.0.0.0';
 var port = 3000;
-var connections = [];
-var clients = {};
+// var connections = [];
+// var clients = {};
 var users = [];
+var usersIDs = [];
 
 //=================================================
 //                DB Connection
@@ -182,7 +183,7 @@ io.on('connection', function(socket){
   
 
 
-	connections.push(socket);
+	// connections.push(socket);
   console.log(`socket connect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
   // console.log('socket name ' + socket.username);
 
@@ -224,7 +225,7 @@ io.on('connection', function(socket){
 
     users.splice(users.indexOf(socket.username), 1);
 
-    connections.splice(connections.indexOf(socket), 1);
+    // connections.splice(connections.indexOf(socket), 1);
     // console.log(colors.green(`ONLINE IS ${connections.length}`));
 
    

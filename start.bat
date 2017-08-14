@@ -1,1 +1,1 @@
-npm start
+START cmd /K "cd D:\Projects\NodeJS Chat Application & npm start"

@@ -19,9 +19,6 @@ const jsonfile = require('jsonfile');
 // parse config.json
 const SETTINGS = jsonfile.readFileSync('./config.json');
 
-
-
-
 //middlewares
 app.use(cookieParser('my-secret'))
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -71,7 +68,7 @@ app.get('/main', function(req, res){
       if(req.signedCookies.userID2 == undefined){
        res.redirect('/login');
     } else {
-       res.sendFile(__dirname + '/routes/main.html');  
+       res.sendFile(__dirname + '/views/main.html');  
     }
 })
 
@@ -80,23 +77,15 @@ app.get('/general_chat', function(req, res){
     if(req.signedCookies.userID2 == undefined){
        res.redirect('/login');
     } else {
-       res.sendFile(__dirname + '/routes/general_chat.html');  
+       res.sendFile(__dirname + '/views/general_chat.html');  
     }
 })
 
-app.get('/logout', function(req, res){
-    res.cookie( 'userID', '', { maxAge: -1 , httpOnly: false });
-    res.cookie( 'nickname', '' ,{ maxAge: -1, httpOnly: false });
-    res.cookie( 'userID2', '', { maxAge: -1 , httpOnly: false, signed: true });
-    // res.cookie( 'nickname2', '' ,{ maxAge: -1, httpOnly: false, signed: true });
-    res.redirect('/login');
-})
-
 app.get('/registration', function(req, res){
- res.sendFile(__dirname + '/routes/registration.html');
+ res.sendFile(__dirname + '/views/registration.html');
 });
 app.get('/login', function(req, res){
- res.sendFile(__dirname + '/routes/login.html');
+ res.sendFile(__dirname + '/views/login.html');
 });
 
 
@@ -136,8 +125,8 @@ app.post('/login', function(req, res){
             if(row.password === password){
               res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
               res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false});
-              res.cookie( 'userID2', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false, signed: true });
-              // res.cookie( 'nickname2', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false, signed: true });
+              res.cookie( 'userID2', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: true, signed: true });
+
               res.redirect('/');
 
             } else{
@@ -153,6 +142,22 @@ app.post('/login', function(req, res){
   }
 });
 
+
+app.get('/logout', function(req, res){
+    res.cookie( 'userID', '', { maxAge: -1 , httpOnly: false });
+    res.cookie( 'nickname', '' ,{ maxAge: -1, httpOnly: false });
+    res.cookie( 'userID2', '', { maxAge: -1 , httpOnly: false, signed: true });
+
+    res.redirect('/login');
+})
+
+
+
+// custom 404 page
+app.use(function(req, res, next) {
+    res.status(400);
+    res.sendFile(__dirname + '/views/404.html'); 
+});
 
 //=================================================
 
@@ -172,7 +177,7 @@ io.on('connection', function(socket){
   socket.userid =  socket.handshake.query.id;
   socket.username =  socket.handshake.query.nickname;
 
-  console.log(`socket connect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
+  // console.log(`socket connect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
 
 
      if(users.id.indexOf(socket.userid) == -1){
@@ -206,7 +211,7 @@ io.on('connection', function(socket){
 
             if(clients.indexOf(id) == -1){
                 // console.log('client isnt here');
-                console.log(`socket disconnect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
+                // console.log(`socket disconnect ${socket.id}[${socket.userid}]--> name - ${socket.username}`);
                 console.log(colors.red(`${socket.username} disconnected`));
 
                 users.name.splice(users.name.indexOf(socket.username), 1);
@@ -218,13 +223,7 @@ io.on('connection', function(socket){
 
         }, timeout);
 
-
-
-
-
-
-
-  });
+      });
 
   socket.on('chat message', function(msg){
 

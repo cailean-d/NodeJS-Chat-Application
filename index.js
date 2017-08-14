@@ -78,7 +78,7 @@ app.get('/main', function(req, res){
       if(req.cookies.userID == undefined){
        res.redirect('/login');
     } else {
-       res.sendFile(__dirname + '/main.html');  
+       res.sendFile(__dirname + '/routes/main.html');  
     }
 })
 
@@ -87,7 +87,7 @@ app.get('/general_chat', function(req, res){
     if(req.cookies.userID == undefined){
        res.redirect('/login');
     } else {
-       res.sendFile(__dirname + '/general_chat.html');  
+       res.sendFile(__dirname + '/routes/general_chat.html');  
     }
 })
 
@@ -122,10 +122,10 @@ app.get('/logout', function(req, res){
 // });
 
 app.get('/registration', function(req, res){
- res.sendFile(__dirname + '/registration.html');
+ res.sendFile(__dirname + '/routes/registration.html');
 });
 app.get('/login', function(req, res){
- res.sendFile(__dirname + '/login.html');
+ res.sendFile(__dirname + '/routes/login.html');
 });
 
 

@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Chat Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" type="image/jpg"  href="/img/chat.ico">
+  </head>
+  <body>
+  <div class="row">
+    <div class="chat">
+      <div class="name">My name is<span style="padding: 10px; color: #DAE1FF; text-transform: uppercase; font-weight: bold;"></span></div>
+      <div id="messages"></div>
+      <form id='chat_input'>
+        <input id="m" autocomplete="off" />
+        <button>Send</button>
+      </form>
+      <div class="type">
+        <ul></ul>
+      </div>
+    </div>
+    <div class="online">
+      <h4>ONLINE [ <span class="online-count">0</span> ]: </h4>
+      <ul>
+      </ul>
+    </div>
+  </div>
+<nav>
+  <a href="main">Назад</a>
+</nav>
+    <script src="/js/libs/jquery.min.js"></script>
+    <script src="/js/libs/socket.io.js"></script>
+    <script src="/js/libs/js.cookie.js"></script>
+    <script>
+      
+      // let userID = Cookies.get('userID');
+       $('.name span').text(Cookies.get('nickname'));
+
+
+    </script>
+    <script src="/js/socket-connection.js"></script>
+  </body>
+</html>
+    

@@ -59,7 +59,7 @@ var connection = mysql.createPool({
 
 
 // app.use(express.static('public'))
-
+app.use(express.static('public'));
 
 
 app.get('/', function(req, res){    //chat only for registered users
@@ -101,25 +101,25 @@ app.get('/logout', function(req, res){
   // }
 })
 
-app.get('/js/socket-connection.js', function(req, res){
- res.sendFile(__dirname + '/js/socket-connection.js');
-});
+// app.get('/js/socket-connection.js', function(req, res){
+//  res.sendFile(__dirname + '/js/socket-connection.js');
+// });
 
-app.get('/js/libs/js.cookie.js', function(req, res){
- res.sendFile(__dirname + '/js/libs/js.cookie.js');
-});
+// app.get('/js/libs/js.cookie.js', function(req, res){
+//  res.sendFile(__dirname + '/js/libs/js.cookie.js');
+// });
 
-app.get('/css/style.css', function(req, res){
- res.sendFile(__dirname + '/css/style.css');
-});
+// app.get('/css/style.css', function(req, res){
+//  res.sendFile(__dirname + '/css/style.css');
+// });
 
-app.get('/js/libs/jquery.min.js', function(req, res){
- res.sendFile(__dirname + '/js/libs/jquery.min.js');
-});
+// app.get('/js/libs/jquery.min.js', function(req, res){
+//  res.sendFile(__dirname + '/js/libs/jquery.min.js');
+// });
 
-app.get('/js/libs/socket.io.js', function(req, res){
- res.sendFile(__dirname + '/js/libs/socket.io.js');
-});
+// app.get('/js/libs/socket.io.js', function(req, res){
+//  res.sendFile(__dirname + '/js/libs/socket.io.js');
+// });
 
 app.get('/registration', function(req, res){
  res.sendFile(__dirname + '/registration.html');

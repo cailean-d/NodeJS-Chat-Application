@@ -23,20 +23,17 @@ const SETTINGS = jsonfile.readFileSync('./config.json');
 
 
 //middlewares
-app.use(cookieParser())
+app.use(cookieParser('my-secret'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
 var ip = '0.0.0.0';
 var port = 3000;
-// var connections = [];
-// var clients = {};
 var users = {
   name: [],
   id: []
 };
-// var usersID = [];
 
 //=================================================
 //                DB Connection
@@ -56,15 +53,11 @@ var connection = mysql.createPool({
 //                   Routing
 //=================================================
 
-
-
-// app.use(express.static('public'))
 app.use(express.static('public'));
-
 
 app.get('/', function(req, res){    //chat only for registered users
 
-    if(req.cookies.userID == undefined){
+    if(req.signedCookies.userID2 == undefined){
        res.redirect('/login');
     } else {
        res.redirect('/main');  
@@ -75,7 +68,7 @@ app.get('/', function(req, res){    //chat only for registered users
 
 app.get('/main', function(req, res){
 
-      if(req.cookies.userID == undefined){
+      if(req.signedCookies.userID2 == undefined){
        res.redirect('/login');
     } else {
        res.sendFile(__dirname + '/routes/main.html');  
@@ -84,7 +77,7 @@ app.get('/main', function(req, res){
 
 app.get('/general_chat', function(req, res){
 
-    if(req.cookies.userID == undefined){
+    if(req.signedCookies.userID2 == undefined){
        res.redirect('/login');
     } else {
        res.sendFile(__dirname + '/routes/general_chat.html');  
@@ -92,34 +85,12 @@ app.get('/general_chat', function(req, res){
 })
 
 app.get('/logout', function(req, res){
-    // if(req.query.logout){
     res.cookie( 'userID', '', { maxAge: -1 , httpOnly: false });
     res.cookie( 'nickname', '' ,{ maxAge: -1, httpOnly: false });
+    res.cookie( 'userID2', '', { maxAge: -1 , httpOnly: false, signed: true });
+    // res.cookie( 'nickname2', '' ,{ maxAge: -1, httpOnly: false, signed: true });
     res.redirect('/login');
-  // } else {
-  //   res.sendFile(__dirname + '/general_chat.html');
-  // }
 })
-
-// app.get('/js/socket-connection.js', function(req, res){
-//  res.sendFile(__dirname + '/js/socket-connection.js');
-// });
-
-// app.get('/js/libs/js.cookie.js', function(req, res){
-//  res.sendFile(__dirname + '/js/libs/js.cookie.js');
-// });
-
-// app.get('/css/style.css', function(req, res){
-//  res.sendFile(__dirname + '/css/style.css');
-// });
-
-// app.get('/js/libs/jquery.min.js', function(req, res){
-//  res.sendFile(__dirname + '/js/libs/jquery.min.js');
-// });
-
-// app.get('/js/libs/socket.io.js', function(req, res){
-//  res.sendFile(__dirname + '/js/libs/socket.io.js');
-// });
 
 app.get('/registration', function(req, res){
  res.sendFile(__dirname + '/routes/registration.html');
@@ -142,8 +113,6 @@ app.post('/registration', function(req, res){
 
   });
 
-  // console.dir(req.headers.cookie);
-  // console.dir(req.body);
   res.redirect('/login');
   
 })
@@ -166,7 +135,9 @@ app.post('/login', function(req, res){
           if(row){
             if(row.password === password){
               res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
-              res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false });
+              res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false});
+              res.cookie( 'userID2', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false, signed: true });
+              // res.cookie( 'nickname2', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false, signed: true });
               res.redirect('/');
 
             } else{
@@ -296,18 +267,18 @@ function updateOnline(){
 }
 
 
-function socketCount(){
+// function socketCount(){
 
-  let sockets = [];
+//   let sockets = [];
 
-  Object.keys(io.sockets.sockets).forEach(function(id) {
-     sockets.push(id) ;
-     // console.log("ID:",id)  // socketId
-  });
+//   Object.keys(io.sockets.sockets).forEach(function(id) {
+//      sockets.push(id) ;
+//      // console.log("ID:",id)  // socketId
+//   });
 
-  return sockets;
+//   return sockets;
 
-}
+// }
 
 // function connectedUser(){
 // 	socket.broadcast.emit('connectedUser', socket.username);

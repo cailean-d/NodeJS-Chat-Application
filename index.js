@@ -67,18 +67,38 @@ app.get('/', function(req, res){    //chat only for registered users
     if(req.cookies.userID == undefined){
        res.redirect('/login');
     } else {
-       res.redirect('/general_chat');  
+       res.redirect('/main');  
     }
 
 });
 
+
+app.get('/main', function(req, res){
+
+      if(req.cookies.userID == undefined){
+       res.redirect('/login');
+    } else {
+       res.sendFile(__dirname + '/main.html');  
+    }
+})
+
 app.get('/general_chat', function(req, res){
-    if(req.query.logout){
+
+    if(req.cookies.userID == undefined){
+       res.redirect('/login');
+    } else {
+       res.sendFile(__dirname + '/general_chat.html');  
+    }
+})
+
+app.get('/logout', function(req, res){
+    // if(req.query.logout){
     res.cookie( 'userID', '', { maxAge: -1 , httpOnly: false });
+    res.cookie( 'nickname', '' ,{ maxAge: -1, httpOnly: false });
     res.redirect('/login');
-  } else {
-    res.sendFile(__dirname + '/general_chat.html');
-  }
+  // } else {
+  //   res.sendFile(__dirname + '/general_chat.html');
+  // }
 })
 
 app.get('/js/socket-connection.js', function(req, res){
@@ -161,17 +181,6 @@ app.post('/login', function(req, res){
      });
   }
 });
-
-app.post('/general_chat', function(req, res){
-    if(req.body.userID){
-       connection.queryRow('SELECT * FROM users where id=?', [req.body.userID], function(err, row) {
-            res.send({ nickname: row.nickname, id: row.id });
-       });
-    } else{
-      res.end();
-    }
-  
-})
 
 
 //=================================================

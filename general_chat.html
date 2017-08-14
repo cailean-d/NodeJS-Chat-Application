@@ -1,7 +1,7 @@
-
 <!doctype html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title>Chat Application</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/style.css">
@@ -20,30 +20,22 @@
       </div>
     </div>
     <div class="online">
-      <h4>ONLINE [ <span class="online-count"></span> ]: </h4>
+      <h4>ONLINE [ <span class="online-count">0</span> ]: </h4>
       <ul>
       </ul>
     </div>
   </div>
-  <form method="get">
-    <input name='logout' type="submit" value='выйти' style="cursor: pointer;">
-  </form>
+<nav>
+  <a href="main">Назад</a>
+</nav>
     <script src="./js/libs/jquery.min.js"></script>
     <script src="./js/libs/socket.io.js"></script>
     <script src="./js/libs/js.cookie.js"></script>
     <script>
       
-      let userID = Cookies.get('userID');
+      // let userID = Cookies.get('userID');
        $('.name span').text(Cookies.get('nickname'));
 
-        // $.ajax({
-        //     url : "general_chat",
-        //     type: "post",
-        //     data: {userID: userID},
-        //     success: function(data){
-        //         $('.name span').text(data.nickname);
-        //     }
-        // });
 
     </script>
     <script src="./js/socket-connection.js"></script>

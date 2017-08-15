@@ -13,6 +13,7 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var colour = require('colour');
 const jsonfile = require('jsonfile');
+var bcrypt = require('bcrypt');
 
 
 
@@ -91,16 +92,21 @@ app.get('/login', function(req, res){
 
 app.post('/registration', function(req, res){
 
-      connection.insert('users', {
-    nickname: req.body.nickname,
-    email: req.body.email,
-    password: req.body.password
-  }, function(err, recordId) {
-    if(err){ console.log(err); res.send('cant registrate'); } else {
-        console.log(`User \"${colors.green(req.body.nickname)}\"[${colors.yellow(recordId)}] is registred`);
-    }
 
-  });
+  bcrypt.hash(req.body.password, 8, function( err, bcryptedPassword) {
+
+    connection.insert('users', {
+        nickname: req.body.nickname,
+        email: req.body.email,
+        password: bcryptedPassword
+        }, function(err, recordId) {
+        if(err){ console.log(err); res.send('cant registrate'); } else {
+            console.log(`User \"${colors.green(req.body.nickname)}\"[${colors.yellow(recordId)}] is registred`);
+        }
+    });
+
+});
+
 
   res.redirect('/login');
   
@@ -112,7 +118,7 @@ app.post('/login', function(req, res){
 
       let email = req.body.email;
       let password = req.body.password;
-
+   
      connection.getConnection(function(err, conn) {
         if(err){ 
           console.log(err.code); 
@@ -121,17 +127,29 @@ app.post('/login', function(req, res){
         }
 
        connection.queryRow('SELECT * FROM users where email=?', [email], function(err, row) {
-          if(row){
-            if(row.password === password){
-              res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
-              res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false});
-              res.cookie( 'userID2', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: true, signed: true });
+          if(row){ 
+              bcrypt.compare(password, row.password, function(err, doesMatch){
+                if (doesMatch){
+                    res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
+                    res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false});
+                    res.cookie( 'userID2', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: true, signed: true });
 
-              res.redirect('/');
+                    res.redirect('/');
+                }else{
+                    res.send('invalid password');
+                }
+              });
 
-            } else{
-              res.send('invalid password');
-            }
+            // if(row.password === password){
+            //   res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
+            //   res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false});
+            //   res.cookie( 'userID2', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: true, signed: true });
+
+            //   res.redirect('/');
+
+            // } else{
+            //   res.send('invalid password');
+            // }
           } else{
             res.send('invalid email');
           }

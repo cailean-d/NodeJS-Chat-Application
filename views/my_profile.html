@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/jpg"  href="/img/chat.ico">
+	<style>
+		img{display: block; margin: 20px; width: 25%;}
+	</style>
+</head>
+<body>
+     <h3 class="nick"></h3>
+	<img class='avatar' src="/img/core/user_avatar/user_thumbnail.jpg" alt="">
+
+	<form id='profile' action="update_profile" method="post">
+	    <textarea class='about' name="about" id="" cols="30" rows="10" placeholder="write information about yourself"></textarea>
+	    <button name='update_profile' type='submit'>Save</button>
+	</form>
+
+<script src="/js/libs/jquery.min.js"></script>
+<script src="/js/libs/js.cookie.js"></script>
+<script>
+
+        $.ajax({
+            url : "profile_data",
+            type: "POST",
+            data: {id: Cookies.get('userID')},
+            success: function(data){
+                    console.log(data);
+                    $('.nick').text(data.nickname);
+                    $('.avatar').prop('src', `/img/core/user_avatar/${data.avatar}`);
+                    $('.about').val(data.about);
+            }
+        });
+
+    $('#profile').on("submit", function(event){
+        event.preventDefault();
+        
+        var url = $(this).attr("action");
+
+        $.ajax({
+            url: url,
+            type: 'POST',            
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function (data){
+                 alert('Профиль сохранен');
+            }
+        });
+    });
+       
+  
+</script>
+</body>
+</html>

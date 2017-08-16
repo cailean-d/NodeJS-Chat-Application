@@ -10,10 +10,12 @@ var mysqlUtilities = require('mysql-utilities');
 // var rndName = require("./randomName");
 // var cookieSession = require('cookie-session');
 var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser')      // x-www-form-urlencoded
 var colour = require('colour');
 const jsonfile = require('jsonfile');
 var bcrypt = require('bcrypt');
+let multer  = require('multer');            // multipart/form-data
+let upload = multer();
 
 
 
@@ -22,8 +24,10 @@ const SETTINGS = jsonfile.readFileSync('./config.json');
 
 //middlewares
 app.use(cookieParser('my-secret'))
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(upload.fields([]));
 
 
 var ip = '0.0.0.0';
@@ -85,10 +89,14 @@ app.get('/general_chat', function(req, res){
 app.get('/registration', function(req, res){
  res.sendFile(__dirname + '/views/registration.html');
 });
+
 app.get('/login', function(req, res){
  res.sendFile(__dirname + '/views/login.html');
 });
 
+app.get('/my_profile', function(req, res){
+ res.sendFile(__dirname + '/views/my_profile.html'); 
+});
 
 app.post('/registration', function(req, res){
 
@@ -111,6 +119,60 @@ app.post('/registration', function(req, res){
   res.redirect('/login');
   
 })
+
+
+app.post('/profile_data', function(req, res){
+
+       let id = req.body.id;
+
+       connection.getConnection(function(err, conn) {
+        if(err){ 
+          console.log(err.code); 
+          res.send('database connection error');
+          return;
+        }
+
+       connection.queryRow('SELECT * FROM users where id=?', [id], function(err, row) {
+          if(row){ 
+                res.send({nickname: row.nickname, avatar: row.avatar, about: row.about});
+          } else{
+            res.send('cant receive data');
+          }
+            conn.release();
+        });
+
+     });
+});
+
+
+app.post('/update_profile', function(req, res){
+
+       let id = req.signedCookies.userID2;
+       let about = req.body.about;
+       // console.log(id, about);
+       // console.dir(req.body);
+
+     connection.getConnection(function(err, conn) {
+        if(err){ 
+          console.log(err.code); 
+          res.send('database connection error');
+          return;
+        }
+         connection.update(
+            'users',
+            { about: about },
+            { id: id },
+            function(err, affectedRows) {
+              // console.dir({update:affectedRows});
+              conn.release();
+              res.send({update: true});
+            }
+          );
+
+     });
+
+
+});
 
 app.post('/login', function(req, res){
 
@@ -139,17 +201,6 @@ app.post('/login', function(req, res){
                     res.send('invalid password');
                 }
               });
-
-            // if(row.password === password){
-            //   res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
-            //   res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false});
-            //   res.cookie( 'userID2', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: true, signed: true });
-
-            //   res.redirect('/');
-
-            // } else{
-            //   res.send('invalid password');
-            // }
           } else{
             res.send('invalid email');
           }

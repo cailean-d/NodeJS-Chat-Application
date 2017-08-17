@@ -1,0 +1,30 @@
+mixin other_profile(nickname, avatar, about, id)
+  h3=nickname
+  img(src=`/img/core/user_avatar/${avatar}`)
+  form#profile(action='update_profile', method='post')
+    textarea.about(name='about', id='', cols='30', rows='10', placeholder='write information about yourself')= about
+
+mixin my_profile(nickname, avatar, about, id)
+  h3=nickname
+  img(src=`/img/core/user_avatar/${avatar}`)
+  form#profile(action='update_profile', method='post')
+    textarea.about(name='about', id='', cols='30', rows='10', placeholder='write information about yourself')= about
+    button(name='update_profile', type='submit') Save
+  label my id
+    input(type='text' value= id)
+  script(src='/js/libs/jquery.min.js')
+  script.
+    $('#profile').on("submit", function(event){
+    event.preventDefault();
+    var url = $(this).attr("action");
+    $.ajax({
+    url: url,
+    type: 'POST',
+    data: new FormData(this),
+    processData: false,
+    contentType: false,
+    success: function (data){
+    alert('Профиль сохранен');
+    }
+    });
+    });

@@ -10,13 +10,14 @@ var mysqlUtilities = require('mysql-utilities');
 // var rndName = require("./randomName");
 // var cookieSession = require('cookie-session');
 var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')      // x-www-form-urlencoded
+var bodyParser = require('body-parser')                         // x-www-form-urlencoded
 var colour = require('colour');
 const jsonfile = require('jsonfile');
-var bcrypt = require('bcrypt');
-let multer  = require('multer');            // multipart/form-data
+let bcrypt = require('bcrypt');
+let multer  = require('multer');                                // multipart/form-data
 let upload = multer();
-var favicon = require('serve-favicon');
+let favicon = require('serve-favicon');
+let pug =  require('pug').renderFile;                           // template engine
 
 
 
@@ -24,7 +25,7 @@ var favicon = require('serve-favicon');
 const SETTINGS = jsonfile.readFileSync('./config.json');
 
 // jade template engine
-app.engine('pug', require('pug').renderFile);
+app.engine('pug', pug);
 // app.set('port', process.env.PORT || 3000);
 app.set('views', './views');
 app.set('view engine', 'pug');
@@ -70,7 +71,7 @@ app.get('/', function(req, res){    //chat only for registered users
     if(req.signedCookies.userID2 == undefined){
        res.redirect('/login');
     } else {
-       res.redirect('/main');  
+       res.redirect('/main');
     }
 
 });
@@ -81,8 +82,29 @@ app.get('/main', function(req, res){
       if(req.signedCookies.userID2 == undefined){
        res.redirect('/login');
     } else {
-       res.sendFile(__dirname + '/views/main.html');  
+
+      let id = req.signedCookies.userID2;
+      connection.getConnection(function(err, conn) {
+         if(err){
+           console.log(err.code);
+           res.send('database connection error');
+           return;
+         }
+
+        connection.queryRow('SELECT * FROM users where id=?', [id], function(err, row) {
+           if(row){
+                 res.render('main', {target: 'me', id: row.id, nickname: row.nickname, avatar: row.avatar, about: row.about});
+           } else{
+             res.status(400);
+             res.render('404');
+           }
+             conn.release();
+         });
+
+      });
+
     }
+
 })
 
 app.get('/general_chat', function(req, res){
@@ -90,9 +112,14 @@ app.get('/general_chat', function(req, res){
     if(req.signedCookies.userID2 == undefined){
        res.redirect('/login');
     } else {
-       res.sendFile(__dirname + '/views/general_chat.html');  
+       let nickname = req.cookies.nickname;
+       res.render('general_chat', {nickname: nickname});
     }
 })
+
+app.get('/friends', function(req, res){
+   res.render('friends');
+});
 
 app.get('/registration', function(req, res){
  res.sendFile(__dirname + '/views/registration.html');
@@ -103,11 +130,11 @@ app.get('/login', function(req, res){
 });
 
 app.get('/my_profile', function(req, res){
- res.sendFile(__dirname + '/views/my_profile.html'); 
+ res.sendFile(__dirname + '/views/my_profile.html');
 });
 
 app.get('/profile', function(req, res){
-    // res.sendFile(__dirname + '/views/profile.html'); 
+    // res.sendFile(__dirname + '/views/profile.html');
     res.render('test', { title: 'Hey', message: 'Hello there!', id: req.query.id});
 
 });
@@ -131,7 +158,7 @@ app.post('/registration', function(req, res){
 
 
   res.redirect('/login');
-  
+
 })
 
 
@@ -140,14 +167,14 @@ app.post('/profile_data', function(req, res){
        let id = req.body.id;
 
        connection.getConnection(function(err, conn) {
-        if(err){ 
-          console.log(err.code); 
+        if(err){
+          console.log(err.code);
           res.send('database connection error');
           return;
         }
 
        connection.queryRow('SELECT * FROM users where id=?', [id], function(err, row) {
-          if(row){ 
+          if(row){
                 res.send({nickname: row.nickname, avatar: row.avatar, about: row.about});
           } else{
             res.send('cant receive data');
@@ -167,8 +194,8 @@ app.post('/update_profile', function(req, res){
        // console.dir(req.body);
 
      connection.getConnection(function(err, conn) {
-        if(err){ 
-          console.log(err.code); 
+        if(err){
+          console.log(err.code);
           res.send('database connection error');
           return;
         }
@@ -194,16 +221,16 @@ app.post('/login', function(req, res){
 
       let email = req.body.email;
       let password = req.body.password;
-   
+
      connection.getConnection(function(err, conn) {
-        if(err){ 
-          console.log(err.code); 
+        if(err){
+          console.log(err.code);
           res.send('database connection error');
           return;
         }
 
        connection.queryRow('SELECT * FROM users where email=?', [email], function(err, row) {
-          if(row){ 
+          if(row){
               bcrypt.compare(password, row.password, function(err, doesMatch){
                 if (doesMatch){
                     res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
@@ -234,12 +261,40 @@ app.get('/logout', function(req, res){
     res.redirect('/login');
 })
 
+app.get('/id[0-9]*', function(req, res){
+
+   let req_id = req.signedCookies.userID2;
+   let string = req.originalUrl;
+   let id = string.slice(3);
+   let target = (req_id == id) ? 'me' : 'other';
+
+   connection.getConnection(function(err, conn) {
+      if(err){
+        console.log(err.code);
+        res.send('database connection error');
+        return;
+      }
+
+     connection.queryRow('SELECT * FROM users where id=?', [id], function(err, row) {
+        if(row){
+              res.render('main',{target: target, id: row.id, nickname: row.nickname, avatar: row.avatar, about: row.about});
+              // res.send('profile is exists')
+        } else{
+          res.status(400);
+          res.render('404');
+        }
+          conn.release();
+      });
+
+   });
+});
+
 
 
 // custom 404 page
 app.use(function(req, res, next) {
     res.status(400);
-    res.sendFile(__dirname + '/views/404.html'); 
+    res.render('404');
 });
 
 //=================================================
@@ -266,13 +321,13 @@ io.on('connection', function(socket){
      if(users.id.indexOf(socket.userid) == -1){
           users.name.push(socket.username);
           users.id.push(socket.userid);
-   
+
       socket.broadcast.emit('connectedUser', socket.username);
       console.log(colors.yellow(`${socket.username} is connected`));
      }
 
 
-      
+
       updateOnline();
 
 
@@ -323,7 +378,7 @@ io.on('connection', function(socket){
     if(err){ console.log(err);}
 
 
-    console.log('MESSAGE \"' + colors.magenta(msg.message) + '\" BY ' + colors.cyan(msg.sender) + ' IS INSERTED INTO ' + 
+    console.log('MESSAGE \"' + colors.magenta(msg.message) + '\" BY ' + colors.cyan(msg.sender) + ' IS INSERTED INTO ' +
           colors.magenta('general_chat') + ' WITH ID ' + colors.magenta(recordId));
   });
 
@@ -331,12 +386,12 @@ io.on('connection', function(socket){
 
   socket.on('typing', function(client){
      socket.broadcast.emit('typing', client);
-  });  
+  });
   socket.on('typingEnd', function(client){
      io.emit('typingEnd', client);
   });
 
-   
+
 
 
 });

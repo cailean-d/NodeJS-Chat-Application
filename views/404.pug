@@ -1,0 +1,23 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    title Page not found
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='icon', type='image/jpg', href='/img/chat.ico')
+    style.
+      body{
+      background: url('img/404.jpg');
+      background-repeat: no-repeat;
+      background-size: 60% 60%;
+      background-position: center center;
+      background-attachment: fixed;
+      }
+      a{text-decoration: none; color: #E13939; font-size: 1.5em; text-transform: uppercase;}
+      a:hover{text-decoration: underline;}
+      a:visited{color: #C24F4F;}
+      .home{position: relative; display: flex; justify-content: center;}
+      .anchor{position: absolute; top: 480px;}
+  body
+    .home
+      a.anchor(href='/') Visit home page

@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    title Chat Application
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='/css/style.css')
+    link(rel='icon', type='image/jpg', href='/img/chat.ico')
+    style.
+      .wrapper{
+      display: flex;
+      }
+  body
+    .wrapper
+      include _side-menu
+      .row
+        .chat
+          .name
+            | My name is 
+            span(style='padding: 10px; color: #DAE1FF; text-transform: uppercase; font-weight: bold;')= nickname
+          #messages
+          form#chat_input
+            input#m(autocomplete='off')
+            button Send
+          .type
+            ul
+        .online
+          h4
+            | ONLINE [ 
+            span.online-count 0
+            |  ]:
+          ul
+    script(src='/js/libs/jquery.min.js')
+    script(src='/js/libs/socket.io.js')
+    script(src='/js/libs/js.cookie.js')
+    script(src='/js/socket-connection.js')

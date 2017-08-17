@@ -20,13 +20,17 @@
 
 <script src="/js/libs/jquery.min.js"></script>
 <script src="/js/libs/js.cookie.js"></script>
+<script src="/js/libs/querystring.min.js"></script>
 <script>
 
 
+let query = querystring.parse(); 
+
+// console.log(.id);
         $.ajax({
             url : "profile_data",
             type: "POST",
-            data: {id: Cookies.get('userID')},
+            data: {id: query.id},
             success: function(data){
                     // console.log(data);
                     $('.nick').text(data.nickname);
@@ -35,22 +39,22 @@
             }
         });
 
-    $('#profile').on("submit", function(event){
-        event.preventDefault();
+    // $('#profile').on("submit", function(event){
+    //     event.preventDefault();
         
-        var url = $(this).attr("action");
+    //     var url = $(this).attr("action");
 
-        $.ajax({
-            url: url,
-            type: 'POST',            
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            success: function (data){
-                 alert('Профиль сохранен');
-            }
-        });
-    });
+    //     $.ajax({
+    //         url: url,
+    //         type: 'POST',            
+    //         data: new FormData(this),
+    //         processData: false,
+    //         contentType: false,
+    //         success: function (data){
+    //              alert('Профиль сохранен');
+    //         }
+    //     });
+    // });
        
   
 </script>

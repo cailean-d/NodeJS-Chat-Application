@@ -135,3 +135,16 @@
           display: block;
         }
       }
+
+      .online a{
+        color: #000;
+        text-decoration: none;
+      }
+
+      .online a:hover{
+        color: #fff;
+      }
+
+      .online li:hover a{
+        color: #fff;
+      }

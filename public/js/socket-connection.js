@@ -64,9 +64,10 @@
 // ----------------------------------------
 
     socket.on('online', function(data){
+      // console.log(data);
       var html = '';
-      for(var i = 0; i < data.length; i++){
-        html += `<li class='${data[i]}'>${i+1}. ${data[i]}</li>`
+      for(var i = 0; i < data.userid.length; i++){
+        html += `<li data-username='${data.username[i]}'><a href='profile?id=${data.userid[i]}'>${i+1}. ${data.username[i]}</a></li>`
       }
       $('.online ul').html(html);
     });

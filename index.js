@@ -16,18 +16,26 @@ const jsonfile = require('jsonfile');
 var bcrypt = require('bcrypt');
 let multer  = require('multer');            // multipart/form-data
 let upload = multer();
+var favicon = require('serve-favicon');
 
 
 
 // parse config.json
 const SETTINGS = jsonfile.readFileSync('./config.json');
 
+// jade template engine
+app.engine('pug', require('pug').renderFile);
+// app.set('port', process.env.PORT || 3000);
+app.set('views', './views');
+app.set('view engine', 'pug');
+
 //middlewares
-app.use(cookieParser('my-secret'))
-app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(upload.fields([]));
+app.use(cookieParser('my-secret'))                             // cookie data
+app.use(bodyParser.json());                                    // post data
+app.use(bodyParser.urlencoded({ extended: false }));           // post data
+app.use(upload.fields([]));                                    // form-data
+app.use(favicon('./public/img/chat.ico'));                     // app logo
+
 
 
 var ip = '0.0.0.0';
@@ -96,6 +104,12 @@ app.get('/login', function(req, res){
 
 app.get('/my_profile', function(req, res){
  res.sendFile(__dirname + '/views/my_profile.html'); 
+});
+
+app.get('/profile', function(req, res){
+    // res.sendFile(__dirname + '/views/profile.html'); 
+    res.render('test', { title: 'Hey', message: 'Hello there!', id: req.query.id});
+
 });
 
 app.post('/registration', function(req, res){
@@ -330,7 +344,7 @@ io.on('connection', function(socket){
 //==================================================================
 
 function updateOnline(){
-      io.sockets.emit('online', users.name);
+      io.sockets.emit('online', {username: users.name, userid: users.id});
       io.sockets.emit('online-count', users.name.length);
 }
 

@@ -1,4 +1,3 @@
-
 var express = require('express');
 var app = require('express')();
 var http = require('http').Server(app);
@@ -6,19 +5,18 @@ var io = require('socket.io')(http);
 var colors = require('colors/safe');
 var mysql = require('mysql');
 var mysqlUtilities = require('mysql-utilities');
-// var now = require("performance-now");
-// var rndName = require("./randomName");
 // var cookieSession = require('cookie-session');
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')                         // x-www-form-urlencoded
 var colour = require('colour');
-const jsonfile = require('jsonfile');
+let jsonfile = require('jsonfile');
 let bcrypt = require('bcrypt');
 let multer  = require('multer');                                // multipart/form-data
 let upload = multer();
 let favicon = require('serve-favicon');
 let pug =  require('pug').renderFile;                           // template engine
-
+let sass = require('node-sass');
+var sassMiddleware = require('node-sass-middleware');
 
 
 // parse config.json
@@ -26,16 +24,25 @@ const SETTINGS = jsonfile.readFileSync('./config.json');
 
 // jade template engine
 app.engine('pug', pug);
-// app.set('port', process.env.PORT || 3000);
 app.set('views', './views');
 app.set('view engine', 'pug');
 
 //middlewares
+
 app.use(cookieParser('my-secret'))                             // cookie data
 app.use(bodyParser.json());                                    // post data
 app.use(bodyParser.urlencoded({ extended: false }));           // post data
 app.use(upload.fields([]));                                    // form-data
 app.use(favicon('./public/img/chat.ico'));                     // app logo
+app.use(sassMiddleware({                                       // sass compile
+  src: __dirname + "/sass",
+  dest: __dirname + "/public",
+  outputStyle: 'compressed',
+  debug: true,
+  sourceMap: true
+}));
+
+app.use(express.static('public'));                             // static dir
 
 
 
@@ -63,8 +70,6 @@ var connection = mysql.createPool({
 //=================================================
 //                   Routing
 //=================================================
-
-app.use(express.static('public'));
 
 app.get('/', function(req, res){    //chat only for registered users
 
@@ -129,12 +134,8 @@ app.get('/login', function(req, res){
  res.sendFile(__dirname + '/views/login.html');
 });
 
-app.get('/my_profile', function(req, res){
- res.sendFile(__dirname + '/views/my_profile.html');
-});
-
 app.get('/profile', function(req, res){
-    // res.sendFile(__dirname + '/views/profile.html');
+ 
     res.render('test', { title: 'Hey', message: 'Hello there!', id: req.query.id});
 
 });
@@ -160,31 +161,6 @@ app.post('/registration', function(req, res){
   res.redirect('/login');
 
 })
-
-
-app.post('/profile_data', function(req, res){
-
-       let id = req.body.id;
-
-       connection.getConnection(function(err, conn) {
-        if(err){
-          console.log(err.code);
-          res.send('database connection error');
-          return;
-        }
-
-       connection.queryRow('SELECT * FROM users where id=?', [id], function(err, row) {
-          if(row){
-                res.send({nickname: row.nickname, avatar: row.avatar, about: row.about});
-          } else{
-            res.send('cant receive data');
-          }
-            conn.release();
-        });
-
-     });
-});
-
 
 app.post('/update_profile', function(req, res){
 
@@ -288,8 +264,6 @@ app.get('/id[0-9]*', function(req, res){
 
    });
 });
-
-
 
 // custom 404 page
 app.use(function(req, res, next) {

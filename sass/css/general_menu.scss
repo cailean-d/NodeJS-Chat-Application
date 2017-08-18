@@ -1,0 +1,28 @@
+.main-menu{
+    width: 20%;
+    height: auto;
+    background: #D3DBF4;
+
+    ul{
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+
+        li{
+            padding: 1em;
+            cursor: pointer;
+            text-align: center;
+
+            a{
+                text-decoration: none;
+                color: #000;
+            }
+            &:hover{
+                background-color: rgba(0, 0, 0, 0.3);
+            }
+            &:hover a{
+                color: #ffffff;
+            }
+        }
+    }
+}

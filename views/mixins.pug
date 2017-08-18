@@ -1,17 +1,30 @@
 mixin other_profile(nickname, avatar, about, id)
-  h3=nickname
-  img(src=`/img/core/user_avatar/${avatar}`)
-  form#profile(action='update_profile', method='post')
-    textarea.about(name='about', id='', cols='30', rows='10', placeholder='write information about yourself')= about
+  .profile
+    h3.nickname=nickname
+    .row
+      .thumbnail
+        img(src=`/img/core/user_avatar/${avatar}`)
+        button Invite to friends
+        button Text him
+        button Phone Him
+      .block
+        form#profile(action='update_profile', method='post')
+          textarea.about(name='about', placeholder='write information about yourself')= about
+    
 
 mixin my_profile(nickname, avatar, about, id)
-  h3=nickname
-  img(src=`/img/core/user_avatar/${avatar}`)
-  form#profile(action='update_profile', method='post')
-    textarea.about(name='about', id='', cols='30', rows='10', placeholder='write information about yourself')= about
-    button(name='update_profile', type='submit') Save
-  label my id
-    input(type='text' value= id)
+  .profile
+    h3.nickname=nickname
+    .row
+      .thumbnail
+        img(src=`/img/core/user_avatar/${avatar}`)
+      .block
+        label my id      
+         input(type='text' value= id)        
+        form#profile(action='update_profile', method='post')
+          textarea.about(name='about', id='', cols='30', rows='10', placeholder='write information about yourself')= about
+          button(name='update_profile', type='submit') Save
+          
   script(src='/js/libs/jquery.min.js')
   script.
     $('#profile').on("submit", function(event){

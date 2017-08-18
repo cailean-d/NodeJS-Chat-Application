@@ -28,7 +28,6 @@ app.set('views', './views');
 app.set('view engine', 'pug');
 
 //middlewares
-
 app.use(cookieParser('my-secret'))                             // cookie data
 app.use(bodyParser.json());                                    // post data
 app.use(bodyParser.urlencoded({ extended: false }));           // post data
@@ -38,10 +37,8 @@ app.use(sassMiddleware({                                       // sass compile
   src: __dirname + "/sass",
   dest: __dirname + "/public",
   outputStyle: 'compressed',
-  debug: true,
   sourceMap: true
 }));
-
 app.use(express.static('public'));                             // static dir
 
 

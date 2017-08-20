@@ -1,12 +1,18 @@
-mixin other_profile(nickname, avatar, about, id)
+mixin other_profile(nickname, avatar, about, id, status)
   .profile
+    .profile_id(hidden)=id
     h3.nickname=nickname
     .row
       .thumbnail
         img(src=`/img/core/user_avatar/${avatar}`)
-        button Invite to friends
-        button Text him
-        button Phone Him
+        if status == 'invited'
+          button.inv_friend(disabled) Invited
+        else if status == 'friend'
+          button.inv_friend(disabled) Friend
+        else
+          button.inv_friend Invite to friends
+        button.type_message Text him
+        button.phone Phone Him
       .block
         form#profile(action='update_profile', method='post')
           textarea.about(name='about', placeholder='write information about yourself')= about
@@ -24,20 +30,3 @@ mixin my_profile(nickname, avatar, about, id)
         form#profile(action='update_profile', method='post')
           textarea.about(name='about', id='', cols='30', rows='10', placeholder='write information about yourself')= about
           button(name='update_profile', type='submit') Save
-          
-  script(src='/js/libs/jquery.min.js')
-  script.
-    $('#profile').on("submit", function(event){
-    event.preventDefault();
-    var url = $(this).attr("action");
-    $.ajax({
-    url: url,
-    type: 'POST',
-    data: new FormData(this),
-    processData: false,
-    contentType: false,
-    success: function (data){
-    alert('Профиль сохранен');
-    }
-    });
-    });

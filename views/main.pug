@@ -15,6 +15,45 @@ html(lang='en')
     .wrapper
       include _side-menu
       if target == 'me'
-         +my_profile(nickname, avatar, about, id)
+        +my_profile(nickname, avatar, about, id) 
+        script(src='/js/libs/jquery.min.js')
+        script.
+            $('#profile').on("submit", function(event){
+            event.preventDefault();
+            var url = $(this).attr("action");
+              $.ajax({
+              url: url,
+              type: 'POST',
+              data: new FormData(this),
+              processData: false,
+              contentType: false,
+              success: function (data){
+                alert('Профиль сохранен');
+              }
+              });
+            });
+
       else
-         +other_profile(nickname, avatar, about, id)
+         +other_profile(nickname, avatar, about, id, status)
+         script(src="/js/libs/jquery.min.js")
+         script.
+          $('.inv_friend').on('click', function(){
+            //- alert('invite with id ' + $('.profile_id').text());
+            let target_id = $('.profile_id').text();
+            $.ajax({
+              url: 'add_friend',
+              type: 'POST',
+              data: {'id': target_id},
+              success: function (data){
+                alert('Заявка отправлена');
+              }
+            });
+          });
+         script.
+          $('.type_message').on('click', function(){
+            alert('text with id ' + $('.profile_id').text());
+          });
+         script.
+          $('.phone').on('click', function(){
+            alert('phone with id ' + $('.profile_id').text());
+          });

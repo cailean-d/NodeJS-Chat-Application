@@ -1,5 +1,6 @@
 //nodejs modules
 let express = require('express');                               // express framework
+let router = express.Router();                                  // app routes
 let app = require('express')();
 let httpExpressServer = require('http').Server(app);            // http server
 let io = require('socket.io')(httpExpressServer);               // socket server
@@ -19,6 +20,7 @@ let socket_general_chat = require('./server/socket_general_chat')(io);
 let routes              = require('./server/routes');
 let ajax                = require('./server/ajax');
 let pagenotfound        = require('./server/404');
+let authorized          = require('./server/authorized');
 
 // jade template engine
 app.engine('pug', pug);
@@ -38,16 +40,14 @@ app.use(sassMiddleware({                                       // sass compile
   sourceMap: true
 }));
 app.use(express.static('public'));                             // static dir
-app.use(routes);                                               // app routes
-app.use(ajax);                                                 // ajax requests
+app.use(authorized);                                           // set authorization bool
+app.use(ajax(router));                                         // ajax responses
+app.use(routes(router));                                       // app routes
 app.use(pagenotfound);                                         // custom 404 page
-
 
 var ip = '0.0.0.0';
 var port = 3000;
 
-
 httpExpressServer.listen(port, ip, function(){
   console.log(colors.green(`\nSERVER listening on ${ip}:${port}\n`));
 });
-

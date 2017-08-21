@@ -69,20 +69,15 @@ module.exports = function(io){
 
             socket.broadcast.emit('chat message', {
                 sender : msg.sender,
-            message: msg.message,
+                message: msg.message,
                 time: msg.time
             });
 
-        connection.insert('general_chat', {
-        sender: msg.sender,
-        message: msg.message
-        }, function(err, recordId) {
-        if(err){ console.log(err);}
-
-
-        console.log('MESSAGE \"' + colors.magenta(msg.message) + '\" BY ' + colors.cyan(msg.sender) + ' IS INSERTED INTO ' +
-                colors.magenta('general_chat') + ' WITH ID ' + colors.magenta(recordId));
-        });
+           mysql_module.general_chat_insert_message(msg.sender, msg.message, function(){
+               
+              console.log('MESSAGE \"' + colors.magenta(msg.message) + '\" BY ' + colors.cyan(msg.sender) + ' IS INSERTED INTO ' +
+              colors.magenta('general_chat') /* + ' WITH ID ' + colors.magenta(recordId) */);
+           });
 
         });
 

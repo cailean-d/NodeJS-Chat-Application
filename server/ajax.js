@@ -1,39 +1,43 @@
-let express = require('express');
-let router = express.Router();
 let mysql_module = require('../server/mysql')
 
+module.exports = function(router){
 
-let connection = mysql_module.connection;
+  router.post('/update_profile', function(req, res){
+      
+    let id = req.signedCookies.userID2;
+    let data = req.body;
 
-
-router.post('/update_profile', function(req, res){
-    
-            let id = req.signedCookies.userID2;
-            let about = req.body.about;
-            // console.log(id, about);
-            // console.dir(req.body);
-    
-          connection.getConnection(function(err, conn) {
-            if(err){
-              console.log(err.code);
-              res.send('database connection error');
-              return;
-            }
-              connection.update(
-                'users',
-                { about: about },
-                { id: id },
-                function(err, affectedRows) {
-                  // console.dir({update:affectedRows});
-                  conn.release();
-                  res.send({update: true});
-                }
-              );
-    
-          });
-    
-    
-});
+    result = mysql_module.update_profile(id, data);
+    res.send(true);
+ 
+       
+  });
 
 
-module.exports = router;
+  router.post('/login', function(req, res){
+
+    if(req.body.login){
+  
+      let email = req.body.email;
+      let password = req.body.password;
+
+      mysql_module.user_login(email, password, res);
+
+    }
+  });
+
+      
+
+  router.post('/add_friend', function(req, res){
+    
+    let sender = req.signedCookies.userID2;
+    let receiver = req.body.id;
+
+    mysql_module.add_friend(sender, receiver);
+    res.send(true);  
+
+  });
+
+
+  return router;
+}

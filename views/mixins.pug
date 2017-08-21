@@ -14,7 +14,6 @@ mixin other_profile(nickname, avatar, about, id, status)
         button.type_message Text him
         button.phone Phone Him
       .block
-        form#profile(action='update_profile', method='post')
           textarea.about(name='about', placeholder='write information about yourself')= about
     
 
@@ -29,4 +28,4 @@ mixin my_profile(nickname, avatar, about, id)
          input(type='text' value= id)        
         form#profile(action='update_profile', method='post')
           textarea.about(name='about', id='', cols='30', rows='10', placeholder='write information about yourself')= about
-          button(name='update_profile', type='submit') Save
+          button(type='submit') Save

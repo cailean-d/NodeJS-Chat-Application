@@ -17,13 +17,12 @@
     "pug": "^2.0.0-rc.3",
     "query-string": "^5.0.0",
     "serve-favicon": "^2.4.3",
-    "socket.io": "^2.0.3"
-  },
-  "devDependencies": {
+    "socket.io": "^2.0.3",
     "mysql": "^2.13.0",
     "mysql-utilities": "^1.0.10"
   },
   "scripts": {
+    "prestart": "node database.js",    
     "start": "node index.js"
   },
   "author": "Lykov Denis",

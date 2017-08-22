@@ -20,12 +20,18 @@ let mysql_module = {
     connection: connection,
     general_chat_insert_message: function(sender, msg, handler){
 
-        connection.insert('general_chat', {
-            sender: sender,
-            message: msg
-            }, function(err, recordId) {
-            if(err){ console.log(err);}
-               (handler)();
+        connection.getConnection(function(err, conn) {
+            if(err){
+              throw new Error('DATABASE CONNECTION ERROR');
+            }
+            connection.insert('general_chat', {
+                sender: sender,
+                message: msg
+                }, function(err, recordId) {
+                if(err){ console.log(err);}
+                   (handler)();
+                conn.release();
+            });
         });
     },
     update_profile: function(userid, data){

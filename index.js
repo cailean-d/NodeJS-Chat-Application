@@ -1,7 +1,7 @@
 //nodejs modules
 let express = require('express');                               // express framework
 let router = express.Router();                                  // app routes
-let app = require('express')();
+let app = require('express')();                                 // express application
 let httpExpressServer = require('http').Server(app);            // http server
 let io = require('socket.io')(httpExpressServer);               // socket server
 let colors = require('colors/safe');                            // color console

@@ -55,8 +55,9 @@ module.exports = function(database_name, database_object){
             }, function(table){
                 //if table doesnt exist in local database
                 delete_excess_tables(table);
-            }, function(){
-                //==================create deleted tables
+            }, function(tableName, table){
+                //create deleted tables
+                create_table(tableName, table);
             });
         });
     });    
@@ -218,34 +219,57 @@ function check_tables(ifdoesntexist, ifexists){
 
 function check_existing_tables(db_tables, tables, checkTable, deleteTables, createTable){
 
-    function listOfTablesl(){
-        let listOfTables = [];
+    function list_of_local_tables(tbls){
+        let list = [];
         
-        for(item in db_tables){
-           listOfTables.push(item);
+        for(item in tbls){
+           list.push(item);
         }    
-        return listOfTables;
+        return list;
+    }
+    function list_of_external_tables(tbls){
+        let list = [];
+        for(let i=0; i < tbls.length; i++){
+            for(item in tbls[i]){
+                list.push(tbls[i][item]);
+            } 
+        }
+        return list;
     }
 
-    let listOfTables = listOfTablesl();
-    
-        for(let i=0; i < tables.length; i++){
-  
-            for(item in tables[i]){
-    
-                let currTable = tables[i][item];
-                if (listOfTables.includes(currTable)){
+    let listOfLocalTables = list_of_local_tables(db_tables);
+    let listOfExternalTables = list_of_external_tables(tables);
+
+    for(let i=0; i < listOfExternalTables.length; i++){
+        if(!listOfLocalTables.includes(listOfExternalTables[i])){
+            process.nextTick(function(){
+                deleteTables(listOfExternalTables[i]);                
+            });
+        }
+    }
+
+    for(let i=0; i < listOfLocalTables.length; i++){              
+        if(!listOfExternalTables.includes(listOfLocalTables[i])){
+            for(item in db_tables){
+                if(item == listOfLocalTables[i]){
                     process.nextTick(function(){
-                        checkTable(currTable);
-                    });                   
-                } else {
-                    process.nextTick(function(){
-                        deleteTables(currTable);
-                    });
+                        createTable(item,db_tables[item]);    
+                    });            
                 }
             }
-  
+        } 
+    }
+
+    for(let i=0; i < tables.length; i++){
+        for(item in tables[i]){
+            let currTable = tables[i][item];
+            if (listOfLocalTables.includes(currTable)){
+                process.nextTick(function(){
+                    checkTable(currTable);
+                });                   
+            }
         }
+    }
 }
 
 function delete_excess_tables(table){

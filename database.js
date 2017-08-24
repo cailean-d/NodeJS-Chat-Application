@@ -5,7 +5,7 @@ let databaseModule = require('./server/database_module');
 //  CREATE TABLES
 //-------------------------------------------------------------------------------------------------------
 
-let db_tables = {
+let database = {
 
     //table users    
     users : [
@@ -15,7 +15,7 @@ let db_tables = {
         { Field: 'password',Type: 'varchar(70)', Null: 'NO', Key: '', Default: null, Extra: '' },
         { Field: 'about',Type: 'text', Null: 'NO', Key: '', Default: null, Extra: '' },
         { Field: 'avatar',Type: 'varchar(40)', Null: 'NO', Key: '', Default: 'user_thumbnail.jpg', Extra: '' },
-        { Field: 'date',Type: 'TIMESTAMP', Null: 'NO', Key: '', Default: 'CURRENT_TIMESTAMP', Extra: '' }
+        { Field: 'date',Type: 'timestamp', Null: 'NO', Key: '', Default: 'CURRENT_TIMESTAMP', Extra: '' }
     ],
     
     //table general_chat
@@ -23,7 +23,7 @@ let db_tables = {
         { Field: 'id', Type: 'int(11) unsigned', Null: 'NO', Key: 'PRI', Default: null, Extra: 'auto_increment' },
         { Field: 'sender', Type: 'varchar(30)', Null: 'NO', Key: '', Default: null, Extra: '' },
         { Field: 'message',Type: 'text', Null: 'NO', Key: '', Default: null, Extra: '' },
-        { Field: 'date',Type: 'TIMESTAMP', Null: 'NO', Key: '', Default: 'CURRENT_TIMESTAMP', Extra: '' }
+        { Field: 'date',Type: 'timestamp', Null: 'NO', Key: '', Default: 'CURRENT_TIMESTAMP', Extra: '' }
     ],
     
     //table friends
@@ -31,10 +31,10 @@ let db_tables = {
         { Field: 'id', Type: 'int(11) unsigned', Null: 'NO', Key: 'PRI', Default: null, Extra: 'auto_increment' },
         { Field: 'friend_1', Type: 'int(11) unsigned', Null: 'NO', Key: '', Default: null, Extra: '' },
         { Field: 'friend_2',Type: 'int(11) unsigned', Null: 'NO', Key: '', Default: null, Extra: '' },
-        { Field: 'status',Type: "enum('0', '1')", Null: 'NO', Key: '', Default: "0", Extra: '' },
-        { Field: 'date',Type: 'TIMESTAMP', Null: 'NO', Key: '', Default: 'CURRENT_TIMESTAMP', Extra: '' }
+        { Field: 'status',Type: "enum('0','1')", Null: 'NO', Key: '', Default: "0", Extra: '' },
+        { Field: 'date',Type: 'timestamp', Null: 'NO', Key: '', Default: 'CURRENT_TIMESTAMP', Extra: '' }
     ]
 }
 
 
-databaseModule("mydb", db_tables);
+databaseModule("mydb", database);

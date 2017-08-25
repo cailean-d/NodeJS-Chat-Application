@@ -47,7 +47,7 @@ module.exports = function(io){
                     clients.push(io.sockets.connected[socketId].handshake.query.id);
                 }
 
-                console.log('disconnect  ___ ' + clients);
+                // console.log('disconnect  ___ ' + clients);
 
                 if(clients.indexOf(id) == -1){
                     // console.log('client isnt here');

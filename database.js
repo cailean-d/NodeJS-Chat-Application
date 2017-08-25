@@ -33,6 +33,25 @@ let database = {
         { Field: 'friend_2',Type: 'int(11) unsigned', Null: 'NO', Key: '', Default: null, Extra: '' },
         { Field: 'status',Type: "enum('0','1')", Null: 'NO', Key: '', Default: "0", Extra: '' },
         { Field: 'date',Type: 'timestamp', Null: 'NO', Key: '', Default: 'CURRENT_TIMESTAMP', Extra: '' }
+    ],
+    
+    //table messages
+    messages : [
+        { Field: 'id', Type: 'int(11) unsigned', Null: 'NO', Key: 'PRI', Default: null, Extra: 'auto_increment' },
+        { Field: 'sender', Type: 'int(11) unsigned', Null: 'NO', Key: '', Default: null, Extra: '' },
+        { Field: 'receiver',Type: 'int(11) unsigned', Null: 'NO', Key: '', Default: null, Extra: '' },
+        { Field: 'dialog_id',Type: 'int(11) unsigned', Null: 'NO', Key: '', Default: null, Extra: '' },
+        { Field: 'message',Type: "text", Null: 'NO', Key: '', Default: null, Extra: '' },
+        { Field: 'date',Type: 'timestamp', Null: 'NO', Key: '', Default: 'CURRENT_TIMESTAMP', Extra: '' }
+    ],
+    
+    //table dialogs
+    dialogs : [
+        { Field: 'id', Type: 'int(11) unsigned', Null: 'NO', Key: 'PRI', Default: null, Extra: 'auto_increment' },
+        { Field: 'user1', Type: 'int(11) unsigned', Null: 'NO', Key: '', Default: null, Extra: '' },
+        { Field: 'user2',Type: 'int(11) unsigned', Null: 'NO', Key: '', Default: null, Extra: '' },
+        { Field: 'status',Type: "enum('0','1')", Null: 'NO', Key: '', Default: "0", Extra: '' },        
+        { Field: 'date',Type: 'timestamp', Null: 'NO', Key: '', Default: 'CURRENT_TIMESTAMP', Extra: '' }
     ]
 }
 

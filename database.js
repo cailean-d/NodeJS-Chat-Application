@@ -37,4 +37,4 @@ let database = {
 }
 
 
-databaseModule("mydb", database);
+databaseModule(database);

@@ -16,11 +16,13 @@ var con2 = mysql.createPool({
     host:     SETTINGS.db.host,
     user:     SETTINGS.db.user,
     password: SETTINGS.db.password,
-    database: "mydb"
+    database: SETTINGS.db.database
 });
 
+let database_name = SETTINGS.db.database;
 
-module.exports = function(database_name, database_object){
+
+module.exports = function(database_object){
 
     //check database
     check_database(database_name, function(){
@@ -40,24 +42,31 @@ module.exports = function(database_name, database_object){
  
                     check_specific_table(database_object, table, function(table, columnName, columnObject){
                         // compare columns, change modified columns
-                        modify_column(table, columnName, columnObject, function(table){
-                            //======================sort table
-                        });           
+                        modify_column(table, columnName, columnObject);           
                         
-                    }, function(table, column){
+                    }, function(tableName, column, var1, var2, var3){
                         //if column doesnt exist in local table
-                        delete_excess_columns(table, column);
-                    }, function(tableName, tableObject, columnName){
+                        delete_excess_columns(tableName, column, function(){
+                                     //sort tables
+                                     sort_columns(database_name, tableName, var1, var2, var3);     
+                        });
+                    }, function(tableName, tableObject, columnName, var1, var2, var3){
                         //if column doesnt exist in external database
-                        create_column(tableName, tableObject, columnName);
+                        create_column(tableName, tableObject, columnName, function(){
+                                    //sort tables
+                                     sort_columns(database_name, tableName, var1, var2, var3);                                
+                        });
+                    }, function(tableName, var1, var2, var3){
+                                    //sort tables
+                                     sort_columns(database_name, tableName, var1, var2, var3);                        
                     });                 
 
-            }, function(table){
+            }, function(tableName){
                 //if table doesnt exist in local database
-                delete_excess_tables(table);
-            }, function(tableName, table){
+                delete_excess_tables(tableName);
+            }, function(tableNamel, tablel){
                 //create deleted tables
-                create_table(tableName, table);
+                create_table(tableNamel, tablel);
             });
         });
     });    
@@ -101,20 +110,20 @@ function create_table(tableName, object){
 
     con2.query(`SELECT 1 FROM ${tableName} LIMIT 1`, function(err, result){
         if(result === undefined){
-            console.log('TABLE '.red + `${tableName}`.cyan.underline + ' DOESNT EXIST.'.red);
+            console.log('TABLE '.red + `${tableName}`.cyan + ' DOESNT EXIST.'.red);
             con2.query(`CREATE TABLE IF NOT EXISTS ${tableName} (` +
             table + `)`, function(err, result){
                 if(err) throw err;
-                console.log('TABLE '.green + `${tableName}`.cyan.underline + ' CREATED.'.green)      
+                console.log('TABLE '.green + `${tableName}`.cyan + ' CREATED.'.green)      
             });          
         } else {
-            console.log('TABLE '.green + `${tableName}`.cyan.underline + ' EXISTS.'.green);    
+            console.log('TABLE '.green + `${tableName}`.cyan + ' EXISTS.'.green);    
         }
     });
 }
 
 
-function check_specific_table(local_table, table, checkColumn, deleteColumns, createColumn){
+function check_specific_table(local_table, table, checkColumn, deleteColumns, createColumn, sortTable){
     con2.query(`DESCRIBE ${table}`, function(err, result){
         if(err) throw err;
 
@@ -134,7 +143,7 @@ function check_specific_table(local_table, table, checkColumn, deleteColumns, cr
         for(let i=0; i < columns_of_db_table.length; i++){
             if(!columns_of_local_table.includes(columns_of_db_table[i])){
                 process.nextTick(function(){
-                    deleteColumns(table, columns_of_db_table[i]);
+                    deleteColumns(table, columns_of_db_table[i], current_local_table, columns_of_db_table, columns_of_local_table);
                 });
             }
         }
@@ -142,7 +151,7 @@ function check_specific_table(local_table, table, checkColumn, deleteColumns, cr
         for(let i=0; i < columns_of_local_table.length; i++){              
             if(!columns_of_db_table.includes(columns_of_local_table[i])){
                 process.nextTick(function(){
-                    createColumn(table, current_local_table[i], columns_of_local_table[i]);
+                    createColumn(table, current_local_table[i], columns_of_local_table[i], current_local_table, columns_of_db_table, columns_of_local_table);
                 });
             } 
         }
@@ -159,13 +168,21 @@ function check_specific_table(local_table, table, checkColumn, deleteColumns, cr
                 }
             }
         } 
+
+        process.nextTick(function(){
+            sortTable(table, current_local_table, columns_of_db_table, columns_of_local_table);
+        });
+ 
     });
 }
 
-function delete_excess_columns(table, column){
+function delete_excess_columns(table, column, callback){
     con2.query(`ALTER TABLE ${table} DROP COLUMN ${column}`, function(err, res){
         if(err) throw err;
-        console.log(table.red + ' ['.red + column + '] DELETED'.red);                    
+        console.log(table.red + ' ['.red + column + '] DELETED'.red);      
+        process.nextTick(function(){
+            callback();
+        });              
     });
 }
 
@@ -175,12 +192,12 @@ function check_database(database, ifdoesntexist, ifexists){
         con.query(`SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '${database}'`, function(err, res){
             if(err) throw err;
             if(res == ''){ 
-                console.log('DATABASE '.red + `${database}`.cyan.underline + ' DOESNT EXIST.'.red);
+                console.log('DATABASE '.red + `${database}`.cyan + ' DOESNT EXIST.'.red);
                 process.nextTick(function(){
                     ifdoesntexist();
                 });                    
             } else {
-                console.log('DATABASE '.green + `${database}`.cyan.underline + ' EXISTS.'.green);
+                console.log('DATABASE '.green + `${database}`.cyan + ' EXISTS.'.green);
                 process.nextTick(function(){
                     ifexists();                    
                 });
@@ -194,7 +211,7 @@ function check_database(database, ifdoesntexist, ifexists){
 function create_database(database, callback){
     con.query(`CREATE DATABASE IF NOT EXISTS ${database}`, function(err, result){
         if(err) throw err;
-        console.log('DATABASE '.green + `${database}`.cyan.underline + ' CREATED.'.green);
+        console.log('DATABASE '.green + `${database}`.cyan + ' CREATED.'.green);
         process.nextTick(function(){
             callback();        
         });
@@ -217,7 +234,7 @@ function check_tables(ifdoesntexist, ifexists){
     });
 }
 
-function check_existing_tables(db_tables, tables, checkTable, deleteTables, createTable){
+function check_existing_tables(db_tables, tables, changeTable, deleteTables, createTable){
 
     function list_of_local_tables(tbls){
         let list = [];
@@ -252,9 +269,7 @@ function check_existing_tables(db_tables, tables, checkTable, deleteTables, crea
         if(!listOfExternalTables.includes(listOfLocalTables[i])){
             for(item in db_tables){
                 if(item == listOfLocalTables[i]){
-                    process.nextTick(function(){
-                        createTable(item,db_tables[item]);    
-                    });            
+                    createTable(item,db_tables[item]);               
                 }
             }
         } 
@@ -265,7 +280,7 @@ function check_existing_tables(db_tables, tables, checkTable, deleteTables, crea
             let currTable = tables[i][item];
             if (listOfLocalTables.includes(currTable)){
                 process.nextTick(function(){
-                    checkTable(currTable);
+                    changeTable(currTable);
                 });                   
             }
         }
@@ -275,7 +290,7 @@ function check_existing_tables(db_tables, tables, checkTable, deleteTables, crea
 function delete_excess_tables(table){
     con2.query(`DROP TABLE ${table}`, function(err, res){
         if(err) throw err;
-        console.log('TABLE '.red + table.cyan.underline + ' DELETED'.red);
+        console.log('TABLE '.red + table.cyan + ' DELETED'.red);
     });  
 }
 
@@ -299,23 +314,23 @@ function generate_column(object){
     return string;
 }
 
-function create_column(table_name, table, column){
+function create_column(table_name, table, column, callback){
     console.log(`COLUMN `.red + table_name.cyan + `[`.red + column + '] DOESNT EXIST'.red);
     let columnQuery = generate_column(table);
     con2.query(`ALTER TABLE ${table_name} ADD ${columnQuery}`, function(err, result){
         if(err) throw err;
         console.log('COLUMN '.green + table_name.cyan + '[' + column + ']' + ' CREATED'.green)
+        process.nextTick(function(){
+            callback();
+        });
     });
 }
 
-function modify_column(table, column2, column, callback){
+function modify_column(table, column2, column){
     let columnQuery = generate_column(column);
     con2.query(`ALTER TABLE ${table} CHANGE ${column2} ${columnQuery}`, function(err, res){
         if (err) throw err;
         console.log(`COLUMN `.yellow + table.cyan + `[`.yellow + column2 + '] CHANGED'.yellow);    
-    });
-    process.nextTick(function(){
-        callback(table);
     });
 }
 
@@ -325,4 +340,38 @@ function select_column(table, column_name){
             return table[i];
         }
     }
+}
+
+function sort_columns(databaseName, tableName, currLocalTable, extColumns, localColumns){
+    for(let i=0; i < extColumns.length; i++){
+        if(localColumns.includes(extColumns[i])){
+            if(extColumns[i] != localColumns[i]){
+                if(extColumns[i] != localColumns[0]){                
+                    for(let j=0; j < localColumns.length; j++){
+                        if(extColumns[i] == localColumns[j]){
+                            con2.query(`SELECT * FROM information_schema.COLUMNS` + 
+                            ` WHERE TABLE_SCHEMA = '${databaseName}' ` + 
+                            ` AND TABLE_NAME = '${tableName}' ` + 
+                            `AND COLUMN_NAME = '${localColumns[j-1]}'`, function(err, result){                   
+                                if(err) throw err;
+                                if(result[0]){
+                                    for(let q=0; q < localColumns.length; q++){
+                                        if(currLocalTable[q].Field == extColumns[i]){                                             
+                                            let column_options = generate_column(currLocalTable[q]);
+                                            con2.query(`ALTER TABLE ${tableName} MODIFY COLUMN ${column_options} ` + 
+                                            `AFTER ${localColumns[j-1]}`, function(err, result){
+                                                if(err) throw err;
+                                                console.log('COLUMN '.yellow + tableName.cyan + 
+                                                '[' + extColumns[i] +'] SORTED'.yellow);
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }                      
+                }
+            }
+        }
+    } 
 }

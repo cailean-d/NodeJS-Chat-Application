@@ -4,7 +4,8 @@
 		"host": "localhost",
 		"user": "root",
 		"password": "",
-		"database": "chat_application"
+		"database": "chat_application",
+		"port": "3306"
 	},
 	"log":{
 		"general_chat_message": "true",

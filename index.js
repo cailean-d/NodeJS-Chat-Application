@@ -4,7 +4,7 @@ let router = express.Router();                                  // app routes
 let app = require('express')();                                 // express application
 let httpExpressServer = require('http').Server(app);            // http server
 let io = require('socket.io')(httpExpressServer);               // socket server
-let colors = require('colors/safe');                            // color console
+let colors = require('colors');                                 // color console
 let cookieParser = require('cookie-parser')                     // cookie middleware
 let bodyParser = require('body-parser')                         // x-www-form-urlencoded
 let bcrypt = require('bcrypt');                                 // encrypt data
@@ -17,6 +17,7 @@ let sassMiddleware = require('node-sass-middleware');
 
 //local modules
 let socket_general_chat = require('./server/socket_general_chat')(io);
+let socket_friends      = require('./server/server_socket_friends')(io.of('/friends'));
 let routes              = require('./server/routes');
 let ajax                = require('./server/ajax');
 let pagenotfound        = require('./server/404');
@@ -49,5 +50,5 @@ var ip = '0.0.0.0';
 var port = 3000;
 
 httpExpressServer.listen(port, ip, function(){
-  console.log(colors.green(`\nSERVER listening on ${ip}:${port}\n`));
+  console.log(`\nSERVER listening on ${ip}:${port}\n`.green);
 });

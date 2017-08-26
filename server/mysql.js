@@ -17,13 +17,11 @@ mysqlUtilities.introspection(connection);
 
 let mysql_module = {
 
-    connection: connection,
+    // connection: connection,
     general_chat_insert_message: function(sender, msg, handler){
 
         connection.getConnection(function(err, conn) {
-            if(err){
-              throw new Error('DATABASE CONNECTION ERROR');
-            }
+            if(err){ throw err;}
             connection.insert('general_chat', {
                 sender: sender,
                 message: msg
@@ -37,9 +35,7 @@ let mysql_module = {
     update_profile: function(userid, data){
 
         connection.getConnection(function(err, conn) {
-            if(err){
-              throw new Error('DATABASE CONNECTION ERROR');
-            }
+            if(err){throw err;}
               connection.update(
                 'users',
                  data,
@@ -66,9 +62,9 @@ let mysql_module = {
               if(row){
                   bcrypt.compare(password, row.password, function(err, doesMatch){
                     if (doesMatch){
-                        res.cookie( 'userID', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: false });
-                        res.cookie( 'nickname', row.nickname ,{ maxAge: 60*60*24*30*12, httpOnly: false});
-                        res.cookie( 'userID2', row.id ,{ maxAge: 60*60*24*30*12, httpOnly: true, signed: true });
+                        res.cookie( 'userID', row.id ,{ maxAge: 1000*60*60*24*30*12, httpOnly: false });
+                        res.cookie( 'nickname', row.nickname ,{ maxAge: 1000*60*60*24*30*12, httpOnly: false});
+                        res.cookie( 'userID2', row.id ,{ maxAge: 1000*60*60*24*30*12, httpOnly: true, signed: true });
     
                         res.send('OK');
                     }else{
@@ -83,7 +79,7 @@ let mysql_module = {
     
           });
     },
-    add_friend: function(sender, receiver){
+    invite_friend: function(sender, receiver){
 
         connection.insert('friends', {
             friend_1: sender,
@@ -197,8 +193,131 @@ let mysql_module = {
             });
         
         });
+    },
+    draw_friends: function(userid, res){
+        connection.getConnection(function(err, conn) {
+            if(err){ throw err;}
+    
+            let invites = false;
+            let friends = false;
+
+            getInvitesIDS(userid, function(stringID){
+                if(stringID[0]){
+                    getInvitesUserObjects(stringID, function(object){
+                        invites = object;
+                        getFriendsIDS(userid, function(stringID2){
+                            if(stringID2[0]){
+                                getFriendsUserObjects(stringID2, function(object2){
+                                    friends = object2;
+                                    conn.release();                                                                
+                                    res.render('friends', {invites: invites,  friends: friends});
+                                });
+                            } else {
+                                conn.release();                            
+                                res.render('friends', {invites: invites,  friends: friends}); 
+                            }
+                        })
+                    });
+                } else {
+                    getFriendsIDS(userid, function(stringID2){
+                        if(stringID2[0]){
+                            getFriendsUserObjects(stringID2, function(object2){
+                                friends = object2;
+                                conn.release();                                                                                                
+                                res.render('friends', {invites: invites,  friends: friends});                                
+                            });
+                        } else {
+                                conn.release();                            
+                                res.render('friends', {invites: invites,  friends: friends}); 
+                        }
+                    })
+                }
+            })
+        });
+    },
+    add_friend: function(user1, user2, callback){
+        connection.getConnection(function(err, conn){
+            if(err) throw err;
+            connection.update(
+                'friends',
+                { status:'1' },
+                { friend_1: user1, friend_2: user2},
+                function(err, affectedRows) {
+                    if(err) throw err;
+                    conn.release();
+                    callback(err);
+                }
+              );
+        });
+    },
+    delete_friend: function (user1, user2, callback){
+        connection.getConnection(function(err, conn){
+            if(err) throw err;
+            connection.delete(
+                'friends',
+                { friend_1: user1, friend_2: user2, status: '1'},
+                function(err, affectedRows) {
+                    if(err) throw err;
+                    conn.release();
+                    callback(err);
+                }
+              );
+        });
     }
 }
+
+
+function getInvitesIDS(userid, callback){
+    connection.query(`SELECT * FROM friends WHERE friend_2=${userid} AND status='0'`, function(err, result){
+        if(err) throw err;
+        let invites_ids = [];
+        if(result[0]) {
+            for(let i=0; i < result.length; i++){
+                invites_ids.push(result[i].friend_1);
+            }
+        } 
+        process.nextTick(function(){
+            callback(invites_ids);
+        });
+    });
+}
+
+function getFriendsIDS(userid, callback){
+    connection.query(`SELECT * FROM friends WHERE (friend_1=${userid} OR friend_2=${userid}) AND status='1'`, 
+    function(err, result){     
+        let friends_ids = [];
+        if(result[0]) {
+            for(let i=0; i < result.length; i++){
+                if(result[i].friend_1 == userid){
+                    friends_ids.push(result[i].friend_2);                    
+                } else {
+                    friends_ids.push(result[i].friend_1);                                        
+                }
+            }
+        }  
+        process.nextTick(function(){
+            callback(friends_ids);
+        });
+    });
+}
         
+function getInvitesUserObjects(IDList, callback){
+    connection.query(`SELECT * FROM users WHERE id IN (${IDList.toString()})`, function(err, result){
+        if(err) throw err;
+        process.nextTick(function(){
+            callback(result);
+        });
+    });
+}
+
+function getFriendsUserObjects(IDList, callback){
+    connection.query(`SELECT * FROM users WHERE id IN (${IDList.toString()})`, 
+    function(err, result){
+       if(err) throw err;
+       process.nextTick(function(){
+        callback(result);
+       });
+    });
+}
 
 module.exports = mysql_module; 

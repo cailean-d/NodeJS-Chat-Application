@@ -23,7 +23,10 @@ module.exports = function(router){
     (req.authorized) ? res.redirect('/') : res.render('registration');
   });
       
-  router.get('/friends', function(req, res){res.render('friends');});
+  router.get('/friends', function(req, res){
+    let id = req.signedCookies.userID2;
+    (req.authorized) ? mysql_module.draw_friends(id, res) : res.redirect('/login');   
+  });
   
   router.get('/general_chat', function(req, res){
     let nickname = req.cookies.nickname;

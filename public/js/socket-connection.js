@@ -109,7 +109,7 @@
   
   socket.on('connectedUser', function(user){
     $('#messages').append(`<div class='connectedUser'><div>${user} connected.</div>`);
-    $('#messages').scrollTop(9999);
+    $('#messages').scrollTop(9999999);
   });
 
   socket.on('disconnectedUser', function(user){

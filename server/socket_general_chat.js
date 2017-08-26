@@ -1,4 +1,3 @@
-
 var colors = require('colors/safe');
 var mysql_module = require('../server/mysql');
 
@@ -8,7 +7,6 @@ var users = {
   id: []
 };
 
-let connection = mysql_module.connection;
 
 module.exports = function(io){
 

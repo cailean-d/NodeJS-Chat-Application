@@ -10,7 +10,37 @@ html(lang='en')
       .wrapper{
       display: flex;
       }
+      h3{
+        display: block;
+        text-decoration: underline;
+      }
+      .user{display:flex;}
+      button{margin-left: 0.5em;}
   body
     .wrapper
       include _side-menu
-      h2 my friends
+      .friends
+        h2 my friends
+        if invites
+          h3 invites
+          ul.inviteList
+            - for (let i = 0; i < invites.length; i++)
+              .user(data-id=invites[i].id)
+                 li= invites[i].nickname
+                 button.accept accept
+                 button.deny deny
+        else
+          h3 no invites
+        if friends
+          h3 friends
+          ul.friendList
+            - for (let i = 0; i < friends.length; i++)
+              .user(data-id=friends[i].id)
+                li= friends[i].nickname
+                button.delete_friend delete from friends
+        else
+          h3 no friends
+    script(src='/js/libs/jquery.min.js')
+    script(src='/js/libs/socket.io.js')
+    script(src='/js/libs/js.cookie.js')
+    script(src='/js/client-socket-friends.js')

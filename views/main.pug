@@ -41,7 +41,7 @@ html(lang='en')
             //- alert('invite with id ' + $('.profile_id').text());
             let target_id = $('.profile_id').text();
             $.ajax({
-              url: 'add_friend',
+              url: 'invite_friend',
               type: 'POST',
               data: {'id': target_id},
               success: function (data){

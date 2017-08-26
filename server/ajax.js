@@ -28,12 +28,12 @@ module.exports = function(router){
 
       
 
-  router.post('/add_friend', function(req, res){
+  router.post('/invite_friend', function(req, res){
     
     let sender = req.signedCookies.userID2;
     let receiver = req.body.id;
 
-    mysql_module.add_friend(sender, receiver);
+    mysql_module.invite_friend(sender, receiver);
     res.send(true);  
 
   });

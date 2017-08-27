@@ -1,5 +1,5 @@
 var colors = require('colors/safe');
-var mysql_module = require('../server/mysql');
+var mysql_module = require('../mysql');
 
 
 module.exports = function(io){

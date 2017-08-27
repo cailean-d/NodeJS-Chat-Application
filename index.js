@@ -18,11 +18,12 @@ let sassMiddleware = require('node-sass-middleware');
 //socket namespaces
 let global = io;
 let friends = io.of('/friends');
+let general_chat = io.of('/general_chat');
 
 //socket modules
-let global_socket       = require('./server/server_global_socket')(global);
-let socket_general_chat = require('./server/socket_general_chat')(global);
-let socket_friends      = require('./server/server_socket_friends')(friends, global);
+let global_socket       = require('./server/socket/global')(global);
+let socket_general_chat = require('./server/socket/general_chat')(global);
+let socket_friends      = require('./server/socket/friends')(friends, global);
 
 //local modules
 let routes              = require('./server/routes');

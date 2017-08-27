@@ -48,15 +48,15 @@
     // =============================================================
 
     //deny friend
-    $(document).on('click', '.deny', function(){
+    $(document).on('click', '.reject', function(){
         let userid = $(this).parent().attr('data-id');
-        socket.emit('deny_friend', userid);
+        socket.emit('reject_friend', userid);
     })
 
     // callback on friend delete
-    socket.on('friend_denied', function(data){
+    socket.on('friend_rejected', function(data){
         if(data.success){
-            alert('friend denied');
+            alert('friend rejected');
             $(`.inviteList .user[data-id=${data.user}]`).remove();
             // $('.friendList').append(`.user[data-id=${data.user}`);
         } else {

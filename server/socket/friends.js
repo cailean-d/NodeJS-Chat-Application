@@ -41,15 +41,15 @@ module.exports = function(io, global){
             });
         });
 
-        socket.on('deny_friend', function(data){
-            mysql_module.deny_friend(data, socket.userid, function(err){
+        socket.on('reject_friend', function(data){
+            mysql_module.reject_friend(data, socket.userid, function(err){
                 if (err) {
-                    socket.emit('friend_denied', {success: false, user: data})
+                    socket.emit('friend_rejected', {success: false, user: data})
                 } else {
-                    socket.emit('friend_denied', {success: true, user: data})
+                    socket.emit('friend_rejected', {success: true, user: data})
 
                     // notify sender about denying friendship
-                    sendToSpecificUser(global, data, 'friendship_denied', socket.username)
+                    sendToSpecificUser(global, data, 'friendship_rejected', socket.username)
                 }            
             });
         });

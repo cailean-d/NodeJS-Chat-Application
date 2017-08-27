@@ -263,7 +263,7 @@ let mysql_module = {
             });
         });
     },
-    deny_friend: function (user1, user2, callback){
+    reject_friend: function (user1, user2, callback){
         connection.getConnection(function(err, conn){
             if(err) throw err;
             connection.query(`DELETE FROM friends WHERE friend_1=${user1} AND friend_2=${user2} ` + 

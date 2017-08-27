@@ -10,7 +10,7 @@
     socket.on('deleted_from_friends', function(data){
         alert('you are deleted from friends by ' + data)
     })
-    socket.on('friendship_denied', function(data){
-        alert('friendship_denied by ' + data)
+    socket.on('friendship_rejected', function(data){
+        alert('friendship rejected by ' + data)
     })
 })();

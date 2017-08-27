@@ -15,10 +15,16 @@ let pug =  require('pug').renderFile;                           // template engi
 let sass = require('node-sass');                                // sass compiler
 let sassMiddleware = require('node-sass-middleware');
 
+//socket namespaces
+let global = io;
+let friends = io.of('/friends');
+
+//socket modules
+let global_socket       = require('./server/server_global_socket')(global);
+let socket_general_chat = require('./server/socket_general_chat')(global);
+let socket_friends      = require('./server/server_socket_friends')(friends, global);
+
 //local modules
-let global_socket       = require('./server/server_global_socket')(io);
-let socket_general_chat = require('./server/socket_general_chat')(io);
-let socket_friends      = require('./server/server_socket_friends')(io.of('/friends'), io);
 let routes              = require('./server/routes');
 let ajax                = require('./server/ajax');
 let pagenotfound        = require('./server/404');

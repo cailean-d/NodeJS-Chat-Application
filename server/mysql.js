@@ -255,17 +255,19 @@ let mysql_module = {
     delete_friend: function (user1, user2, callback){
         connection.getConnection(function(err, conn){
             if(err) throw err;
-            // connection.delete(
-            //     'friends',
-            //     { friend_1: user1, friend_2: user2, status: '1'},
-            //     function(err, affectedRows) {
-            //         if(err) throw err;
-            //         conn.release();
-            //         callback(err);
-            //     }
-            //   );
             connection.query(`DELETE FROM friends WHERE (friend_1=${user1} AND friend_2=${user2}) OR ` + 
-            `(friend_1=${user2} AND friend_2=${user1})`, function(err){
+            `(friend_1=${user2} AND friend_2=${user1}) AND status='1'`, function(err){
+                 if(err) throw err;
+                    conn.release();
+                    callback(err);
+            });
+        });
+    },
+    deny_friend: function (user1, user2, callback){
+        connection.getConnection(function(err, conn){
+            if(err) throw err;
+            connection.query(`DELETE FROM friends WHERE friend_1=${user1} AND friend_2=${user2} ` + 
+            `AND status='0'`, function(err){
                  if(err) throw err;
                     conn.release();
                     callback(err);

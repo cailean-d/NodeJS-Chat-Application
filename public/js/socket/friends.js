@@ -21,6 +21,10 @@
         }
     })
 
+    // =============================================================
+    // =============================================================
+    // =============================================================
+
     //delete friend
     $(document).on('click', '.delete_friend', function(){
         let userid = $(this).parent().attr('data-id');
@@ -37,4 +41,26 @@
             alert('error');
         }
     })
+
+
+    // =============================================================
+    // =============================================================
+    // =============================================================
+
+    //deny friend
+    $(document).on('click', '.deny', function(){
+        let userid = $(this).parent().attr('data-id');
+        socket.emit('deny_friend', userid);
+    })
+
+    // callback on friend delete
+    socket.on('friend_denied', function(data){
+        if(data.success){
+            alert('friend denied');
+            $(`.inviteList .user[data-id=${data.user}]`).remove();
+            // $('.friendList').append(`.user[data-id=${data.user}`);
+        } else {
+            alert('error');
+        }
+    })    
 })();

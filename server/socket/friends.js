@@ -4,14 +4,10 @@ var mysql_module = require('../mysql');
 
 module.exports = function(io, global){
     io.on('connection', function(socket){
+
         socket.userid =  socket.handshake.query.id;
         socket.username =  socket.handshake.query.nickname;
-        // console.log(socket.userid)
-        // console.dir(global.of('/').clients().sockets);
-        // for(socketId in global.of('/').clients().sockets){
 
-        //     console.log(global.of('/').clients().sockets[socketId].handshake.query.id);
-        // }
         socket.on('add_friend', function(data){
             mysql_module.add_friend(data, socket.userid, function(err){
                 if (err) {
@@ -45,6 +41,27 @@ module.exports = function(io, global){
             });
         });
 
+        socket.on('deny_friend', function(data){
+            mysql_module.deny_friend(data, socket.userid, function(err){
+                if (err) {
+                    socket.emit('friend_denied', {success: false, user: data})
+                } else {
+                    socket.emit('friend_denied', {success: true, user: data})
+
+                    // notify sender about denying friendship
+                    sendToSpecificUser(global, data, 'friendship_denied', socket.username)
+                }            
+            });
+        });
+
     });
 }
     
+
+function sendToSpecificUser(globalIO, userid, event, data){
+    for(socketId in globalIO.of('/').clients().sockets){
+        if(globalIO.of('/').clients().sockets[socketId].handshake.query.id == userid){
+            globalIO.to(socketId).emit(event, data);
+        }
+    }
+}

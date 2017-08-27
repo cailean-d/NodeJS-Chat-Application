@@ -65,7 +65,7 @@ module.exports = function(router){
       let id = string.slice(3);
       let target = (req_id == id) ? 'me' : 'other';
 
-      mysql_module.render_profile(id, res, target);
+      mysql_module.render_profile(id, res, target, req_id);
 
   });
 

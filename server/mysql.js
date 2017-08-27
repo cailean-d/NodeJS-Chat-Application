@@ -136,44 +136,13 @@ let mysql_module = {
       });
     
     },
-    render_profile: function(id, res, target){
+    render_profile: function(id, res, target, myid){
         connection.getConnection(function(err, conn) {
-            if(err){
-                console.log(err.code);
-                res.send('database connection error');
-                return;
-            }
-        
+            if(err) throw err;
             connection.queryRow('SELECT * FROM users where id=?', [id], function(err, row) {
                 if(row){
-        
-                connection.queryRow('SELECT * FROM friends where friend_2=?', [id], function(err, row2) {
-                    if(row2){
-                    if(row2.status == 0){
-
-                        // console.log('invite exist')
+                    if(target == 'me'){
                         res.render('main',
-                        {status: 'invited', 
-                        target: target, 
-                        id: row.id, 
-                        nickname: row.nickname, 
-                        avatar: row.avatar, 
-                        about: row.about});
-
-                    } else if(row2.status == 1){
-
-                        // console.log('friend')
-                        res.render('main',
-                        {status: 'friend', 
-                        target: target, 
-                        id: row.id, 
-                        nickname: row.nickname, 
-                        avatar: row.avatar, 
-                        about: row.about});
-                    }
-    
-                    } else{
-                    res.render('main',
                         {   status: false, 
                             target: target, 
                             id: row.id, 
@@ -181,10 +150,43 @@ let mysql_module = {
                             avatar: row.avatar, 
                             about: row.about
                         });
+                    } else {
+                        connection.queryRow('SELECT * FROM friends where (friend_1=? AND friend_2=?)' + 
+                        ' OR (friend_1=? AND friend_2=?)', [id, myid, myid, id], function(err, row2) {
+                            if (err) throw err;
+                            if(row2){
+                                    if(row2.status == 0 && row2.friend_2 == id){
+                                        res.render('main',
+                                        {status: 'invited', 
+                                        target: target, 
+                                        id: row.id, 
+                                        nickname: row.nickname, 
+                                        avatar: row.avatar, 
+                                        about: row.about});
+                
+                                    } else if(row2.status == 1){
+   
+                                        res.render('main',
+                                        {status: 'friend', 
+                                        target: target, 
+                                        id: row.id, 
+                                        nickname: row.nickname, 
+                                        avatar: row.avatar, 
+                                        about: row.about});
+                                    }
+                            } else {
+                                res.render('main',
+                                {   status: false, 
+                                    target: target, 
+                                    id: row.id, 
+                                    nickname: row.nickname, 
+                                    avatar: row.avatar, 
+                                    about: row.about
+                                });
+                            }
+                
+                        });
                     }
-        
-                });
-        
                 } else{
                 res.status(400);
                 res.render('404');

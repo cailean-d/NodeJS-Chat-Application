@@ -1,6 +1,6 @@
 (function(){
 
-    var myName =  Cookies.get('nickname');
+    let myName =  Cookies.get('nickname');
     let myID = Cookies.get('userID');
 
     const socket = io('/friends',{ query: { id: myID, nickname: myName } });

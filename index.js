@@ -16,8 +16,9 @@ let sass = require('node-sass');                                // sass compiler
 let sassMiddleware = require('node-sass-middleware');
 
 //local modules
+let global_socket       = require('./server/server_global_socket')(io);
 let socket_general_chat = require('./server/socket_general_chat')(io);
-let socket_friends      = require('./server/server_socket_friends')(io.of('/friends'));
+let socket_friends      = require('./server/server_socket_friends')(io.of('/friends'), io);
 let routes              = require('./server/routes');
 let ajax                = require('./server/ajax');
 let pagenotfound        = require('./server/404');

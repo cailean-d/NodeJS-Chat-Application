@@ -1,42 +1,34 @@
+extends main_template
 include mixins
-doctype html
-html(lang='en')
-  head
-    meta(charset='UTF-8')
-    title!=nickname
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    link(rel="stylesheet", href="/css/general_menu.css")
-    link(rel="stylesheet", href="/css/profile.css")
-    style.
-      .wrapper{
-      display: flex;
-      }
-  body
-    .wrapper
-      include _side-menu
-      if target == 'me'
-        +my_profile(nickname, avatar, about, id) 
-        script(src='/js/libs/jquery.min.js')
-        script.
-            $('#profile').on("submit", function(event){
-            event.preventDefault();
-            var url = $(this).attr("action");
-              $.ajax({
-              url: url,
-              type: 'POST',
-              data: new FormData(this),
-              processData: false,
-              contentType: false,
-              success: function (data){
-                alert('Профиль сохранен');
-              }
-              });
-            });
 
-      else
-         +other_profile(nickname, avatar, about, id, status)
-         script(src="/js/libs/jquery.min.js")
-         script.
+block title
+  title!=nickname
+append style
+  link(rel="stylesheet", href="/css/profile.css")
+block main
+    if target == 'me'
+      +my_profile(nickname, avatar, about, id) 
+      script(src='/js/libs/jquery.min.js')
+      script.
+        $('#profile').on("submit", function(event){
+        event.preventDefault();
+        var url = $(this).attr("action");
+          $.ajax({
+          url: url,
+          type: 'POST',
+          data: new FormData(this),
+          processData: false,
+          contentType: false,
+          success: function (data){
+            alert('Профиль сохранен');
+          }
+          });
+        });
+
+    else
+        +other_profile(nickname, avatar, about, id, status)
+        script(src="/js/libs/jquery.min.js")
+        script.
           $('.inv_friend').on('click', function(){
             //- alert('invite with id ' + $('.profile_id').text());
             let target_id = $('.profile_id').text();
@@ -49,15 +41,11 @@ html(lang='en')
               }
             });
           });
-         script.
+        script.
           $('.type_message').on('click', function(){
             alert('text with id ' + $('.profile_id').text());
           });
-         script.
+        script.
           $('.phone').on('click', function(){
             alert('phone with id ' + $('.profile_id').text());
           });
-    script(src='/js/libs/jquery.min.js')
-    script(src='/js/libs/socket.io.js')
-    script(src='/js/libs/js.cookie.js')
-    script(src='/js/socket/global.js')

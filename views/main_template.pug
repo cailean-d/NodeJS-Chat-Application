@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        block title
+            title Document
+        block style
+            link(rel="stylesheet", href="/css/main_style.css")
+    body
+        .wrapper
+            header
+                block header
+                    p header
+            .body
+                aside.left
+                    block left
+                        nav.main-menu
+                            ul
+                                li: a(href="main") Home Page
+                                li: a(href="friends") Friends
+                                li: a(href="general_chat") General Chat
+                                li: a(href="dialogs") Dialogs
+                                li: a(href="logout") Log out
+                main
+                    block main
+                aside.right
+                    block right
+            footer
+                block footer
+                    p footer
+        block scripts
+            script(src='/js/libs/jquery.min.js')
+            script(src='/js/libs/socket.io.js')
+            script(src='/js/libs/js.cookie.js')
+            script(src='/js/socket/global.js')
+

@@ -1,46 +1,37 @@
+extends main_template
 include mixins
-doctype html
-html(lang='en')
-  head
-    meta(charset='UTF-8')
-    title Friends
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    link(rel="stylesheet", href="/css/general_menu.css")
-    style.
-      .wrapper{
-      display: flex;
-      }
-      h3{
-        display: block;
-        text-decoration: underline;
-      }
-      .user{display:flex;}
-      button{margin-left: 0.5em;}
-  body
-    .wrapper
-      include _side-menu
-      .friends
-        h2 my friends
-        if invites
-          h3 invites
-          ul.inviteList
-            - for (let i = 0; i < invites.length; i++)
-              .user(data-id=invites[i].id)
-                 li= invites[i].nickname
-                 button.accept accept
-                 button.reject reject friendship
-        else
-          h3 no invites
-        if friends
-          h3 friends
-          ul.friendList
-            - for (let i = 0; i < friends.length; i++)
-              .user(data-id=friends[i].id)
-                li= friends[i].nickname
-                button.delete_friend delete from friends
-        else
-          h3 no friends
-    script(src='/js/libs/jquery.min.js')
-    script(src='/js/libs/socket.io.js')
-    script(src='/js/libs/js.cookie.js')
-    script(src='/js/socket/friends.js')
+
+block title
+  title Friends
+append style
+  style.
+    h3{
+      display: block;
+      text-decoration: underline;
+    }
+    .user{display:flex;}
+    button{margin-left: 0.5em;}
+append scripts
+  script(src='/js/socket/friends.js')
+block main
+  .friends
+    h2 my friends
+    if invites
+      h3 invites
+      ul.inviteList
+        - for (let i = 0; i < invites.length; i++)
+          .user(data-id=invites[i].id)
+              li= invites[i].nickname
+              button.accept accept
+              button.reject reject friendship
+    else
+      h3 no invites
+    if friends
+      h3 friends
+      ul.friendList
+        - for (let i = 0; i < friends.length; i++)
+          .user(data-id=friends[i].id)
+            li= friends[i].nickname
+            button.delete_friend delete from friends
+    else
+      h3 no friends

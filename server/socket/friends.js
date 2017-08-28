@@ -16,11 +16,7 @@ module.exports = function(io, global){
                     socket.emit('friend_added', {success: true, user: data})
 
                     // notify sender about accepting friendship
-                    for(socketId in global.of('/').clients().sockets){
-                        if(global.of('/').clients().sockets[socketId].handshake.query.id == data){
-                            global.to(socketId).emit('added_to_friends', socket.username);
-                        }
-                    }
+                    sendToSpecificUser(global, data, 'added_to_friends', socket.username)                    
                 }
             });
         })
@@ -32,11 +28,7 @@ module.exports = function(io, global){
                     socket.emit('friend_deleted', {success: true, user: data})
 
                     // notify sender about deleting friendship
-                    for(socketId in global.of('/').clients().sockets){
-                        if(global.of('/').clients().sockets[socketId].handshake.query.id == data){
-                            global.to(socketId).emit('deleted_from_friends', socket.username);
-                        }
-                    }
+                    sendToSpecificUser(global, data, 'deleted_from_friends', socket.username)
                 }            
             });
         });
@@ -57,6 +49,9 @@ module.exports = function(io, global){
     });
 }
     
+
+
+//==========================================================================
 
 function sendToSpecificUser(globalIO, userid, event, data){
     for(socketId in globalIO.of('/').clients().sockets){

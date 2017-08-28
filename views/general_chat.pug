@@ -1,36 +1,27 @@
-doctype html
-html
-  head
-    meta(charset='UTF-8')
-    title General Chat
-    meta(name='viewport', content='width=device-width, initial-scale=1')
+extends main_template
+
+block title
+  title General Chat
+append style
     link(rel='stylesheet', href='/css/style.css')
-    link(rel="stylesheet", href="/css/general_menu.css")
-    style.
-      .wrapper{
-      display: flex;
-      }
-  body
-    .wrapper
-      include _side-menu
-      .row
-        .chat
-          .name
-            | My name is 
-            span(style='padding: 10px; color: #DAE1FF; text-transform: uppercase; font-weight: bold;')= nickname
-          #messages
-          form#chat_input
-            input#m(autocomplete='off')
-            button Send
-          .type
-            ul
-        .online
-          h4
-            | ONLINE [ 
-            span.online-count 0
-            |  ]:
-          ul
-    script(src='/js/libs/jquery.min.js')
-    script(src='/js/libs/socket.io.js')
-    script(src='/js/libs/js.cookie.js')
+append scripts
     script(src='/js/socket/general_chat.js')
+block main  
+  .row
+    .chat
+      .name
+        | My name is 
+        span(style='padding: 10px; color: #DAE1FF; text-transform: uppercase; font-weight: bold;')= nickname
+      #messages
+      form#chat_input
+        input#m(autocomplete='off')
+        button Send
+      .type
+        ul
+block right
+  .online
+    h4
+      | ONLINE [ 
+      span.online-count 0
+      |  ]:
+    ul

@@ -47,13 +47,13 @@
     // =============================================================
     // =============================================================
 
-    //deny friend
+    //reject friend
     $(document).on('click', '.reject', function(){
         let userid = $(this).parent().attr('data-id');
         socket.emit('reject_friend', userid);
     })
 
-    // callback on friend delete
+    // callback on friend rejected
     socket.on('friend_rejected', function(data){
         if(data.success){
             alert('friend rejected');

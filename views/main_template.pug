@@ -12,17 +12,22 @@ html(lang="en")
         .wrapper
             header
                 block header
-                    p header
+                    p=mynickname
             .body
                 aside.left
                     block left
                         nav.main-menu
                             ul
-                                li: a(href="main") Home
-                                li: a(href="friends") Friends
-                                li: a(href="general_chat") General Chat
-                                li: a(href="dialogs") Dialogs
-                                li: a(href="logout") Log out
+                                block Home
+                                    li: a(href="main") Home                                    
+                                block Friends
+                                    li: a(href="friends") Friends 
+                                block General Chat
+                                    li: a(href="general_chat") General Chat   
+                                block Dialogs
+                                    li: a(href="dialogs") Dialogs
+                                block Log out
+                                    li: a(href="logout") Log out
                 main
                     block main
                 aside.right

@@ -14,7 +14,7 @@ mixin other_profile(nickname, avatar, about, id, status)
         button.type_message Text him
         button.phone Phone Him
       .block
-          textarea.about(name='about', placeholder='write information about yourself')= about
+          textarea.about(name='about', placeholder='' disabled)= about
     
 
 mixin my_profile(nickname, avatar, about, id)

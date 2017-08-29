@@ -4,6 +4,8 @@ block title
   title General Chat
 append style
     link(rel='stylesheet', href='/css/style.css')
+block General Chat
+    li.selected: a(href="general_chat") General Chat   
 append scripts
     script(src='/js/socket/general_chat.js')
 block main  
@@ -11,7 +13,7 @@ block main
     .chat
       .name
         | My name is 
-        span(style='padding: 10px; color: #DAE1FF; text-transform: uppercase; font-weight: bold;')= nickname
+        span(style='padding: 10px; color: #DAE1FF; text-transform: uppercase; font-weight: bold;')=mynickname
       #messages
       form#chat_input
         input#m(autocomplete='off')

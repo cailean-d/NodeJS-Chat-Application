@@ -90,7 +90,7 @@ let mysql_module = {
           });
       
     },
-    render_own_profile: function(id, res){
+    render_own_profile: function(mynickname, id, res){
         connection.getConnection(function(err, conn) {
             if(err){
               console.log(err.code);
@@ -105,7 +105,8 @@ let mysql_module = {
                     id: row.id, 
                     nickname: row.nickname, 
                     avatar: row.avatar, 
-                    about: row.about
+                    about: row.about,
+                    mynickname: mynickname
                 });
               } else{
                 res.status(400);
@@ -136,7 +137,7 @@ let mysql_module = {
       });
     
     },
-    render_profile: function(id, res, target, myid){
+    render_profile: function(mynickname, id, res, target, myid){
         connection.getConnection(function(err, conn) {
             if(err) throw err;
             connection.queryRow('SELECT * FROM users where id=?', [id], function(err, row) {
@@ -148,7 +149,8 @@ let mysql_module = {
                             id: row.id, 
                             nickname: row.nickname, 
                             avatar: row.avatar, 
-                            about: row.about
+                            about: row.about,
+                            mynickname: mynickname
                         });
                     } else {
                         connection.queryRow('SELECT * FROM friends where (friend_1=? AND friend_2=?)' + 
@@ -162,7 +164,9 @@ let mysql_module = {
                                         id: row.id, 
                                         nickname: row.nickname, 
                                         avatar: row.avatar, 
-                                        about: row.about});
+                                        about: row.about,
+                                        mynickname: mynickname
+                                    });
                 
                                     } else if(row2.status == 1){
    
@@ -172,7 +176,9 @@ let mysql_module = {
                                         id: row.id, 
                                         nickname: row.nickname, 
                                         avatar: row.avatar, 
-                                        about: row.about});
+                                        about: row.about,
+                                        mynickname: mynickname
+                                    });
                                     }
                             } else {
                                 res.render('main',
@@ -181,7 +187,8 @@ let mysql_module = {
                                     id: row.id, 
                                     nickname: row.nickname, 
                                     avatar: row.avatar, 
-                                    about: row.about
+                                    about: row.about,
+                                    mynickname: mynickname
                                 });
                             }
                 
@@ -196,7 +203,7 @@ let mysql_module = {
         
         });
     },
-    draw_friends: function(userid, res){
+    draw_friends: function(mynickname, userid, res){
         connection.getConnection(function(err, conn) {
             if(err){ throw err;}
     
@@ -212,11 +219,11 @@ let mysql_module = {
                                 getFriendsUserObjects(stringID2, function(object2){
                                     friends = object2;
                                     conn.release();                                                                
-                                    res.render('friends', {invites: invites,  friends: friends});
+                                    res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends});
                                 });
                             } else {
                                 conn.release();                            
-                                res.render('friends', {invites: invites,  friends: friends}); 
+                                res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends}); 
                             }
                         })
                     });
@@ -226,11 +233,11 @@ let mysql_module = {
                             getFriendsUserObjects(stringID2, function(object2){
                                 friends = object2;
                                 conn.release();                                                                                                
-                                res.render('friends', {invites: invites,  friends: friends});                                
+                                res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends});                                
                             });
                         } else {
                                 conn.release();                            
-                                res.render('friends', {invites: invites,  friends: friends}); 
+                                res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends}); 
                         }
                     })
                 }

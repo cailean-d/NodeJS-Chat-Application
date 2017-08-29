@@ -5,8 +5,13 @@ block title
   title!=nickname
 append style
   link(rel="stylesheet", href="/css/profile.css")
+block Home
+  if target == 'me' 
+    li.selected: a(href="main") Home   
+  else
+    li: a(href="main") Home       
 block main
-    if target == 'me'
+    if target == 'me' 
       +my_profile(nickname, avatar, about, id) 
       script(src='/js/libs/jquery.min.js')
       script.

@@ -11,8 +11,10 @@ module.exports = function(router){
 
   router.get('/main', function(req, res){
     let id = req.signedCookies.userID2;
+    let mynickname = req.cookies.nickname;
     
-    (req.authorized) ? mysql_module.render_own_profile(id, res) : res.redirect('/login');
+    
+    (req.authorized) ? mysql_module.render_own_profile(mynickname, id, res) : res.redirect('/login');
 
   });
 
@@ -25,13 +27,14 @@ module.exports = function(router){
       
   router.get('/friends', function(req, res){
     let id = req.signedCookies.userID2;
-    (req.authorized) ? mysql_module.draw_friends(id, res) : res.redirect('/login');   
+    let mynickname = req.cookies.nickname;
+    (req.authorized) ? mysql_module.draw_friends(mynickname, id, res) : res.redirect('/login');   
   });
   
   router.get('/general_chat', function(req, res){
-    let nickname = req.cookies.nickname;
+    let mynickname = req.cookies.nickname;
      
-    (req.authorized) ? res.render('general_chat', {nickname: nickname}) : res.redirect('/login');
+    (req.authorized) ? res.render('general_chat', {mynickname: mynickname}) : res.redirect('/login');
 
   })
 
@@ -64,8 +67,10 @@ module.exports = function(router){
       let string = req.originalUrl;
       let id = string.slice(3);
       let target = (req_id == id) ? 'me' : 'other';
+      let mynickname = req.cookies.nickname;
+    
 
-      mysql_module.render_profile(id, res, target, req_id);
+      mysql_module.render_profile(mynickname, id, res, target, req_id);
 
   });
 

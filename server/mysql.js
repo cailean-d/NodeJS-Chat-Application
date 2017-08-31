@@ -337,4 +337,19 @@ function getFriendsUserObjects(IDList, callback){
     });
 }
 
+function getInvitesCount(userid, callback){
+    connection.query(`SELECT * FROM friends WHERE friend_2=${userid} AND status='0'`, function(err, result){
+        if(err) throw err;
+        let invites_count = 0;
+        if(result[0]) {
+            for(let i=0; i < result.length; i++){
+                invites_count++;
+            }
+        } 
+        process.nextTick(function(){
+            callback(invites_count);
+        });
+    });
+}
+
 module.exports = mysql_module; 

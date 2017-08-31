@@ -9,11 +9,12 @@ let cookieParser = require('cookie-parser')                     // cookie middle
 let bodyParser = require('body-parser')                         // x-www-form-urlencoded
 let bcrypt = require('bcrypt');                                 // encrypt data
 let multer  = require('multer');                                // multipart/form-data
-let upload = multer();
+let upload = multer();                                          // <--
 let favicon = require('serve-favicon');                         // app icon
 let pug =  require('pug').renderFile;                           // template engine
 let sass = require('node-sass');                                // sass compiler
-let sassMiddleware = require('node-sass-middleware');
+let sassMiddleware = require('node-sass-middleware');           // <--
+let i18n = require("i18n");                                     // internationalization
 
 //socket namespaces
 let global = io;
@@ -36,27 +37,41 @@ app.engine('pug', pug);
 app.set('views', './views');
 app.set('view engine', 'pug');
 
-//middlewares
-app.use(cookieParser('my-secret'))                             // cookie data
-app.use(bodyParser.json());                                    // post data
-app.use(bodyParser.urlencoded({ extended: false }));           // post data
-app.use(upload.fields([]));                                    // form-data
-app.use(favicon('./public/img/chat.ico'));                     // app logo
-app.use(sassMiddleware({                                       // sass compile
+// internationalization config
+i18n.configure({
+  locales:['ru', 'en'],
+  directory: __dirname + '/locales',
+  defaultLocale: 'en',
+  cookie: 'lang',
+  queryParameter: 'lang'
+});
+
+//sass config
+let sassConfig = {
   src: __dirname + "/sass",
   dest: __dirname + "/public",
   outputStyle: 'compressed',
   sourceMap: true
-}));
+}
+
+//middlewares
+app.use(cookieParser('my-secret'))                             // cookie data
+app.use(i18n.init);                                            // app internationalization
+app.use(bodyParser.json());                                    // post data
+app.use(bodyParser.urlencoded({ extended: false }));           // post data
+app.use(upload.fields([]));                                    // form-data
+app.use(favicon('./public/img/chat.ico'));                     // app logo
+app.use(sassMiddleware(sassConfig));                           // sass compile
 app.use(express.static('public'));                             // static dir
 app.use(authorized);                                           // set authorization bool
 app.use(ajax(router));                                         // ajax responses
 app.use(routes(router));                                       // app routes
 app.use(pagenotfound);                                         // custom 404 page
 
-var ip = '0.0.0.0';
-var port = 3000;
+let ip = '0.0.0.0';
+let port = 3000;
 
 httpExpressServer.listen(port, ip, function(){
   console.log(`\nSERVER listening on ${ip}:${port}\n`.green);
 });
+

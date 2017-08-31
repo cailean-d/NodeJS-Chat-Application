@@ -10,6 +10,7 @@ module.exports = function(router){
   });
 
   router.get('/main', function(req, res){
+    
     let id = req.signedCookies.userID2;
     let mynickname = req.cookies.nickname;
     
@@ -73,10 +74,6 @@ module.exports = function(router){
       mysql_module.render_profile(mynickname, id, res, target, req_id);
 
   });
-
-  router.get('/test', function(req, res){
-    res.render('main_template')
-  })
 
   return router;
 }    

@@ -1,0 +1,10 @@
+extends main_template
+
+block title
+  title #{__("Dialogs")}
+block Dialogs
+    li.selected
+        i.fa.fa-envelope(aria-hidden="true")
+        a(href="dialogs") #{__("Dialogs")}
+block main
+    h3 #{__("Dialogs")}

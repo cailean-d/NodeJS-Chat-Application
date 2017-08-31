@@ -7,3 +7,11 @@ $('.locale .en').on('click', function(){
     Cookies.set('lang', 'en', { expires: 365 });
     window.location.reload();    
 });
+
+$('.current').on("click", function(){
+    $('.langList').slideToggle(200);
+  });
+
+  $('.langList').on("mouseleave", function(){
+    $('.langList').slideUp(300);
+});

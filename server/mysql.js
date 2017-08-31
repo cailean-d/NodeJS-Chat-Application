@@ -90,7 +90,7 @@ let mysql_module = {
           });
       
     },
-    render_own_profile: function(mynickname, id, res){
+    render_own_profile: function(id, callback){
         connection.getConnection(function(err, conn) {
             if(err){
               console.log(err.code);
@@ -99,19 +99,9 @@ let mysql_module = {
             }
   
           connection.queryRow('SELECT * FROM users where id=?', [id], function(err, row) {
-              if(row){
-                    res.render('main', 
-                    {target: 'me', 
-                    id: row.id, 
-                    nickname: row.nickname, 
-                    avatar: row.avatar, 
-                    about: row.about,
-                    mynickname: mynickname
-                });
-              } else{
-                res.status(400);
-                res.render('404');
-              }
+              process.nextTick(function(){
+                  callback(row);
+              });
                 conn.release();
             });
   
@@ -203,7 +193,7 @@ let mysql_module = {
         
         });
     },
-    draw_friends: function(mynickname, userid, res){
+    draw_friends: function(userid, callback){
         connection.getConnection(function(err, conn) {
             if(err){ throw err;}
     
@@ -218,12 +208,18 @@ let mysql_module = {
                             if(stringID2[0]){
                                 getFriendsUserObjects(stringID2, function(object2){
                                     friends = object2;
-                                    conn.release();                                                                
-                                    res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends});
+                                    conn.release();    
+                                    process.nextTick(function(){
+                                        callback(invites, friends);
+                                    });                                                            
+                                    // res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends});
                                 });
                             } else {
-                                conn.release();                            
-                                res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends}); 
+                                conn.release();   
+                                process.nextTick(function(){
+                                    callback(invites, friends);
+                                });                            
+                                // res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends}); 
                             }
                         })
                     });
@@ -232,12 +228,18 @@ let mysql_module = {
                         if(stringID2[0]){
                             getFriendsUserObjects(stringID2, function(object2){
                                 friends = object2;
-                                conn.release();                                                                                                
-                                res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends});                                
+                                conn.release();  
+                                process.nextTick(function(){
+                                    callback(invites, friends);
+                                });                                                                                                 
+                                // res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends});                                
                             });
                         } else {
-                                conn.release();                            
-                                res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends}); 
+                                conn.release();   
+                                process.nextTick(function(){
+                                    callback(invites, friends);
+                                });                            
+                                // res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends}); 
                         }
                     })
                 }

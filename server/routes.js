@@ -13,15 +13,42 @@ module.exports = function(router){
     
     let id = req.signedCookies.userID2;
     let mynickname = req.cookies.nickname;
+    let lang = req.cookies.lang;
     
-    
-    (req.authorized) ? mysql_module.render_own_profile(mynickname, id, res) : res.redirect('/login');
+    if(req.authorized){
+      mysql_module.render_own_profile(id, function(dbRequest){
+        if(dbRequest){
+          res.render('main', 
+          {target: 'me', 
+          id: dbRequest.id, 
+          nickname: dbRequest.nickname, 
+          avatar: dbRequest.avatar, 
+          about: dbRequest.about,
+          mynickname: mynickname,
+          lang: lang
+          });
+        } else{
+          res.status(400);
+          res.render('404');
+        }
+      });
+    } else{
+      res.redirect('/login');      
+    }
 
   });
 
   router.get('/login', function(req, res){
     (req.authorized) ? res.redirect('/') : res.render('login');
   })
+
+  router.get('/dialogs', function(req, res){
+    let mynickname = req.cookies.nickname;
+    let lang = req.cookies.lang;
+
+    (req.authorized) ? res.render('dialogs', {mynickname: mynickname, lang: lang}) : res.redirect('/');
+  })
+  
   router.get('/registration', function(req, res){
     (req.authorized) ? res.redirect('/') : res.render('registration');
   });
@@ -29,13 +56,35 @@ module.exports = function(router){
   router.get('/friends', function(req, res){
     let id = req.signedCookies.userID2;
     let mynickname = req.cookies.nickname;
-    (req.authorized) ? mysql_module.draw_friends(mynickname, id, res) : res.redirect('/login');   
+    let lang = req.cookies.lang;
+
+    if(req.authorized){
+      mysql_module.draw_friends(id, function(invites, friends){
+        res.render('friends', {
+          mynickname: mynickname, 
+          invites: invites,  
+          friends: friends,
+          lang: lang
+        });
+      });
+    } else {
+      res.redirect('/login');         
+    }
   });
   
   router.get('/general_chat', function(req, res){
     let mynickname = req.cookies.nickname;
-     
-    (req.authorized) ? res.render('general_chat', {mynickname: mynickname}) : res.redirect('/login');
+    let lang = req.cookies.lang;
+    
+    if(req.authorized){
+      res.render('general_chat', {
+        mynickname: mynickname,
+        lang: lang
+      });
+      
+    } else {
+      res.redirect('/login');
+    }
 
   })
 

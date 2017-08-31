@@ -9,14 +9,27 @@ html(lang="en")
         block style
             link(rel="stylesheet", href="/css/main_style.css")
             link(rel="stylesheet", href="/css/font-awesome.min.css")
+            link(rel="stylesheet", href="/css/flag-icon.css")
     body
         .wrapper
             header
                 block header
                     p=mynickname
+                    //- .locale
+                    //-     span.flag-icon.flag-icon-us
+                    //-     button.ru #{__("ru")} 
+                    //-     button.en #{__("en")}
+
                     .locale
-                        button.ru #{__("ru")} 
-                        button.en #{__("en")}
+                        .current 
+                            if lang == 'en'
+                                span.flag-icon.flag-icon-us
+                            if lang == 'ru'
+                                span.flag-icon.flag-icon-ru
+                        ul.langList
+                            li.lang.en: span.flag-icon.flag-icon-us
+                            li.lang.ru: span.flag-icon.flag-icon-ru
+
             .body
                 aside.left
                     block left

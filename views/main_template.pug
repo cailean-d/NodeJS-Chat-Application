@@ -8,6 +8,7 @@ html(lang="en")
             title Document
         block style
             link(rel="stylesheet", href="/css/main_style.css")
+            link(rel="stylesheet", href="/css/font-awesome.min.css")
     body
         .wrapper
             header
@@ -22,15 +23,25 @@ html(lang="en")
                         nav.main-menu
                             ul
                                 block Home
-                                    li: a(href="main") #{__("Home")}                                    
+                                    li
+                                        i.fa.fa-home(aria-hidden="true")
+                                        a(href="main") #{__("Home")}                                    
                                 block Friends
-                                    li: a(href="friends") #{__("Friends")} 
+                                    li
+                                        i.fa.fa-users(aria-hidden="true")
+                                        a(href="friends") #{__("Friends")} 
                                 block General Chat
-                                    li: a(href="general_chat") #{__("General Chat")} 
+                                    li
+                                        i.fa.fa-comments(aria-hidden="true")
+                                        a(href="general_chat") #{__("General Chat")} 
                                 block Dialogs
-                                    li: a(href="dialogs") #{__("Dialogs")}
+                                    li 
+                                        i.fa.fa-envelope(aria-hidden="true")
+                                        a(href="dialogs") #{__("Dialogs")}
                                 block Log out
-                                    li: a(href="logout") #{__("Log out")}
+                                    li
+                                        i.fa.fa-sign-out(aria-hidden="true")                                        
+                                        a(href="logout") #{__("Log out")}
                 main
                     block main
                 aside.right

@@ -39,7 +39,7 @@ app.set('view engine', 'pug');
 
 // internationalization config
 i18n.configure({
-  locales:['ru', 'en'],
+  locales: ['ru', 'en'],
   directory: __dirname + '/locales',
   defaultLocale: 'en',
   cookie: 'lang',

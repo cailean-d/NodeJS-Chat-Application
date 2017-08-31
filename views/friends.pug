@@ -12,7 +12,9 @@ append style
     .user{display:flex;}
     button{margin-left: 0.5em;}
 block Friends
-  li.selected: a(href="friends") #{__("Friends")} 
+  li.selected
+    i.fa.fa-users(aria-hidden="true")
+    a(href="friends") #{__("Friends")}
 append scripts
   script(src='/js/socket/friends.js')
 block main

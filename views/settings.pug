@@ -1,0 +1,10 @@
+extends main_template
+
+block title
+  title #{__("Settings")}
+block Settings
+    li.selected
+        i.fa.fa-cog(aria-hidden="true")
+        a(href="dialogs") #{__("Settings")}
+block main
+    h3 #{__("Settings")}

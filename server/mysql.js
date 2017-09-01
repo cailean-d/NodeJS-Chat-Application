@@ -212,14 +212,12 @@ let mysql_module = {
                                     process.nextTick(function(){
                                         callback(invites, friends);
                                     });                                                            
-                                    // res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends});
                                 });
                             } else {
                                 conn.release();   
                                 process.nextTick(function(){
                                     callback(invites, friends);
                                 });                            
-                                // res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends}); 
                             }
                         })
                     });
@@ -232,14 +230,12 @@ let mysql_module = {
                                 process.nextTick(function(){
                                     callback(invites, friends);
                                 });                                                                                                 
-                                // res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends});                                
                             });
                         } else {
                                 conn.release();   
                                 process.nextTick(function(){
                                     callback(invites, friends);
                                 });                            
-                                // res.render('friends', {mynickname: mynickname, invites: invites,  friends: friends}); 
                         }
                     })
                 }

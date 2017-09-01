@@ -1,7 +1,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
       /* body { 
         font: 13px Helvetica, Arial; background: #FEFEFE;
-      } */
+      }
       form { 
         /* background: #000;  */
         /* padding: 3px; */
@@ -99,7 +99,7 @@
       .row{
         display: flex;
       }
-      .online{
+      /* .online{
         min-width: 150px;
         display: inline-block;
         background: #EFF5F4;
@@ -117,7 +117,7 @@
       }
       .online h4{
         margin-bottom: 20px;
-      }
+      } */
       .connectedUser{
         background: #81F281;
         color: #fff;
@@ -135,7 +135,7 @@
           display: block;
         }
       }
-
+/* 
       .online a{
         color: #000;
         text-decoration: none;
@@ -147,4 +147,4 @@
 
       .online li:hover a{
         color: #fff;
-      }
+      } */

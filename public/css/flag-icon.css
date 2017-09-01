@@ -4,7 +4,7 @@
   background-repeat: no-repeat;
 }
 .flag-icon {
-  background-size: contain;
+  background-size: 150%;
   background-position: 50%;
   background-repeat: no-repeat;
   position: relative;
@@ -19,8 +19,8 @@
   width: 1em;
 }
 .flag-icon-ru {
-  background-image: url(../flags/ru.svg);
+  background-image: url(../flags/ru.png);
 }
 .flag-icon-us {
-  background-image: url(../flags/us.svg);
+  background-image: url(../flags/us.png);
 }

@@ -4,6 +4,7 @@ block title
   title #{__("General Chat")} 
 append style
     link(rel='stylesheet', href='/css/style.css')
+    link(rel='stylesheet', href='/css/general_chat.css')
 block General Chat
     li.selected
       i.fa.fa-comments(aria-hidden="true")
@@ -13,9 +14,6 @@ append scripts
 block main  
   .row
     .chat
-      .name
-        | My name is 
-        span(style='padding: 10px; color: #DAE1FF; text-transform: uppercase; font-weight: bold;')=mynickname
       #messages
       form#chat_input
         input#m(autocomplete='off')
@@ -27,5 +25,5 @@ block right
     h4
       | ONLINE [ 
       span.online-count 0
-      |  ]:
+      |  ]
     ul

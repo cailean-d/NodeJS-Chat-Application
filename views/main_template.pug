@@ -15,11 +15,6 @@ html(lang="en")
             header
                 block header
                     p=mynickname
-                    //- .locale
-                    //-     span.flag-icon.flag-icon-us
-                    //-     button.ru #{__("ru")} 
-                    //-     button.en #{__("en")}
-
                     .locale
                         .current 
                             if lang == 'en'
@@ -51,6 +46,10 @@ html(lang="en")
                                     li 
                                         i.fa.fa-envelope(aria-hidden="true")
                                         a(href="dialogs") #{__("Dialogs")}
+                                block Settings
+                                    li 
+                                        i.fa.fa-cog(aria-hidden="true")
+                                        a(href="settings") #{__("Settings")}
                                 block Log out
                                     li
                                         i.fa.fa-sign-out(aria-hidden="true")                                        

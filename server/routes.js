@@ -49,6 +49,13 @@ module.exports = function(router){
     (req.authorized) ? res.render('dialogs', {mynickname: mynickname, lang: lang}) : res.redirect('/');
   })
   
+  router.get('/settings', function(req, res){
+    let mynickname = req.cookies.nickname;
+    let lang = req.cookies.lang;
+
+    (req.authorized) ? res.render('settings', {mynickname: mynickname, lang: lang}) : res.redirect('/');
+  })
+  
   router.get('/registration', function(req, res){
     (req.authorized) ? res.redirect('/') : res.render('registration');
   });

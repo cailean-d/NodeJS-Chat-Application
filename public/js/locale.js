@@ -4,7 +4,7 @@ $('.locale .ru').on('click', function(){
     window.location.reload();
 });
 $('.locale .en').on('click', function(){
-    Cookies.set('lang', 'en', { expires: 365 });
+    Cookies.set('lang', 'us', { expires: 365 });
     window.location.reload();    
 });
 

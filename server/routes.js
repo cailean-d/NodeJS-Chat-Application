@@ -18,7 +18,7 @@ module.exports = function(router){
     if(req.authorized){
       mysql_module.render_own_profile(id, function(dbRequest){
         if(dbRequest){
-          res.render('main', 
+          res.render('profile', 
           {target: 'me', 
           id: dbRequest.id, 
           nickname: dbRequest.nickname, 
@@ -125,9 +125,20 @@ module.exports = function(router){
       let id = string.slice(3);
       let target = (req_id == id) ? 'me' : 'other';
       let mynickname = req.cookies.nickname;
+      let lang = req.cookies.lang;
     
-
-      mysql_module.render_profile(mynickname, id, res, target, req_id);
+      mysql_module.render_profile(id, req_id, target, function(row, status){
+          res.render('profile',
+          {   status: status, 
+              target: target, 
+              id: row.id, 
+              nickname: row.nickname, 
+              avatar: row.avatar, 
+              about: row.about,
+              mynickname: mynickname,
+              lang: lang
+          });
+      });
 
   });
 

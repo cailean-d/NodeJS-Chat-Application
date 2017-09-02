@@ -127,59 +127,38 @@ let mysql_module = {
       });
     
     },
-    render_profile: function(mynickname, id, res, target, myid){
+    render_profile: function(id, myid, target, callback){
         connection.getConnection(function(err, conn) {
             if(err) throw err;
             connection.queryRow('SELECT * FROM users where id=?', [id], function(err, row) {
                 if(row){
                     if(target == 'me'){
-                        res.render('main',
-                        {   status: false, 
-                            target: target, 
-                            id: row.id, 
-                            nickname: row.nickname, 
-                            avatar: row.avatar, 
-                            about: row.about,
-                            mynickname: mynickname
-                        });
+                        process.nextTick(function(){
+                            let status = false;
+                            callback(row, status);
+                        });    
                     } else {
                         connection.queryRow('SELECT * FROM friends where (friend_1=? AND friend_2=?)' + 
                         ' OR (friend_1=? AND friend_2=?)', [id, myid, myid, id], function(err, row2) {
                             if (err) throw err;
                             if(row2){
                                     if(row2.status == 0 && row2.friend_2 == id){
-                                        res.render('main',
-                                        {status: 'invited', 
-                                        target: target, 
-                                        id: row.id, 
-                                        nickname: row.nickname, 
-                                        avatar: row.avatar, 
-                                        about: row.about,
-                                        mynickname: mynickname
-                                    });
+                                        process.nextTick(function(){
+                                            let status = 'invited';
+                                            callback(row, status);
+                                        });   
                 
                                     } else if(row2.status == 1){
-   
-                                        res.render('main',
-                                        {status: 'friend', 
-                                        target: target, 
-                                        id: row.id, 
-                                        nickname: row.nickname, 
-                                        avatar: row.avatar, 
-                                        about: row.about,
-                                        mynickname: mynickname
-                                    });
+                                        process.nextTick(function(){
+                                            let status = 'friend';
+                                            callback(row, status);
+                                        });   
                                     }
                             } else {
-                                res.render('main',
-                                {   status: false, 
-                                    target: target, 
-                                    id: row.id, 
-                                    nickname: row.nickname, 
-                                    avatar: row.avatar, 
-                                    about: row.about,
-                                    mynickname: mynickname
-                                });
+                                process.nextTick(function(){
+                                    let status = false;
+                                    callback(row, status);
+                                });   
                             }
                 
                         });

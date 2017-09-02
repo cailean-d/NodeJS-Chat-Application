@@ -9,7 +9,6 @@ html(lang="en")
         block style
             link(rel="stylesheet", href="/css/main_style.css")
             link(rel="stylesheet", href="/css/font-awesome.min.css")
-            link(rel="stylesheet", href="/css/flag-icon.css")
     body
         .wrapper
             header
@@ -17,13 +16,10 @@ html(lang="en")
                     p=mynickname
                     .locale
                         .current 
-                            if lang == 'en'
-                                span.flag-icon.flag-icon-us
-                            if lang == 'ru'
-                                span.flag-icon.flag-icon-ru
+                            img(src=`/img/flags/${lang}.png`)
                         ul.langList
-                            li.lang.en: span.flag-icon.flag-icon-us
-                            li.lang.ru: span.flag-icon.flag-icon-ru
+                            li.lang.en: img(src='/img/flags/us.png')
+                            li.lang.ru: img(src='/img/flags/ru.png')
 
             .body
                 aside.left

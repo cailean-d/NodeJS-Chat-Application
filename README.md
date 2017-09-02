@@ -1,19 +1,11 @@
-**NodeJS Chat**
-
--express(http server)
--socket.io(socket-connection)
--mysql, mysql-utilities(mysql db)
--passport(authorization)
-
-
 # NodeJS Chat
 
 **The application components:**
 
-- `[Express](https://github.com/expressjs/express)` - Web framework for node
-- `[Socket.io](https://github.com/socketio/socket.io)` - Realtime application framework
-- `[Pug](https://github.com/pugjs/pug)` -  Template engine for Node.js
-- `[Mysql](https://github.com/mysqljs/mysql)` -  Driver for mysql
+- [Express](https://github.com/expressjs/express) - Web framework for node
+- [Socket.io](https://github.com/socketio/socket.io) - Realtime application framework
+- [Pug](https://github.com/pugjs/pug) -  Template engine for Node.js
+- [Mysql](https://github.com/mysqljs/mysql) -  Driver for mysql
 
 
 **Common files:**

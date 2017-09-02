@@ -48,7 +48,7 @@ i18n.configure({
 
 //sass config
 let sassConfig = {
-  src: __dirname + "/sass",
+  src: __dirname + "/public/sass",
   dest: __dirname + "/public",
   outputStyle: 'compressed',
   sourceMap: true

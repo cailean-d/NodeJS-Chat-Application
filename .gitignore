@@ -1,3 +1,4 @@
 node_modules/
+!node_modules/bcrypt/
 *.log
 Procfile

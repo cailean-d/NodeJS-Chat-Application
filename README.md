@@ -8,7 +8,7 @@
 - [Mysql](https://github.com/mysqljs/mysql) -  Driver for mysql
 
 
-**Common files:**
+**Main files:**
 
 - `package.json` - The app's main file and lists its details and dependencies.
 - `config.json` - The app's config file.

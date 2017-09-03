@@ -59,9 +59,9 @@ app.use(i18n.init);                                            // app internatio
 app.use(bodyParser.json());                                    // post data
 app.use(bodyParser.urlencoded({ extended: false }));           // post data
 app.use(upload.fields([]));                                    // form-data
-app.use(favicon('./public/img/chat.ico'));                     // app logo
+app.use(favicon('./client/img/chat.ico'));                     // app logo
 app.use(sassMiddleware(sassConfig));                           // sass compile
-app.use(express.static('public'));                             // static dir
+app.use(express.static('client'));                             // static dir
 app.use(authorized);                                           // set authorization bool
 app.use(ajax(router));                                         // ajax responses
 app.use(routes(router));                                       // app routes

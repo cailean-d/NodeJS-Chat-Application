@@ -1,4 +1,5 @@
 extends main_template
+include mixins
 
 block title
   title #{__("General Chat")} 
@@ -13,6 +14,11 @@ append scripts
 block main  
   .chat
     #messages
+      - for (let i = messages.length - 1; i >= 0; i--)
+        if myid == messages[i].sender
+          +myMessage(messages[i].message, messages[i].date)
+        else
+          +otherMessage(messages[i].nickname, messages[i].message, messages[i].date)
     .type
       ul
     form#chat_input

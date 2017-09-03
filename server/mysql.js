@@ -258,6 +258,23 @@ let mysql_module = {
                     callback(err);
             });
         });
+    },
+    getMessagesFromGeneralMenu: function(count, callback){
+        connection.getConnection(function(err, conn){
+            if(err) throw err;
+            connection.query(`SELECT` + 
+            ` general_chat.sender,` + 
+            ` general_chat.message,` +
+            ` general_chat.date,` +
+            ` users.nickname,` +
+            ` users.avatar FROM general_chat` +
+            ` INNER JOIN users ON general_chat.sender = users.id` +
+            ` ORDER by general_chat.id DESC LIMIT ${count}`, function(err, result){
+                 if(err) throw err;
+                    conn.release();
+                    callback(err, result);
+            });
+        });
     }
 }
 

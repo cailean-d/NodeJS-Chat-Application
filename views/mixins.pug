@@ -29,3 +29,30 @@ mixin my_profile(nickname, avatar, about, id)
         form#profile(action='update_profile', method='post')
           textarea.about(name='about', id='', cols='30', rows='10', placeholder='write information about yourself')= about
           button(type='submit') Save
+
+mixin myMessage(message, time)
+  -
+    formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
+    time =  formatter.format(Date.parse(time));
+
+  .myMessage
+    .msg
+        span.s Me:
+        |
+        =message
+    .time
+        span=time
+
+mixin otherMessage(sender, message, time)
+  -
+    formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
+    time =  formatter.format(Date.parse(time));
+    
+  .message
+    .align
+      .msg
+          span.s #{sender}:
+          |
+          =message
+      .time
+          span=time

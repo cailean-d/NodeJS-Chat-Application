@@ -71,7 +71,7 @@ module.exports = function(io){
                 time: msg.time
             });
 
-           mysql_module.general_chat_insert_message(msg.sender, msg.message, function(){
+           mysql_module.general_chat_insert_message(socket.userid, msg.message, function(){
                
               console.log('MESSAGE \"' + colors.magenta(msg.message) + '\" BY ' + colors.cyan(msg.sender) + ' IS INSERTED INTO ' +
               colors.magenta('general_chat') /* + ' WITH ID ' + colors.magenta(recordId) */);

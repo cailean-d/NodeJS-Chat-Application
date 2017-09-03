@@ -7,6 +7,9 @@
     var type;
     var serverIP = '192.168.0.54';
 
+    let scrl = 10000*10000;
+
+    $('#messages').scrollTop(scrl);
     //connect
     // var socket = io();        // var socket = io(`http://${serverIP}:3000`);
 

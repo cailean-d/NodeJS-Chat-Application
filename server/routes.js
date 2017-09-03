@@ -80,15 +80,22 @@ module.exports = function(router){
   });
   
   router.get('/general_chat', function(req, res){
+
+    let id = req.signedCookies.userID2;    
     let mynickname = req.cookies.nickname;
     let lang = req.cookies.lang;
     
     if(req.authorized){
-      res.render('general_chat', {
-        mynickname: mynickname,
-        lang: lang
+      mysql_module.getMessagesFromGeneralMenu(20, function(err, result){
+        if (err) throw err;
+        res.render('general_chat', {
+          myid: id,
+          mynickname: mynickname,
+          lang: lang,
+          messages: result
+        });
       });
-      
+
     } else {
       res.redirect('/login');
     }

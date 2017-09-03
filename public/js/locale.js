@@ -12,6 +12,6 @@ $('.current').on("click", function(){
     $('.langList').slideToggle(200);
   });
 
-  $('.langList').on("mouseleave", function(){
+$('.langList').on("mouseleave", function(){
     $('.langList').slideUp(300);
 });

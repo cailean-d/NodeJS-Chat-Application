@@ -28,15 +28,15 @@ module.exports = function(router){
 
       
 
-  router.post('/invite_friend', function(req, res){
+  // router.post('/invite_friend', function(req, res){
     
-    let sender = req.signedCookies.userID2;
-    let receiver = req.body.id;
+  //   let sender = req.signedCookies.userID2;
+  //   let receiver = req.body.id;
 
-    mysql_module.invite_friend(sender, receiver);
-    res.send(true);  
+  //   mysql_module.invite_friend(sender, receiver);
+  //   res.send(true);  
 
-  });
+  // });
 
 
   return router;

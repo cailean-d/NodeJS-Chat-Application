@@ -63,4 +63,22 @@
             alert('error');
         }
     })    
+
+    // =============================================================
+    // =============================================================
+    // =============================================================
+    
+    $('.inv_friend').on('click', function(){
+        let target_id = $('.profile_id').text();
+        socket.emit('invite_friend', target_id)
+    });
+
+    socket.on('friend_invited', function(data){
+        if(data.success){
+            alert('friend invited');
+        } else {
+            alert('error');
+        }
+    })
+
 })();

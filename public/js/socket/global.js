@@ -29,6 +29,13 @@
         }
         alert('friendship rejected by ' + data)
     })
+    socket.on('invited_to_friend', function(data){
+        if(!isPlaying(notification)){
+            notification.play();
+        }
+        alert('invited to friend by ' + data)
+    })
+
 })();
 
 function isPlaying(audio) { return !audio.paused; }

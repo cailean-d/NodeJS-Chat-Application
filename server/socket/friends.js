@@ -46,6 +46,20 @@ module.exports = function(io, global){
             });
         });
 
+        socket.on('invite_friend', function(data){
+            console.log(data)
+            mysql_module.invite_friend(socket.userid, data, function(err){
+                if (err) {
+                    socket.emit('friend_invited', {success: false, user: data})
+                } else {
+                    socket.emit('friend_invited', {success: true, user: data})
+
+                    // notify sender about invite
+                    sendToSpecificUser(global, data, 'invited_to_friend', socket.username)
+                }    
+            });
+        })
+
     });
 }
     

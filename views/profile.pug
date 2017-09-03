@@ -5,6 +5,8 @@ block title
   title!=nickname
 append style
   link(rel="stylesheet", href="/css/profile.css")
+append scripts
+  script(src='/js/socket/friends.js')
 block Home
   if target == 'me' 
     li.selected
@@ -37,19 +39,6 @@ block main
     else
         +other_profile(nickname, avatar, about, id, status)
         script(src="/js/libs/jquery.min.js")
-        script.
-          $('.inv_friend').on('click', function(){
-            //- alert('invite with id ' + $('.profile_id').text());
-            let target_id = $('.profile_id').text();
-            $.ajax({
-              url: 'invite_friend',
-              type: 'POST',
-              data: {'id': target_id},
-              success: function (data){
-                alert('Заявка отправлена');
-              }
-            });
-          });
         script.
           $('.type_message').on('click', function(){
             alert('text with id ' + $('.profile_id').text());

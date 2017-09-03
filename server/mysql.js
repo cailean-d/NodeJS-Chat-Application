@@ -79,7 +79,7 @@ let mysql_module = {
     
           });
     },
-    invite_friend: function(sender, receiver){
+    invite_friend: function(sender, receiver, callback){
 
         connection.insert('friends', {
             friend_1: sender,
@@ -87,6 +87,7 @@ let mysql_module = {
             status: "0",
           }, function(err, recordId) {
             if(err){console.dir(err)}
+              callback(err);
           });
       
     },

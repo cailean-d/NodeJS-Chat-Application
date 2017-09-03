@@ -28,8 +28,8 @@
         //format date
            date = new Date();
            formatter = new Intl.DateTimeFormat('ru',{ 
-            month: "long", 
-            day: "numeric", 
+            // month: "long", 
+            // day: "numeric", 
             hour: "numeric", 
             minute: "numeric" 
             });
@@ -42,7 +42,8 @@
       });
 
       //append my message to chat
-      $('#messages').append(`<div class='myMessage'><div  class='msg'><span class='s'>Me:</span> ${$('#m').val()}</div><div class='time'>[${time}]</div></div>`);
+      $('#messages').append(`<div class='myMessage'><div  class='msg'>` + 
+      `<span class='s'>Me:</span> ${$('#m').val()}</div><div class='time'><span>${time}</span></div></div>`);
       $('#messages').scrollTop(9999999);
 
       $('#m').val('');   // clear input
@@ -55,7 +56,9 @@
 // ----------------------------------------
 
     socket.on('chat message', function(msg){
-        $('#messages').append(`<div class='message'><div  class='msg'><span class='s'>${msg.sender}:</span> ${msg.message}</div><div class='time'>[${msg.time}]</div></div>`);
+        $('#messages').append(`<div class='message'><div class='align'><div  class='msg'>` + 
+        `<span class='s'>${msg.sender}:</span> ${msg.message}</div>` + 
+        `<div class='time'><span>${msg.time}</span></div></div></div>`);
         $('#messages').scrollTop(9999999);
     });
 

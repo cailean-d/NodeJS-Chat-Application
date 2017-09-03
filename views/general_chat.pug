@@ -3,7 +3,6 @@ extends main_template
 block title
   title #{__("General Chat")} 
 append style
-    link(rel='stylesheet', href='/css/style.css')
     link(rel='stylesheet', href='/css/general_chat.css')
 block General Chat
     li.selected
@@ -12,14 +11,13 @@ block General Chat
 append scripts
     script(src='/js/socket/general_chat.js')
 block main  
-  .row
-    .chat
-      #messages
-      form#chat_input
-        input#m(autocomplete='off')
-        button Send
-      .type
-        ul
+  .chat
+    #messages
+    .type
+      ul
+    form#chat_input
+      input#m(autocomplete='off')
+      button#send >
 block right
   .online
     h4

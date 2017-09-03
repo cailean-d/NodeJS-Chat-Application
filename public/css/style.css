@@ -1,15 +1,15 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* * { margin: 0; padding: 0; box-sizing: border-box; } */
       /* body { 
         font: 13px Helvetica, Arial; background: #FEFEFE;
       }
       form { 
         /* background: #000;  */
         /* padding: 3px; */
-        bottom: 0; 
+        /* bottom: 0; 
         width: 100%; 
         display: flex;
-      }
-      form input { 
+      } */
+      /* form input { 
         border: 1px solid #000; 
         padding: 10px;
         width: 100%;
@@ -17,13 +17,13 @@
       }
       form button { 
         /* width: 9%;  */
-        background: #CECEFD;
+        /* background: #CECEFD;
         cursor: pointer;
         border: 1px solid #000; 
         /* border: none;  */
-        padding: 10px; 
-      }
-      #messages { 
+        /* padding: 10px; 
+      }  */
+      /* #messages { 
         background: #EFF5F4;
         list-style: none;
         margin: 0; 
@@ -33,16 +33,9 @@
         overflow-x: hidden; 
       }
       .chat{
-        width: 500px;
-        /* height: 300px; */
-        margin: 20px;
-      }
-      .name{
-        padding: 10px;
-        color: #fff;
-        background: #333;
-      }
-      #messages::-webkit-scrollbar{
+        width: 100%;
+      } */
+      /* #messages::-webkit-scrollbar{
         width:10px;
         }
       #messages::-webkit-scrollbar-thumb{
@@ -62,8 +55,8 @@
       #messages::-webkit-scrollbar-track:hover{
           border-left: solid 1px #aaa;
           background-color: #eee;
-      }
-      .message, .myMessage, .connectedUser, .disconnectedUser{
+      } */
+      /* .message, .myMessage, .connectedUser, .disconnectedUser{
           margin: 5px;
           background: #EADAF8;
           padding: 5px;
@@ -78,27 +71,27 @@
       }
       .message .time, .myMessage .time{
         /* display: inline; */
-        padding: 5px;
+        /* padding: 5px;
         /* width: 30%; */
-      }
+      /* }
       .myMessage{
           background: #FFFFFF;
       }
       .myMessage .s, .message .s{
          color: #3100AD;
-      }
-      .type{
+      } */ 
+      /* .type{
         min-height: 25px;
         background: #EFF5F4;
         padding: 5px;
         /* border: 1px solid #000; */
-      }
-      .type ul{
+      /* } */
+      /* .type ul{
         list-style: none;
-      }
-      .row{
+      } */ 
+      /* .row{
         display: flex;
-      }
+      } */
       /* .online{
         min-width: 150px;
         display: inline-block;
@@ -118,7 +111,7 @@
       .online h4{
         margin-bottom: 20px;
       } */
-      .connectedUser{
+      /* .connectedUser{
         background: #81F281;
         color: #fff;
       }
@@ -126,15 +119,15 @@
         background: #F55656;
         color: #fff;
 
-      }
-      @media screen and (max-width: 500px){
+      } */
+      /* @media screen and (max-width: 500px){
         .chat{
           width: 90%;
         }
         .row{
           display: block;
         }
-      }
+      } */
 /* 
       .online a{
         color: #000;

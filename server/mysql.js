@@ -1,7 +1,7 @@
 let mysql = require('mysql');
 let mysqlUtilities = require('mysql-utilities');
 let jsonfile = require('jsonfile');
-let bcrypt = require('bcrypt');                                
+let bcrypt = require('bcryptjs');                                
 
 const SETTINGS = jsonfile.readFileSync('./config.json');
 

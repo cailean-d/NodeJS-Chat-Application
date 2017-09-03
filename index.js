@@ -7,7 +7,6 @@ let io = require('socket.io')(httpExpressServer);               // socket server
 let colors = require('colors');                                 // color console
 let cookieParser = require('cookie-parser')                     // cookie middleware
 let bodyParser = require('body-parser')                         // x-www-form-urlencoded
-let bcrypt = require('bcrypt');                                 // encrypt data
 let multer  = require('multer');                                // multipart/form-data
 let upload = multer();                                          // <--
 let favicon = require('serve-favicon');                         // app icon

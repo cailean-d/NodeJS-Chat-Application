@@ -24,32 +24,33 @@ html(lang="en")
             .body
                 aside.left
                     block left
-                        nav.main-menu
-                            ul
-                                block Home
-                                    li
-                                        i.fa.fa-home(aria-hidden="true")
-                                        a(href="main") #{__("Home")}                                    
-                                block Friends
-                                    li
-                                        i.fa.fa-users(aria-hidden="true")
-                                        a(href="friends") #{__("Friends")} 
-                                block General Chat
-                                    li
-                                        i.fa.fa-comments(aria-hidden="true")
-                                        a(href="general_chat") #{__("General Chat")} 
-                                block Dialogs
-                                    li 
-                                        i.fa.fa-envelope(aria-hidden="true")
-                                        a(href="dialogs") #{__("Dialogs")}
-                                block Settings
-                                    li 
-                                        i.fa.fa-cog(aria-hidden="true")
-                                        a(href="settings") #{__("Settings")}
-                                block Log out
-                                    li
-                                        i.fa.fa-sign-out(aria-hidden="true")                                        
-                                        a(href="logout") #{__("Log out")}
+                        .wrap
+                            nav.main-menu
+                                ul
+                                    block Home
+                                        li
+                                            i.fa.fa-home(aria-hidden="true")
+                                            a(href="main") #{__("Home")}                                    
+                                    block Friends
+                                        li
+                                            i.fa.fa-users(aria-hidden="true")
+                                            a(href="friends") #{__("Friends")} 
+                                    block General Chat
+                                        li
+                                            i.fa.fa-comments(aria-hidden="true")
+                                            a(href="general_chat") #{__("General Chat")} 
+                                    block Dialogs
+                                        li 
+                                            i.fa.fa-envelope(aria-hidden="true")
+                                            a(href="dialogs") #{__("Dialogs")}
+                                    block Settings
+                                        li 
+                                            i.fa.fa-cog(aria-hidden="true")
+                                            a(href="settings") #{__("Settings")}
+                                    block Log out
+                                        li
+                                            i.fa.fa-sign-out(aria-hidden="true")                                        
+                                            a(href="logout") #{__("Log out")}
                 main
                     block main
                 aside.right

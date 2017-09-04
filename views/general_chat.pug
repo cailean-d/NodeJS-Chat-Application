@@ -13,21 +13,26 @@ append scripts
     script(src='/js/socket/general_chat.js')
 block main  
   .chat
-    #messages
-      - for (let i = messages.length - 1; i >= 0; i--)
-        if myid == messages[i].sender
-          +myMessage(messages[i].nickname, messages[i].message, messages[i].date, messages[i].avatar, messages[i].sender)
-        else
-          +anotherMessage(messages[i].nickname, messages[i].message, messages[i].date, messages[i].avatar, messages[i].sender)
-    .type
-      ul
-    form#chat_input
-      input#m(autocomplete='off' placeholder=__("Write a message"))
-      button#send >
+      #messages
+        - for (let i = messages.length - 1; i >= 0; i--)
+          if myid == messages[i].sender
+            +myMessage(messages[i].nickname, messages[i].message, messages[i].date, messages[i].avatar, messages[i].sender)
+          else
+            +anotherMessage(messages[i].nickname, messages[i].message, messages[i].date, messages[i].avatar, messages[i].sender)
+      .type
+        ul
+      form#chat_input
+        button.paperclip(title=__("Attach a file"))
+          i.fa.fa-paperclip(aria-hidden="true") 
+        input#m(autocomplete='off' placeholder=__("Write a message"))
+        button#send(title=__("Send the message"))
+          i.fa.fa-paper-plane(aria-hidden="true") 
+        
 block right
   .online
     h4
       | #{__("ONLINE")} [ 
       span.online-count 0
       |  ]
-    ul
+    .wrap
+      ul

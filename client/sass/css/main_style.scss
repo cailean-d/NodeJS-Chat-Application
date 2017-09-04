@@ -13,6 +13,14 @@ body{
     .wrapper{
         padding: 0;
         margin: 0;
+
+        .wrap{
+            overflow: hidden;
+            height: 100%;     
+            & > *{
+                margin-right: -20px;                
+            }       
+        }
         
         header{
             display: flex;

@@ -21,22 +21,27 @@ module.exports = function(router){
       let email = req.body.email;
       let password = req.body.password;
 
-      mysql_module.user_login(email, password, res);
+      mysql_module.user_login(email, password, function(data, row){
+        if(data == 'OK'){
+          res.cookie( 'userID', row.id ,{ maxAge: 1000*60*60*24*30*12, httpOnly: false });
+          res.cookie( 'nickname', row.nickname ,{ maxAge: 1000*60*60*24*30*12, httpOnly: false});
+          res.cookie( 'userID2', row.id ,{ maxAge: 1000*60*60*24*30*12, httpOnly: true, signed: true });
+          res.cookie( 'userAvatar', row.avatar ,{ maxAge: 1000*60*60*24*30*12, httpOnly: false});
+          res.send('OK');
+
+        } else if(data =='INVALID_PASSWORD'){
+          res.send('invalid password');
+        } else if(data =='INVALID_EMAIL'){
+          res.send('invalid email');
+        } else if(data =='IDATABASE_ERROR'){
+          res.send('database connection error');
+        }
+      });
 
     }
   });
 
       
-
-  // router.post('/invite_friend', function(req, res){
-    
-  //   let sender = req.signedCookies.userID2;
-  //   let receiver = req.body.id;
-
-  //   mysql_module.invite_friend(sender, receiver);
-  //   res.send(true);  
-
-  // });
 
 
   return router;

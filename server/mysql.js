@@ -49,30 +49,35 @@ let mysql_module = {
               );          
         });
     },
-    user_login: function(email, password, res){
+    user_login: function(email, password, callback){
 
         connection.getConnection(function(err, conn) {
             if(err){
               console.log(err.code);
-              res.send('database connection error');
+              process.nextTick(function(){
+                callback('DATABASE_ERROR', false);
+            });
               return;
             }
     
             connection.queryRow('SELECT * FROM users where email=?', [email], function(err, row) {
               if(row){
                   bcrypt.compare(password, row.password, function(err, doesMatch){
+                    if (err) throw err;
                     if (doesMatch){
-                        res.cookie( 'userID', row.id ,{ maxAge: 1000*60*60*24*30*12, httpOnly: false });
-                        res.cookie( 'nickname', row.nickname ,{ maxAge: 1000*60*60*24*30*12, httpOnly: false});
-                        res.cookie( 'userID2', row.id ,{ maxAge: 1000*60*60*24*30*12, httpOnly: true, signed: true });
-    
-                        res.send('OK');
+                        process.nextTick(function(){
+                            callback('OK', row);
+                        });
                     }else{
-                        res.send('invalid password');
+                        process.nextTick(function(){
+                            callback('INVALID_PASSWORD', false);
+                        });
                     }
                   });
               } else{
-                res.send('invalid email');
+                process.nextTick(function(){
+                    callback('INVALID_EMAIL', false);
+                });
               }
                 conn.release();
             });
@@ -95,7 +100,6 @@ let mysql_module = {
         connection.getConnection(function(err, conn) {
             if(err){
               console.log(err.code);
-              res.send('database connection error');
               return;
             }
   
@@ -136,7 +140,7 @@ let mysql_module = {
                     if(target == 'me'){
                         process.nextTick(function(){
                             let status = false;
-                            callback(row, status);
+                            callback(row, status, true);
                         });    
                     } else {
                         connection.queryRow('SELECT * FROM friends where (friend_1=? AND friend_2=?)' + 
@@ -146,27 +150,28 @@ let mysql_module = {
                                     if(row2.status == 0 && row2.friend_2 == id){
                                         process.nextTick(function(){
                                             let status = 'invited';
-                                            callback(row, status);
+                                            callback(row, status, true);
                                         });   
                 
                                     } else if(row2.status == 1){
                                         process.nextTick(function(){
                                             let status = 'friend';
-                                            callback(row, status);
+                                            callback(row, status, true);
                                         });   
                                     }
                             } else {
                                 process.nextTick(function(){
                                     let status = false;
-                                    callback(row, status);
+                                    callback(row, status, true);
                                 });   
                             }
                 
                         });
                     }
                 } else{
-                res.status(400);
-                res.render('404');
+                    process.nextTick(function(){
+                        callback(false, false, false);
+                    }); 
                 }
                 conn.release();
             });

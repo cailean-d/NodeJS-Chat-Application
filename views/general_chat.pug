@@ -18,7 +18,7 @@ block main
         if myid == messages[i].sender
           +myMessage(messages[i].nickname, messages[i].message, messages[i].date, messages[i].avatar, messages[i].sender)
         else
-          +otherMessage(messages[i].nickname, messages[i].message, messages[i].date, messages[i].avatar, messages[i].sender)
+          +anotherMessage(messages[i].nickname, messages[i].message, messages[i].date, messages[i].avatar, messages[i].sender)
     .type
       ul
     form#chat_input

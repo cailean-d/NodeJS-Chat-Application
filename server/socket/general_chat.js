@@ -68,7 +68,9 @@ module.exports = function(io){
             socket.broadcast.emit('chat message', {
                 sender : msg.sender,
                 message: msg.message,
-                time: msg.time
+                time: msg.time,
+                avatar: msg.avatar,
+                id: msg.id
             });
 
            mysql_module.general_chat_insert_message(socket.userid, msg.message, function(){

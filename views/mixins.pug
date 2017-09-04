@@ -44,7 +44,7 @@ mixin myMessage(sender, message, time, avatar, id)
     .time
         span=time
 
-mixin otherMessage(sender, message, time, avatar, id)
+mixin anotherMessage(sender, message, time, avatar, id)
   -
     formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
     time =  formatter.format(Date.parse(time));

@@ -137,7 +137,8 @@ module.exports = function(router){
       let mynickname = req.cookies.nickname;
       let lang = req.cookies.lang;
     
-      mysql_module.render_profile(id, req_id, target, function(row, status){
+      mysql_module.render_profile(id, req_id, target, function(row, status, pageFound){
+        if(pageFound){
           res.render('profile',
           {   status: status, 
               target: target, 
@@ -148,6 +149,11 @@ module.exports = function(router){
               mynickname: mynickname,
               lang: lang
           });
+        } else {
+              res.status(400);
+              res.render('404');
+        }
+
       });
 
   });

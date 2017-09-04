@@ -1,11 +1,12 @@
 
    $(function () {
 
-    var myName =  Cookies.get('nickname');
+    let myName =  Cookies.get('nickname');
     let myID = Cookies.get('userID');
-    var isTyping = false;
-    var type;
-    var serverIP = '192.168.0.54';
+    let myAvatar = Cookies.get('userAvatar');
+    let isTyping = false;
+    let type;
+    let serverIP = '192.168.0.54';
 
     let scrl = 10000*10000;
 
@@ -21,6 +22,39 @@
     //   socket.io.opts.query = { id: myID, nickname: myName }
     // });
 
+    function myMessage(sender, message, time, avatar, id){
+
+      formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
+      time =  formatter.format(Date.parse(time));
+
+      return  `<div class='myMessage'>` + 
+                `<div  class='msg'>` + 
+                    `<a class='avatar' href='/id${id}' target='_blank' title=${sender}>`+
+                    `<img src='/img/core/user_avatar/${avatar}'></a> `+ 
+                    `${message}`+
+                `</div>`+
+                `<div class='time'><span>${time}</span>`+
+                `</div>`+
+              `</div>`
+    }
+
+    function anotherMessage(sender, message, time, avatar, id){
+
+      formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
+      time =  formatter.format(Date.parse(time));
+
+      return  `<div class='message'>` + 
+                  `<div class='align'>` + 
+                    `<div  class='msg'>` + 
+                        `<a class='avatar' href='/id${id}' target='_blank' title=${sender}>`+
+                        `<img src='/img/core/user_avatar/${avatar}'></a> `+ 
+                        `${message}`+
+                    `</div>`+
+                    `<div class='time'><span>${time}</span>`+
+                    `</div>`+
+                  `</div>`+
+              `</div>`
+    }
 
 // ----------------------------------------
 //     SEND MESSAGE
@@ -28,29 +62,23 @@
     $('#chat_input').submit(function(){
 
       if ($('#m').val() != ''){  
-        //format date
-           date = new Date();
-           formatter = new Intl.DateTimeFormat('ru',{ 
-            // month: "long", 
-            // day: "numeric", 
-            hour: "numeric", 
-            minute: "numeric" 
-            });
-        var time =  formatter.format(date);
+
+        let time = new Date();
+        let message = $('#m').val();
         //-------------------------
-      socket.emit('chat message', {
-        message : $('#m').val(),
-        sender: myName,
-        time : time
-      });
+        socket.emit('chat message', {
+          message : message,
+          sender: myName,
+          time: time,
+          avatar: myAvatar,
+          id: myID 
+        });
 
-      //append my message to chat
-      $('#messages').append(`<div class='myMessage'><div  class='msg'>` + 
-      `<a class='avatar' href='/id1' target='_blank'><img src='/img/core/user_avatar/user_thumbnail.jpg'></a> `+ 
-      `${$('#m').val()}</div><div class='time'><span>${time}</span></div></div>`);
-      $('#messages').scrollTop(9999999);
+        //append my message to chat
+        $('#messages').append(myMessage(myName, message, time, myAvatar, myID));
+        $('#messages').scrollTop(scrl);
 
-      $('#m').val('');   // clear input
+        $('#m').val('');   // clear input
       } 
       return false;
     });
@@ -60,9 +88,7 @@
 // ----------------------------------------
 
     socket.on('chat message', function(msg){
-        $('#messages').append(`<div class='message'><div class='align'><div  class='msg'>` + 
-        `<span class='s'>${msg.sender}:</span> ${msg.message}</div>` + 
-        `<div class='time'><span>${msg.time}</span></div></div></div>`);
+        $('#messages').append(anotherMessage(msg.sender, msg.message, msg.time, msg.avatar, msg.id));
         $('#messages').scrollTop(9999999);
     });
 

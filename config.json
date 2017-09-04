@@ -1,5 +1,5 @@
 {
-	"db": {
+	"db":{
 		"type": "mysql",
 		"host": "localhost",
 		"user": "root",
@@ -12,5 +12,8 @@
 		"general_chat_online": "true",
 		"user_registration": "true",
 		"user_online": "true"
+	},
+	"general_chat":{
+		"countMessages": "20"
 	}
 }

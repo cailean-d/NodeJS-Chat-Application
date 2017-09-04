@@ -16,13 +16,13 @@ block main
     #messages
       - for (let i = messages.length - 1; i >= 0; i--)
         if myid == messages[i].sender
-          +myMessage(messages[i].message, messages[i].date)
+          +myMessage(messages[i].nickname, messages[i].message, messages[i].date, messages[i].avatar, messages[i].sender)
         else
-          +otherMessage(messages[i].nickname, messages[i].message, messages[i].date)
+          +otherMessage(messages[i].nickname, messages[i].message, messages[i].date, messages[i].avatar, messages[i].sender)
     .type
       ul
     form#chat_input
-      input#m(autocomplete='off')
+      input#m(autocomplete='off' placeholder=__("Write a message"))
       button#send >
 block right
   .online

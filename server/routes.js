@@ -1,5 +1,8 @@
 let mysql_module = require('../server/mysql')   
-let colors = require('colors/safe');                           
+let colors = require('colors/safe');              
+let jsonfile = require('jsonfile');                            
+
+const SETTINGS = jsonfile.readFileSync('./config.json');             
 
 module.exports = function(router){
 
@@ -86,7 +89,7 @@ module.exports = function(router){
     let lang = req.cookies.lang;
     
     if(req.authorized){
-      mysql_module.getMessagesFromGeneralMenu(20, function(err, result){
+      mysql_module.getMessagesFromGeneralMenu(SETTINGS.general_chat.countMessages, function(err, result){
         if (err) throw err;
         res.render('general_chat', {
           myid: id,

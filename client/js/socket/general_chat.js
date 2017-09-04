@@ -46,7 +46,8 @@
 
       //append my message to chat
       $('#messages').append(`<div class='myMessage'><div  class='msg'>` + 
-      `<span class='s'>Me:</span> ${$('#m').val()}</div><div class='time'><span>${time}</span></div></div>`);
+      `<a class='avatar' href='/id1' target='_blank'><img src='/img/core/user_avatar/user_thumbnail.jpg'></a> `+ 
+      `${$('#m').val()}</div><div class='time'><span>${time}</span></div></div>`);
       $('#messages').scrollTop(9999999);
 
       $('#m').val('');   // clear input

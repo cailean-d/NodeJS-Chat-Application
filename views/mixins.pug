@@ -30,20 +30,21 @@ mixin my_profile(nickname, avatar, about, id)
           textarea.about(name='about', id='', cols='30', rows='10', placeholder='write information about yourself')= about
           button(type='submit') Save
 
-mixin myMessage(message, time)
+mixin myMessage(sender, message, time, avatar, id)
   -
     formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
     time =  formatter.format(Date.parse(time));
 
   .myMessage
     .msg
-        span.s Me:
+        a.avatar(href=`/id${id}` target='_blank' title=`${sender}`)
+          img(src=`/img/core/user_avatar/${avatar}`)
         |
         =message
     .time
         span=time
 
-mixin otherMessage(sender, message, time)
+mixin otherMessage(sender, message, time, avatar, id)
   -
     formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
     time =  formatter.format(Date.parse(time));
@@ -51,7 +52,8 @@ mixin otherMessage(sender, message, time)
   .message
     .align
       .msg
-          span.s #{sender}:
+          a.avatar(href=`/id${id}` target='_blank' title=`${sender}`)
+            img(src=`/img/core/user_avatar/${avatar}`)
           |
           =message
       .time

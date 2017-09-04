@@ -267,7 +267,8 @@ let mysql_module = {
             ` general_chat.message,` +
             ` general_chat.date,` +
             ` users.nickname,` +
-            ` users.avatar FROM general_chat` +
+            ` users.avatar`+
+            ` FROM general_chat` +
             ` INNER JOIN users ON general_chat.sender = users.id` +
             ` ORDER by general_chat.id DESC LIMIT ${count}`, function(err, result){
                  if(err) throw err;
@@ -277,7 +278,6 @@ let mysql_module = {
         });
     }
 }
-
 
 function getInvitesIDS(userid, callback){
     connection.query(`SELECT * FROM friends WHERE friend_2=${userid} AND status='0'`, function(err, result){

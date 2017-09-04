@@ -121,7 +121,7 @@
         .myMessage{
             background: rgb(244, 244, 244);
             padding: 0.1em;
-            border-radius: 0.5em;
+            border-radius: 0.7em;
             min-width: 30%;
             width: fit-content; 
             max-width: 60%;
@@ -153,18 +153,19 @@
                     padding: 0.5em;
                     width: 90%;
                 }
-                // &:after{
-                //     content: '';
-                //     clear: both;
-                // }
                 .time{
                     color: #fff;
                 }
             }
 
         }
-        .myMessage .s, .message .s{
-            color: #3100AD;
+        .avatar{
+            img{
+                width: 2em;
+                height: auto;
+                margin-right: 5px;
+                border-radius: 50%;
+            }
         }
         .connectedUser{
             background: #81F281;

@@ -10,5 +10,8 @@
 	"ONLINE": "ОНЛАЙН",
 	"Write a message": "Введите сообщение",
 	"Attach a file": "Прикрепить файл",
-	"Send the message": "Отправить сообщение"
+	"Send the message": "Отправить сообщение",
+	"online": "онлайн",
+	"busy": "занят",
+	"invisible": "невидимый"
 }

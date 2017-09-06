@@ -13,7 +13,22 @@ html(lang="en")
         .wrapper
             header
                 block header
-                    p=mynickname
+                    .user
+                        .nickname=mynickname
+                        .statusBlock
+                            .current 
+                                .ico(title=__('online'))
+                                   .online 
+                            ul.statusList
+                                li.status
+                                    .ico(title=__('online'))
+                                        .online 
+                                li.status
+                                    .ico(title=__('busy'))
+                                        .busy 
+                                li.status
+                                    .ico(title=__('invisible'))
+                                        .invisible 
                     .locale
                         .current 
                             img(src=`/img/flags/${lang}.png`)

@@ -8,10 +8,24 @@ $('.locale .en').on('click', function(){
     window.location.reload();    
 });
 
-$('.current').on("click", function(){
+$('.locale .current').on("click", function(){
     $('.langList').slideToggle(200);
   });
 
 $('.langList').on("mouseleave", function(){
     $('.langList').slideUp(300);
 });
+
+//=============================================
+//=============================================
+//=============================================
+
+
+$('.statusBlock .current').on("click", function(){
+    $('.statusList').slideToggle(200);
+  });
+
+$('.statusList').on("mouseleave", function(){
+    $('.statusList').slideUp(300);
+});
+

@@ -60,3 +60,17 @@ mixin anotherMessage(sender, message, time, avatar, id)
           img(src=`/img/core/user_avatar/${avatar}`)      
         .time
           span=time                      
+
+mixin dialog(id, logo, nickname, message, time)
+  .dialog
+        .dialogWrap
+            .logo
+                a(href=`/id${id}` target='_blank')
+                    img(src=`/img/core/user_avatar/${logo}`, alt="")
+            .dialogBody
+                .top
+                    a.nickname(href=`/id${id}` target='_blank')=nickname
+                    .time=time
+                .bottom
+                    .msg
+                      p=message  

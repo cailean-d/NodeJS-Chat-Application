@@ -10,5 +10,8 @@
 	"ONLINE": "ONLINE",
 	"Write a message": "Write a message",
 	"Attach a file": "Attach a file",
-	"Send the message": "Send the message"
+	"Send the message": "Send the message",
+	"online": "online",
+	"busy": "busy",
+	"invisible": "invisible"
 }

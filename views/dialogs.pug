@@ -1,10 +1,22 @@
 extends main_template
+include mixins
 
 block title
   title #{__("Dialogs")}
+append style
+    link(rel='stylesheet', href='/css/dialogs.css')
 block Dialogs
     li.selected
         i.fa.fa-envelope(aria-hidden="true")
         a(href="dialogs") #{__("Dialogs")}
 block main
-    h3 #{__("Dialogs")}
+    .dialogBlock
+        +dialog(1, '22.jpeg', "Bloodmessiah", "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio distinctio tempora odio in accusamus! Quam blanditiis fugit aut, quasi reprehenderit ad modi sunt libero quis vero deleniti, dolorum architecto temporibus?", "23:10")
+        +dialog(1, '22.jpeg', "Bloodmessiah", "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio distinctio tempora odio in accusamus! Quam blanditiis fugit aut, quasi reprehenderit ad modi sunt libero quis vero deleniti, dolorum architecto temporibus?", "23:10")
+        +dialog(6, '11.jpg', "Horse", "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio distinctio tempora odio in accusamus! Quam blanditiis fugit aut, quasi reprehenderit ad modi sunt libero quis vero deleniti, dolorum architecto temporibus?", "23:10")
+        +dialog(1, '22.jpeg', "Bloodmessiah", "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio distinctio tempora odio in accusamus! Quam blanditiis fugit aut, quasi reprehenderit ad modi sunt libero quis vero deleniti, dolorum architecto temporibus?", "23:10")
+        +dialog(6, '11.jpg', "Horse", "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio distinctio tempora odio in accusamus! Quam blanditiis fugit aut, quasi reprehenderit ad modi sunt libero quis vero deleniti, dolorum architecto temporibus?", "23:10")
+        +dialog(1, '22.jpeg', "Bloodmessiah", "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio distinctio tempora odio in accusamus! Quam blanditiis fugit aut, quasi reprehenderit ad modi sunt libero quis vero deleniti, dolorum architecto temporibus?", "23:10")
+        +dialog(1, '22.jpeg', "Bloodmessiah", "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio distinctio tempora odio in accusamus! Quam blanditiis fugit aut, quasi reprehenderit ad modi sunt libero quis vero deleniti, dolorum architecto temporibus?", "23:10")
+        +dialog(6, '11.jpg', "Horse", "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio distinctio tempora odio in accusamus! Quam blanditiis fugit aut, quasi reprehenderit ad modi sunt libero quis vero deleniti, dolorum architecto temporibus?", "23:10")
+        +dialog(1, '22.jpeg', "Bloodmessiah", "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio distinctio tempora odio in accusamus! Quam blanditiis fugit aut, quasi reprehenderit ad modi sunt libero quis vero deleniti, dolorum architecto temporibus?", "23:10")

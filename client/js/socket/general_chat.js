@@ -27,15 +27,21 @@
       formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
       time =  formatter.format(Date.parse(time));
 
-      return  `<div class='myMessage'>` + 
-                `<div  class='msg'>` + 
-                    `<a class='avatar' href='/id${id}' target='_blank' title=${sender}>`+
-                    `<img src='/img/core/user_avatar/${avatar}'></a> `+ 
-                    `${message}`+
-                `</div>`+
-                `<div class='time'><span>${time}</span>`+
-                `</div>`+
-              `</div>`
+      return  `<div class='message myMessage'>` + 
+                `<div class='align'>` +   
+                  `<div class='logo'>` + 
+                    `<a class='avatar' href='/id${id}' target='_blank' title=${sender}>`+    
+                      `<img src='/img/core/user_avatar/${avatar}'>`+
+                    `</a> `+    
+                    `<div class='time'>
+                      <span>${time}</span>`+
+                    `</div>`+             
+                  `</div>` +            
+                  `<div  class='msg'>` + 
+                      `${message}`+
+                  `</div>`+ 
+                `</div>`+ 
+              `</div>`;
     }
 
     function anotherMessage(sender, message, time, avatar, id){
@@ -43,17 +49,21 @@
       formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
       time =  formatter.format(Date.parse(time));
 
-      return  `<div class='message'>` + 
-                  `<div class='align'>` + 
-                    `<div  class='msg'>` + 
-                        `<a class='avatar' href='/id${id}' target='_blank' title=${sender}>`+
-                        `<img src='/img/core/user_avatar/${avatar}'></a> `+ 
-                        `${message}`+
-                    `</div>`+
-                    `<div class='time'><span>${time}</span>`+
-                    `</div>`+
-                  `</div>`+
-              `</div>`
+      return  `<div class='message anotherMessage'>` + 
+                `<div class='align'>` +   
+                 `<div  class='msg'>` + 
+                   `${message}`+
+                  `</div>`+     
+                  `<div class='logo'>` + 
+                    `<a class='avatar' href='/id${id}' target='_blank' title=${sender}>`+    
+                      `<img src='/img/core/user_avatar/${avatar}'>`+
+                    `</a> `+    
+                    `<div class='time'>
+                      <span>${time}</span>`+
+                    `</div>`+             
+                  `</div>` +            
+                `</div>`+               
+              `</div>`;
     }
 
 // ----------------------------------------

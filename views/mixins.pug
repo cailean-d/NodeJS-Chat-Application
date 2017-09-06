@@ -35,26 +35,28 @@ mixin myMessage(sender, message, time, avatar, id)
     formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
     time =  formatter.format(Date.parse(time));
 
-  .myMessage
-    .msg
-        a.avatar(href=`/id${id}` target='_blank' title=`${sender}`)
-          img(src=`/img/core/user_avatar/${avatar}`)
-        |
-        =message
-    .time
-        span=time
+  .message.myMessage
+    .align
+      .logo
+        a.avatar(href=`/id${id}` target='_blank' title=`${sender}`)   
+          img(src=`/img/core/user_avatar/${avatar}`)      
+        .time
+          span=time                      
+      .msg=message
+
+
+
 
 mixin anotherMessage(sender, message, time, avatar, id)
   -
     formatter = new Intl.DateTimeFormat('ru',{ hour: "numeric", minute: "numeric" });
     time =  formatter.format(Date.parse(time));
     
-  .message
+  .message.anotherMessage
     .align
-      .msg
-          a.avatar(href=`/id${id}` target='_blank' title=`${sender}`)
-            img(src=`/img/core/user_avatar/${avatar}`)
-          |
-          =message
-      .time
-          span=time
+      .msg=message    
+      .logo
+        a.avatar(href=`/id${id}` target='_blank' title=`${sender}`)   
+          img(src=`/img/core/user_avatar/${avatar}`)      
+        .time
+          span=time                      

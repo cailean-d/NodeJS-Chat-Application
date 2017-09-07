@@ -36,7 +36,6 @@
         if(data.success){
             alert('friend deleted');
             $(`.friendList .user[data-id=${data.user}]`).remove();
-            // $('.friendList').append(`.user[data-id=${data.user}`);
         } else {
             alert('error');
         }

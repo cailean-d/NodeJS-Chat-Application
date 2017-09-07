@@ -74,3 +74,26 @@ mixin dialog(id, logo, nickname, message, time)
                 .bottom
                     .msg
                       p=message  
+
+
+mixin friend(id, logo, nickname, accept, reject, deletez)
+  .user(data-id=id)
+        .userWrap
+            .logo
+                a(href=`/id${id}` target='_blank')
+                    img(src=`/img/core/user_avatar/${logo}`, alt="")
+            .userBody
+                .top
+                    a.nickname=nickname
+                    if accept
+                      .id(data-id=id)
+                        i.accept.fa.fa-check-circle-o(aria-hidden="true" title=__('add user to friends'))
+                .bottom
+                    .msg
+                      a.write-message(href=`/dialogs?with=${id}`)=__('To white a message')
+                    if reject 
+                      .id(data-id=id)
+                         i.reject.fa.fa-ban(aria-hidden="true" title=__('delete invite'))
+                    if deletez
+                      .id(data-id=id)
+                        i.delete_friend.fa.fa-trash-o(aria-hidden="true" title=__('delete user'))

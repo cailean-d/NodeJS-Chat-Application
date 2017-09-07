@@ -28,7 +28,10 @@ module.exports = function(io, global){
                     socket.emit('friend_deleted', {success: true, user: data})
 
                     // notify sender about deleting friendship
-                    sendToSpecificUser(global, data, 'deleted_from_friends', socket.username)
+                    sendToSpecificUser(global, data, 'deleted_from_friends', {
+                        username: socket.username,
+                        id: socket.userid
+                    })
                 }            
             });
         });
@@ -47,7 +50,6 @@ module.exports = function(io, global){
         });
 
         socket.on('invite_friend', function(data){
-            console.log(data)
             mysql_module.invite_friend(socket.userid, data, function(err){
                 if (err) {
                     socket.emit('friend_invited', {success: false, user: data})

@@ -13,5 +13,17 @@
 	"Send the message": "Send the message",
 	"online": "online",
 	"busy": "busy",
-	"invisible": "invisible"
+	"invisible": "invisible",
+	"All Friends": "All Friends",
+	" Online": " Online",
+	" Invites": " Invites",
+	"Online": "Online",
+	"Invites": "Invites",
+	"You have no friends online": "You have no friends online",
+	"You have no invites": "You have no invites",
+	"To white a message": "To white a message",
+	"delete user": "delete user",
+	"add user to friends": "add user to friends",
+	"delete invite": "delete invite",
+	"You have no friends": "You have no friends"
 }

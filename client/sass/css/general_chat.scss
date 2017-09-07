@@ -101,22 +101,12 @@
             background-color: #eee;
         }
 
-        // .message, .myMessage, .connectedUser, .disconnectedUser{
-        //     margin: 10px;
-        //     // background: #EADAF8;
-        //     padding: 5px;
-        //     display: flex;
-        //     // justify-content: space-between;
-        // }
-        // .message .msg, .myMessage .msg{
-        //     padding: 5px;
-        //     word-wrap: break-word;
-        //     margin-right: 5px;
-        // }
-        // .message .time, .myMessage .time{
-        //     padding: 5px;
-        // }
-        // .myMessage            
+        .connectedUser, .disconnectedUser{
+            margin: 10px;
+            padding: 5px;
+            display: flex;
+        }
+          
         .message{
             
             .align{

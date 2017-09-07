@@ -1,40 +1,45 @@
 extends main_template
+include mixins
 
 block title
   title #{__("Friends")}
 append style
-  style.
-    h3{
-      display: block;
-      text-decoration: underline;
-    }
-    .user{display:flex;}
-    button{margin-left: 0.5em;}
+  link(rel='stylesheet', href='/css/friends.css')
 block Friends
   li.selected
     i.fa.fa-users(aria-hidden="true")
     a(href="friends") #{__("Friends")}
 append scripts
   script(src='/js/socket/friends.js')
+  script(src='/js/dialogs.js')
 block main
-  .friends
-    h2 my friends
-    if invites
-      h3 invites
-      ul.inviteList
-        - for (let i = 0; i < invites.length; i++)
-          .user(data-id=invites[i].id)
-              li= invites[i].nickname
-              button.accept accept
-              button.reject reject friendship
-    else
-      h3 no invites
-    if friends
-      h3 friends
-      ul.friendList
-        - for (let i = 0; i < friends.length; i++)
-          .user(data-id=friends[i].id)
-            li= friends[i].nickname
-            button.delete_friend delete from friends
-    else
-      h3 no friends
+  .tabs-buttons
+    button.all-friends.active=__('All Friends')
+      if friends.length > 0
+        span.count=friends.length
+      else
+        span.count=0
+    button.online-friends=__('Online')
+      span.count=0
+    button.invites=__('Invites')
+      if invites.length > 0
+        span.count=invites.length
+      else
+        span.count=0
+  .tabs-body
+    .all-friends
+      if friends
+        .friendList
+          - for (let i = 0; i < friends.length; i++)
+            +friend(friends[i].id, friends[i].avatar, friends[i].nickname, false, false, true)
+      else
+        h3=__('You have no friends')
+    .online-friends
+        h3=__('You have no friends online')
+    .invites
+      if invites
+        .inviteList
+          - for (let i = 0; i < invites.length; i++)
+            +friend(invites[i].id, invites[i].avatar, invites[i].nickname, true, true, false)
+      else
+        h3=__('You have no invites')

@@ -13,5 +13,14 @@
 	"Send the message": "Отправить сообщение",
 	"online": "онлайн",
 	"busy": "занят",
-	"invisible": "невидимый"
+	"invisible": "невидимый",
+	"All Friends": "Все друзья",
+	"Online": "Онлайн",
+	"Invites": "Приглашения",
+	"You have no friends online": "У вас нет друзей онлайн",
+	"You have no invites": "Приглашений нет",
+	"delete user": "удалить пользователя",
+	"To white a message": "Написать сообщение",
+	"add user to friends": "добавить в друзья",
+	"delete invite": "удалить приглашение"
 }

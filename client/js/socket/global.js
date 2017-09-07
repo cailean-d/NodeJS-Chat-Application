@@ -21,7 +21,10 @@
         if(!isPlaying(notification)){
             notification.play();
         }
-        alert('you are deleted from friends by ' + data)
+        alert('you are deleted from friends by ' + data.username)
+        if(location.pathname = '/friends'){
+            $(`.friendList .user[data-id=${data.id}]`).remove();            
+        }
     })
     socket.on('friendship_rejected', function(data){
         if(!isPlaying(notification)){

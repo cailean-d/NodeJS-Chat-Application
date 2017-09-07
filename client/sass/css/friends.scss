@@ -1,0 +1,169 @@
+.tabs-buttons{
+    display: flex;
+    background: #fafbfc;
+    border-bottom: 1px solid #D8D8D9;
+    height: 8.5%;    
+    
+    button{
+        &:first-child{
+            margin-left: 5px;
+        }
+        padding: 15px;
+        margin: 0;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        
+        cursor: pointer;
+        
+        &:hover{
+             border-bottom: 3px solid #B0B0BE;
+             background: #F7F7FA;    
+        }
+    }
+    .active{
+        border-bottom: 3px solid #B0B0BE;            
+    }
+    .count{
+        border-radius: 20px;
+        background: #9E9D9D;
+        color: #fff;
+        margin-left: 10px;
+        padding: 2px 6px;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+    }
+}
+
+.tabs-body{
+    height: 91.5%;
+    & > div{
+        display: none;
+        height: 100%;
+    }
+    & > div:first-child{
+        display: block;        
+    }
+
+    h3{
+        color: #A8A8A8;
+        padding: 0;
+        margin: 0;
+        padding: 20px;
+    }
+}
+
+
+.friendList, .inviteList{
+    overflow-y: scroll;
+    height: 100%;
+
+    &::-webkit-scrollbar{
+        width: 6px;
+    }
+    &::-webkit-scrollbar-thumb{
+        border-width: 0;
+        border-width:1px 1px 1px 2px;
+        border-color: #777;
+        background-color: #CCCCCC;
+    }
+    &::-webkit-scrollbar-thumb:hover{
+        border-width: 1px 1px 1px 2px;
+        border-color: #555;
+        background-color: #777;
+    }
+    &::-webkit-scrollbar-track{
+        border-width:0;
+    }
+    &::-webkit-scrollbar-track:hover{
+        border-left: solid 1px #aaa;
+        background-color: #eee;
+    }
+}
+.user{
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+
+    &:hover{
+        background: #EEEDFF;
+    }
+
+    .userWrap{
+        width: 100%;
+        display: flex;
+        border-bottom: 1px solid #CCCCCC;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+
+    .logo{
+        width: 10%;
+        padding: 5px;
+
+        img{
+            max-width: 100%;
+            max-height: auto;
+            border-radius: 50%;
+        }
+    }
+    .userBody{
+        padding: 0.5em;
+        width: 90%;
+
+        .top{
+            margin-bottom: 5px;            
+            height: 50%;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+
+            .nickname{
+                font-weight: bold;
+                text-decoration: none;
+                color: #464646;
+            }
+            .id i{
+                cursor: pointer;
+                display: flex;
+                justify-content: flex-end;
+                min-width: 10%;
+                font-size: 1.3em;
+
+                &:hover{
+                  color: #0FFF00;                
+                }
+            }
+        }
+        .bottom{
+            height: 50%;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+
+            .write-message{
+                margin: 0;
+                padding: 0;
+                text-decoration: none;
+                color: #6C6C6C;
+                &:hover{
+                    text-decoration: underline;
+                }
+                &:visited, &:active{
+                color: #6C6C6C;                
+                }
+            }
+            .id i{
+                cursor: pointer;
+                display: flex;
+                justify-content: flex-end;
+                min-width: 10%;
+                font-size: 1.3em;
+                
+                &:hover{
+                  color: #FF0000;                
+                }
+            }
+        }
+    }
+}

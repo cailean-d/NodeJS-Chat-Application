@@ -30,7 +30,7 @@ block main
     .all-friends
       if friends
         .friendList
-          - for (let i = 0; i < friends.length; i++)
+          - for (let i = friends.length - 1; i >= 0; i--)
             +friend(friends[i].id, friends[i].avatar, friends[i].nickname, false, false, true)
       else
         h3=__('You have no friends')
@@ -39,7 +39,7 @@ block main
     .invites
       if invites
         .inviteList
-          - for (let i = 0; i < invites.length; i++)
+          - for (let i = invites.length - 1; i >= 0; i--)
             +friend(invites[i].id, invites[i].avatar, invites[i].nickname, true, true, false)
       else
         h3=__('You have no invites')

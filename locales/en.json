@@ -25,5 +25,6 @@
 	"delete user": "delete user",
 	"add user to friends": "add user to friends",
 	"delete invite": "delete invite",
-	"You have no friends": "You have no friends"
+	"You have no friends": "You have no friends",
+	"afk": "afk"
 }

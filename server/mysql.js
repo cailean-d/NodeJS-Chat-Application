@@ -281,6 +281,16 @@ let mysql_module = {
                     callback(err, result);
             });
         });
+    },
+    getUser: function(id, callback){
+        connection.getConnection(function(err, conn){
+            if(err) throw err;
+            connection.query(`SELECT * FROM users WHERE id=${id}`, function(err, result){
+                 if(err) throw err;
+                    conn.release();
+                    callback(result);
+            });
+        });    
     }
 }
 

@@ -1,3 +1,4 @@
+
 (function(){
 
     let myName =  Cookies.get('nickname');
@@ -14,10 +15,28 @@
     // callback on friend invite
     socket.on('friend_added', function(data){
         if(data.success){
-            alert('friend added');
-            $(`.inviteList .user[data-id=${data.user}]`).remove();
+            console.log('friend added');
+            
+            let invitesCount =  $('.tabs-buttons .invites .count').text();
+            let friendsCount =  $('.tabs-buttons .all-friends .count').text();
+            
+            $(`.inviteList .user[data-id=${data.user.id}]`).remove();     // remove userObject
+            $('.tabs-buttons .invites .count').text(+invitesCount - 1);   // decrease count
+
+
+            if(friendsCount == 0){
+                $('.tabs-body .all-friends').html(`<div class='friendList'></div>`);
+                $('.tabs-body .friendList').append(user_friend(data.user.id, data.user.avatar, data.user.nickname));
+            } else{
+                $('.tabs-body .friendList').append(user_friend(data.user.id, data.user.avatar, data.user.nickname));
+            }
+            $('.tabs-buttons .all-friends .count').text(+friendsCount + 1);
+            
+            if($('.tabs-buttons .invites .count').text() == 0){
+                $('.tabs-body .invites').html(`<h3>You have no invites`);
+            }
         } else {
-            alert('error');
+            console.log('error');
         }
     })
 
@@ -34,10 +53,19 @@
     // callback on friend delete
     socket.on('friend_deleted', function(data){
         if(data.success){
-            alert('friend deleted');
-            $(`.friendList .user[data-id=${data.user}]`).remove();
+            console.log('friend deleted');
+            
+            let friendsCount =  $('.tabs-buttons .all-friends .count').text();
+
+            $(`.friendList .user[data-id=${data.user}]`).remove();  // remove userObject
+
+            $('.tabs-buttons .all-friends .count').text(+friendsCount - 1); // decrease count
+
+            if($('.tabs-buttons .all-friends .count').text() == 0){
+                $('.tabs-body .all-friends').html(`<h3>You have no friends</h3>`);
+            }
         } else {
-            alert('error');
+            console.log('error');
         }
     })
 
@@ -55,11 +83,17 @@
     // callback on friend rejected
     socket.on('friend_rejected', function(data){
         if(data.success){
-            alert('friend rejected');
-            $(`.inviteList .user[data-id=${data.user}]`).remove();
-            // $('.friendList').append(`.user[data-id=${data.user}`);
+            console.log('friend rejected');
+
+            let invitesCount =  $('.tabs-buttons .invites .count').text();
+
+            $(`.inviteList .user[data-id=${data.user}]`).remove(); // remove userObject
+            $('.tabs-buttons .invites .count').text(+invitesCount - 1);  // decrease count
+            if($('.tabs-buttons .invites .count').text() == 0){
+                $('.tabs-body .invites').html(`<h3>You have no invites`);
+            }
         } else {
-            alert('error');
+            console.log('error');
         }
     })    
 
@@ -74,9 +108,11 @@
 
     socket.on('friend_invited', function(data){
         if(data.success){
-            alert('friend invited');
+            console.log('friend invited');
+            $('.thumbnail .inv_friend').attr('disabled', 'true');
+            $('.thumbnail .inv_friend').text('Invited');
         } else {
-            alert('error');
+            console.log('error');
         }
     })
 

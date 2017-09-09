@@ -13,7 +13,7 @@ html(lang="en")
         .wrapper
             header
                 block header
-                    .user
+                    .header-user
                         .nickname=mynickname
                         .statusBlock
                             .current 
@@ -23,6 +23,9 @@ html(lang="en")
                                 li.status
                                     .ico(title=__('online'))
                                         .online 
+                                li.status
+                                    .ico(title=__('afk'))
+                                        .afk 
                                 li.status
                                     .ico(title=__('busy'))
                                         .busy 
@@ -80,6 +83,7 @@ html(lang="en")
             script(src='/js/libs/jquery.min.js')
             script(src='/js/libs/socket.io.js')
             script(src='/js/libs/js.cookie.js')
+            script(src='/js/html_templates.js')
             script(src='/js/socket/global.js')
             script(src='/js/locale.js')
 

@@ -22,5 +22,7 @@
 	"delete user": "удалить пользователя",
 	"To white a message": "Написать сообщение",
 	"add user to friends": "добавить в друзья",
-	"delete invite": "удалить приглашение"
+	"delete invite": "удалить приглашение",
+	"afk": "отошел",
+	"You have no friends": "You have no friends"
 }

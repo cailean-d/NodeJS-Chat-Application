@@ -7,13 +7,20 @@ module.exports = function(io, global){
 
         socket.userid =  socket.handshake.query.id;
         socket.username =  socket.handshake.query.nickname;
+        socket.avatar =  socket.handshake.query.avatar;
 
         socket.on('add_friend', function(data){
             mysql_module.add_friend(data, socket.userid, function(err){
                 if (err) {
-                    socket.emit('friend_added', {success: false, user: data})
+                    socket.emit('friend_added', {success: false, user: false})
                 } else {
-                    socket.emit('friend_added', {success: true, user: data})
+                    mysql_module.getUser(data, function(userObject){
+                        socket.emit('friend_added', {success: true, user: {
+                            id: userObject[0].id,
+                            nickname: userObject[0].nickname,
+                            avatar: userObject[0].avatar
+                        }})
+                    });
 
                     // notify sender about accepting friendship
                     sendToSpecificUser(global, data, 'added_to_friends', socket.username)                    
@@ -57,7 +64,11 @@ module.exports = function(io, global){
                     socket.emit('friend_invited', {success: true, user: data})
 
                     // notify sender about invite
-                    sendToSpecificUser(global, data, 'invited_to_friend', socket.username)
+                    sendToSpecificUser(global, data, 'invited_to_friend', {
+                        username: socket.username,
+                        id: socket.userid,
+                        avatar: socket.avatar
+                    })
                 }    
             });
         })
